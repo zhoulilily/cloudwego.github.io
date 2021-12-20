@@ -1,0 +1,1173 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>CloudWeGo – CloudWeGo</title><link>/zh/</link><description>Recent content on CloudWeGo</description><generator>Hugo -- gohugo.io</generator><atom:link href="/zh/index.xml" rel="self" type="application/rss+xml"/><item><title>Blog: Kitex v0.1.0 版本发布</title><link>/zh/blog/2021/12/13/kitex-v0.1.0-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</link><pubDate>Mon, 13 Dec 2021 00:00:00 +0000</pubDate><guid>/zh/blog/2021/12/13/kitex-v0.1.0-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</guid><description>
+&lt;h2 id="功能">功能&lt;/h2>
+&lt;h3 id="泛化调用">泛化调用&lt;/h3>
+&lt;ul>
+&lt;li>IDL 解析支持多 Service&lt;/li>
+&lt;li>暴露 SetSeqID 方法便于二进制泛化场景 server 侧使用&lt;/li>
+&lt;li>泛化 client 支持关闭，规避内存泄漏问题&lt;/li>
+&lt;/ul>
+&lt;h3 id="日志">日志&lt;/h3>
+&lt;ul>
+&lt;li>修改日志风格，使用 &amp;ldquo;key=value&amp;rdquo; 列出信息&lt;/li>
+&lt;li>使用 klog 作为全局的日志输出工具&lt;/li>
+&lt;li>使用全局的 default logger&lt;/li>
+&lt;li>日志打印更多 context 信息，例如 logId，方便问题排查&lt;/li>
+&lt;li>go func 传入服务信息用于 recover panic 后输出关键信息方便问题排查&lt;/li>
+&lt;/ul>
+&lt;h3 id="option">Option&lt;/h3>
+&lt;ul>
+&lt;li>增加 NewThriftCodecDisableFastMode 方法，来关闭 FastWrite 和 FastRead&lt;/li>
+&lt;li>Kitex server 支持端口复用&lt;/li>
+&lt;li>默认 RPC 超时设置为 0（在后续 PR 中，revert 了该变更）&lt;/li>
+&lt;/ul>
+&lt;h3 id="proxy">Proxy&lt;/h3>
+&lt;ul>
+&lt;li>Proxy 增加 ContextHandler 接口用于传递初始化ctx给 mwbuilder&lt;/li>
+&lt;li>注册 lbcache 的 Dump 给 diagnosis，用于问题诊断&lt;/li>
+&lt;li>将 PRCConfig 传递给 proxy.Config&lt;/li>
+&lt;/ul>
+&lt;h2 id="优化">优化&lt;/h2>
+&lt;ul>
+&lt;li>减少了对象的堆分配&lt;/li>
+&lt;li>优化多路复用性能&lt;/li>
+&lt;li>优化 grpc 编解码性能，通过 Release 时释放(Close) LinkBuffer&lt;/li>
+&lt;li>在计算 backup request 的消耗(cost)时，区分 ErrRPCFinish&lt;/li>
+&lt;li>多路复用分片队列逻辑移动至 netpoll/mux，并重命名分片字典&lt;/li>
+&lt;li>优化Fast api中容器类型的长度编码逻辑&lt;/li>
+&lt;/ul>
+&lt;h2 id="bug-修复">Bug 修复&lt;/h2>
+&lt;ul>
+&lt;li>修复 server 端 WithErrorHandler 配置不生效问题&lt;/li>
+&lt;li>调整 lbcache 中的 Balancer 初始化逻辑&lt;/li>
+&lt;li>修复 TraceCtl 可能为 nil 的问题(仅影响单测)&lt;/li>
+&lt;li>设置默认的 rpc timeout, 并支持设置 WithRPCTimeout(0) 来关闭超时中间件&lt;/li>
+&lt;li>修复 default logger 使用错误的 call depth&lt;/li>
+&lt;li>重命名 BackwardProxy 为 ReverseProxy&lt;/li>
+&lt;li>修复 grpc 场景下的 panic&lt;/li>
+&lt;li>修复 grpc 场景下的潜在风险（keepalive 超时导致 panic）&lt;/li>
+&lt;li>修复 void 方法中的异常缺失&lt;/li>
+&lt;li>修复实例变更时 dump 信息不正确问题。&lt;/li>
+&lt;/ul>
+&lt;h2 id="文档">文档&lt;/h2>
+&lt;ul>
+&lt;li>修复失效的中文链接&lt;/li>
+&lt;li>将全部 doc 移至官网 cloudwego.io&lt;/li>
+&lt;/ul>
+&lt;h2 id="netpoll-api-change">Netpoll API Change:&lt;/h2>
+&lt;ul>
+&lt;li>适应 netpoll.Writer.Append 的 API 改动，返回值从 2个 变为 1个&lt;/li>
+&lt;/ul>
+&lt;h2 id="依赖变化">依赖变化&lt;/h2>
+&lt;ul>
+&lt;li>github.com/cloudwego/netpoll: v0.0.4 -&amp;gt; v0.1.2&lt;/li>
+&lt;/ul></description></item><item><title>Blog: RPC 框架 Kitex 实践入门：性能测试指南</title><link>/zh/blog/2021/11/24/rpc-%E6%A1%86%E6%9E%B6-kitex-%E5%AE%9E%E8%B7%B5%E5%85%A5%E9%97%A8%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95%E6%8C%87%E5%8D%97/</link><pubDate>Wed, 24 Nov 2021 00:00:00 +0000</pubDate><guid>/zh/blog/2021/11/24/rpc-%E6%A1%86%E6%9E%B6-kitex-%E5%AE%9E%E8%B7%B5%E5%85%A5%E9%97%A8%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95%E6%8C%87%E5%8D%97/</guid><description>
+&lt;blockquote>
+&lt;p>2021 年 9 月 8 日，字节跳动宣布正式开源 CloudWeGo。CloudWeGo 是一套字节跳动内部微服务中间件集合，具备高性能、强扩展性和稳定性的特点，专注于解决微服务通信与治理的难题，满足不同业务在不同场景的诉求。CloudWeGo 第一批开源了四个项目：Kitex、Netpoll、Thriftgo 和 netpoll-http2，以 RPC 框架 Kitex 和网络库 Netpoll 为主。&lt;/p>
+&lt;/blockquote>
+&lt;p>日前，字节跳动服务框架团队正式开源 &lt;a href="https://mp.weixin.qq.com/s?__biz=MzI1MzYzMjE0MQ==&amp;amp;mid=2247490160&amp;amp;idx=1&amp;amp;sn=9fce5fec2e6520d4637bcf5a3d483edd&amp;amp;chksm=e9d0d192dea758845c85d1e9a73532a08da09afffdfc003a33168d858efb43ae79855594844e&amp;amp;scene=21#wechat_redirect">CloudWeGo&lt;/a> ，在抖音、今日头条均有深度应用的 Golang 微服务 RPC 框架 Kitex 也包含在其中。&lt;/p>
+&lt;p>本文旨在分享开发者在压测 Kitex 时需要了解的场景和技术问题。这些建议有助于用户更好地结合真实 RPC 场景对 Kitex 进行调优，使之更贴合业务需要、发挥最佳性能。用户也可以参考官方提供的压测项目 &lt;a href="https://github.com/cloudwego/kitex-benchmark">kitex-benchmark&lt;/a> 了解更多细节。&lt;/p>
+&lt;h2 id="微服务场景的特点">微服务场景的特点&lt;/h2>
+&lt;p>Kitex 诞生于字节跳动大规模微服务架构实践，面向的场景自然是微服务场景，因此下面会先介绍微服务的特点，方便开发者深入理解 Kitex 在其中的设计思考。&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>RPC 通信模型&lt;/p>
+&lt;p>一次 RPC 调用往往需要多个微服务协作完成，而下游服务又会有其自身依赖，所以整个调用链路会是一个复杂的网状结构。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>复杂的调用链路&lt;/p>
+&lt;p>在这种复杂调用关系中，某个中间节点出现的延迟波动可能会传导到整个链路上，导致整体超时。当链路上的节点足够多时，即便每个节点的波动概率很低，最终汇聚到链路上的超时概率也会被放大。所以单一服务的延迟波动 —— 即 P99 延迟指标，也是一个会对线上服务产生重大影响的关键指标。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>包体积大小&lt;/p>
+&lt;p>虽然一个服务通信包的大小取决于实际业务场景，但在字节跳动的内部统计中，我们发现线上请求大多以小包（&amp;lt;2KB）为主，所以在兼顾大包场景的同时，也重点优化了小包场景下的性能。&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="针对微服务场景进行压测">针对微服务场景进行压测&lt;/h2>
+&lt;h3 id="确定压测对象">确定压测对象&lt;/h3>
+&lt;p>衡量一个 RPC 框架的性能需要从两个视角分别去思考：Client 视角与 Server 视角。在大规模的业务架构中，上游 Client 不见得使用的也是下游的框架，而开发者调用的下游服务也同样如此，如果再考虑到 Service Mesh 的情况就更复杂了。&lt;/p>
+&lt;p>一些压测项目通常会把 Client 和 Server 进程混部进行压测，然后得出&lt;strong>整个框架&lt;/strong>的性能数据，这其实和线上实际运行情况很可能是不符的。&lt;/p>
+&lt;p>如果要压测 Server，应该给 Client 尽可能多的资源，把 Server 压到极限，反之亦然。如果 Client 和 Server 都只给了 4 核 CPU 进行压测，会导致开发者无法判断最终得出来的性能数据是哪个视角下的，更无法给线上服务做实际的参考。&lt;/p>
+&lt;h3 id="对齐连接模型">对齐连接模型&lt;/h3>
+&lt;p>常规 RPC 的连接模型主要有三种：&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>短连接&lt;/strong>：每次请求都创建新连接，得到返回后立即关闭连接&lt;/li>
+&lt;li>&lt;strong>长连接池&lt;/strong>：单个连接同时只能处理一次完整请求与返回&lt;/li>
+&lt;li>&lt;strong>连接多路复用&lt;/strong>：单个连接可以同时异步处理多个请求与返回&lt;/li>
+&lt;/ul>
+&lt;p>每类连接模型没有绝对好坏，取决于实际使用场景。连接多路复用虽然一般来说性能相对最好，但应用上必须依赖协议能够支持包序列号，且一些老框架服务可能也并不支持多路复用的方式调用。&lt;/p>
+&lt;p>Kitex 最早为保证最大程度的兼容性，在 Client 端默认使用了短连接，而其他主流开源框架默认使用连接多路复用，这导致一些用户在使用默认配置压测时，出现了比较大的性能数据偏差。&lt;/p>
+&lt;p>后来为了契合开源用户的常规使用场景，Kitex 在 v0.0.2 中也加入了&lt;a href="https://github.com/cloudwego/kitex/pull/40/files">默认使用长连接&lt;/a>的设置。&lt;/p>
+&lt;h3 id="对齐序列化方式">对齐序列化方式&lt;/h3>
+&lt;p>对于 RPC 框架来说，不考虑服务治理的话，计算开销主要都集中在序列化与反序列化中。&lt;/p>
+&lt;p>Kitex 对于 Protobuf 的序列化使用的是官方的 &lt;a href="https://github.com/golang/protobuf">Protobuf&lt;/a> 库，对于 Thrift 的序列化，则专门进行了性能优化，这方面的内容在&lt;a href="https://www.cloudwego.io/zh/blog/2021/09/23/%E5%AD%97%E8%8A%82%E8%B7%B3%E5%8A%A8-go-rpc-%E6%A1%86%E6%9E%B6-kitex-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E5%AE%9E%E8%B7%B5/#thrift-%E5%BA%8F%E5%88%97%E5%8C%96%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%BC%98%E5%8C%96">官网博客&lt;/a>中有介绍。&lt;/p>
+&lt;p>当前开源框架大多优先支持 Protobuf，而部分框架内置使用的 Protobuf 其实是做了许多性能优化的 &lt;a href="https://github.com/gogo/protobuf">gogo/protobuf&lt;/a> 版本，但由于 gogo/protobuf 当前有&lt;a href="https://github.com/gogo/protobuf/issues/691">失去维护的风险&lt;/a>，所以出于可维护性角度考虑，我们依然决定只使用官方的 Protobuf 库，当然后续我们也会计划对 Protobuf 进行优化。&lt;/p>
+&lt;h3 id="使用独占-cpu">使用独占 CPU&lt;/h3>
+&lt;p>虽然线上应用通常是多个进程共享 CPU，但在压测场景下，Client 与 Server 进程都处于极端繁忙的状况，如果同时还共享 CPU 会导致大量上下文切换，从而使得数据缺乏可参考性，且容易产生前后很大波动。&lt;/p>
+&lt;p>所以我们建议是将 Client 与 Server 进程隔离在不同 CPU 或者不同独占机器上进行。如果还想要进一步避免其他进程产生影响，可以再加上 nice -n -20 命令调高压测进程的调度优先级。&lt;/p>
+&lt;p>另外如果条件允许，相比云平台虚拟机，使用真实物理机会使得测试结果更加严谨与具备可复现性。&lt;/p>
+&lt;h2 id="性能数据参考">性能数据参考&lt;/h2>
+&lt;p>在满足上述要求的前提下，我们对多个框架使用 Protobuf 进行了压测对比，压测代码在 kitex-benchmark 仓库。在充分压满 Server 的目标下，Kitex 在连接池模式下的 P99 Latency 在所有框架中最低。而在多路复用模式下，Kitex 在各指标上也都具有更加明显的优势。&lt;/p>
+&lt;p>&lt;strong>配置：&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>Client 16 CPUs，Server 4 CPUs&lt;/li>
+&lt;li>1KB 请求大小，Echo 场景&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>参考数据：&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>KITEX：连接池模式（默认模式）&lt;/li>
+&lt;li>KITEX-MUX：多路复用模式&lt;/li>
+&lt;li>其他框架均使用多路复用模式&lt;/li>
+&lt;/ul>
+&lt;p>&lt;img src="/img/blog/kitex_performance_testing/qps.png" alt="image">&lt;br>
+&lt;img src="/img/blog/kitex_performance_testing/tp99.png" alt="image">&lt;/p>
+&lt;h2 id="结语">结语&lt;/h2>
+&lt;p>在当前主流的 Golang 开源 RPC 框架中，每个框架其实在设计目标上都各有侧重：有些框架侧重于通用性，有些侧重于类似 Redis 这种轻业务逻辑的场景，有些侧重于吞吐性能，而有些则更侧重 P99 时延。&lt;/p>
+&lt;p>字节跳动的业务在日常迭代中，常常会出现因某个 feature 导致一个指标上升，另一个指标下降的情况，因此 Kitex 在设计之初就更倾向于解决大规模微服务场景下各种问题。&lt;/p>
+&lt;p>Kitex 发布后，我们接到了大量来自用户的自测数据，感谢社区对我们的关注和支持，也欢迎广大开发者基于本文提供的测试指南，针对自己的实际场景选择合适的工具。更多问题，请在 GitHub 上提 Issue 交流。&lt;/p>
+&lt;h2 id="相关链接">相关链接&lt;/h2>
+&lt;ul>
+&lt;li>
+&lt;p>CloudWeGo 官网: &lt;a href="https://www.cloudwego.io">https://www.cloudwego.io&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Kitex: &lt;a href="https://github.com/cloudwego/kitex">https://github.com/cloudwego/kitex&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Netpoll: &lt;a href="https://github.com/cloudwego/netpoll">https://github.com/cloudwego/netpoll&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>kitex-benchmark: &lt;a href="https://github.com/cloudwego/kitex-benchmark">https://github.com/cloudwego/kitex-benchmark&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>netpoll-benchmark: &lt;a href="https://github.com/cloudwego/netpoll-benchmark">https://github.com/cloudwego/netpoll-benchmark&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>官方 Protobuf 库：https://github.com/golang/protobuf&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Thriftgo：https://github.com/cloudwego/thriftgo&lt;/p>
+&lt;/li>
+&lt;/ul></description></item><item><title>Blog: Kitex v0.0.8 版本发布</title><link>/zh/blog/2021/11/05/kitex-v0.0.8-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</link><pubDate>Fri, 05 Nov 2021 00:00:00 +0000</pubDate><guid>/zh/blog/2021/11/05/kitex-v0.0.8-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</guid><description>
+&lt;h2 id="优化">优化&lt;/h2>
+&lt;ul>
+&lt;li>使用分片 ring 减少连接池的锁开销。&lt;/li>
+&lt;li>装填 TTHeader 中的上游服务信息到 rpcinfo 中，用于在 decode 出错时输出来源信息。&lt;/li>
+&lt;li>Unlink uds 调整至 CreateListener 中。&lt;/li>
+&lt;li>event.go 和 ring_single.go 中的 Mutex 改为 RWMutex。&lt;/li>
+&lt;/ul>
+&lt;h2 id="bug-修复">Bug 修复&lt;/h2>
+&lt;ul>
+&lt;li>修复 netpollmux shard index 溢出的问题。&lt;/li>
+&lt;li>移除 &lt;code>WithCircuitBreaker&lt;/code> option 里对参数的反射，避免 data-race。&lt;/li>
+&lt;li>在重试场景下， 修复 rpc finish 错误导致的小概率失败的问题，并且加上了熔断 sample 的校验。&lt;/li>
+&lt;li>修复 endpoint_test.go 中的一处单测错误。&lt;/li>
+&lt;li>修改 conn_wrapper.go 中 longconn 变量命名为 conn.。&lt;/li>
+&lt;/ul>
+&lt;h2 id="生成工具">生成工具&lt;/h2>
+&lt;ul>
+&lt;li>代码生成工具支持透传thrift-go插件参数。&lt;/li>
+&lt;/ul>
+&lt;h2 id="文档">文档&lt;/h2>
+&lt;ul>
+&lt;li>将 README 中的性能结果改为引用 kitex-benchmark 仓库的数据。&lt;/li>
+&lt;/ul>
+&lt;h2 id="依赖变化">依赖变化&lt;/h2>
+&lt;ul>
+&lt;li>github.com/tidwall/gjson: v1.8.0 -&amp;gt; v1.9.3&lt;/li>
+&lt;/ul></description></item><item><title>Blog: 字节跳动在 Go 网络库上的实践</title><link>/zh/blog/2021/10/09/%E5%AD%97%E8%8A%82%E8%B7%B3%E5%8A%A8%E5%9C%A8-go-%E7%BD%91%E7%BB%9C%E5%BA%93%E4%B8%8A%E7%9A%84%E5%AE%9E%E8%B7%B5/</link><pubDate>Sat, 09 Oct 2021 00:00:00 +0000</pubDate><guid>/zh/blog/2021/10/09/%E5%AD%97%E8%8A%82%E8%B7%B3%E5%8A%A8%E5%9C%A8-go-%E7%BD%91%E7%BB%9C%E5%BA%93%E4%B8%8A%E7%9A%84%E5%AE%9E%E8%B7%B5/</guid><description>
+&lt;blockquote>
+&lt;p>本文选自“字节跳动基础架构实践”系列文章。&lt;/p>
+&lt;p>“字节跳动基础架构实践”系列文章是由字节跳动基础架构部门各技术团队及专家倾力打造的技术干货内容，和大家分享团队在基础架构发展和演进过程中的实践经验与教训，与各位技术同学一起交流成长。&lt;/p>
+&lt;p>RPC 框架作为研发体系中重要的一环，承载了几乎所有的服务流量。本文将简单介绍字节跳动自研网络库 netpoll 的设计及实践；以及我们实际遇到的问题和解决思路，希望能为大家提供一些参考。&lt;/p>
+&lt;/blockquote>
+&lt;h2 id="前言">前言&lt;/h2>
+&lt;p>RPC 框架作为研发体系中重要的一环，承载了几乎所有的服务流量。随着公司内 Go 语言使用越来越广，业务对框架的要求越来越高，而 Go 原生 net 网络库却无法提供足够的性能和控制力，如无法感知连接状态、连接数量多导致利用率低、无法控制协程数量等。为了能够获取对于网络层的完全控制权，同时先于业务做一些探索并最终赋能业务，框架组推出了全新的基于 epoll 的自研网络库 —— netpoll，并基于其之上开发了字节内新一代 Golang 框架 Kitex。&lt;/p>
+&lt;p>由于 epoll 原理已有较多文章描述，本文将仅简单介绍 netpoll 的设计；随后，我们会尝试梳理一下我们基于 netpoll 所做的一些实践；最后，我们将分享一个我们遇到的问题，以及我们解决的思路。同时，欢迎对于 Go 语言以及框架感兴趣的同学加入我们！&lt;/p>
+&lt;h2 id="新型网络库设计">新型网络库设计&lt;/h2>
+&lt;h3 id="reactor---事件监听和调度核心">Reactor - 事件监听和调度核心&lt;/h3>
+&lt;p>netpoll 核心是 Reactor 事件监听调度器，主要功能为使用 epoll 监听连接的文件描述符（fd），通过回调机制触发连接上的 读、写、关闭 三种事件。&lt;br>
+&lt;br/>
+&lt;img src="/img/blog/bytedance_gonet_practice_img/reactor.png" alt="image">&lt;/p>
+&lt;h3 id="server---主从-reactor-实现">Server - 主从 Reactor 实现&lt;/h3>
+&lt;p>netpoll 将 Reactor 以 1:N 的形式组合成主从模式。&lt;/p>
+&lt;ol>
+&lt;li>MainReactor 主要管理 Listener，负责监听端口，建立新连接；&lt;/li>
+&lt;li>SubReactor 负责管理 Connection，监听分配到的所有连接，并将所有触发的事件提交到协程池里进行处理。&lt;/li>
+&lt;li>netpoll 在 I/O Task 中引入了主动的内存管理，向上层提供 NoCopy 的调用接口，由此支持 NoCopy RPC。&lt;/li>
+&lt;li>使用协程池集中处理 I/O Task，减少 goroutine 数量和调度开销。&lt;br>
+&lt;br/>
+&lt;img src="/img/blog/bytedance_gonet_practice_img/server_reactor.png" alt="image">&lt;/li>
+&lt;/ol>
+&lt;h3 id="client---共享-reactor-能力">Client - 共享 Reactor 能力&lt;/h3>
+&lt;p>client 端和 server 端共享 SubReactor，netpoll 同样实现了 dialer，提供创建连接的能力。client 端使用上和 net.Conn 相似，netpoll 提供了 write -&amp;gt; wait read callback 的底层支持。&lt;br>
+&lt;br/>
+&lt;img src="/img/blog/bytedance_gonet_practice_img/client_reactor.png" alt="image">&lt;/p>
+&lt;h2 id="nocopy-buffer">Nocopy Buffer&lt;/h2>
+&lt;h3 id="为什么需要-nocopy-buffer-">为什么需要 Nocopy Buffer ?&lt;/h3>
+&lt;p>在上述提及的 Reactor 和 I/O Task 设计中，epoll 的触发方式会影响 I/O 和 buffer 的设计，大体来说分为两种方式：&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>采用水平触发(LT)&lt;/strong>，则需要同步的在事件触发后主动完成 I/O，并向上层代码直接提供 buffer。&lt;/li>
+&lt;li>&lt;strong>采用边沿触发(ET)&lt;/strong>，可选择只管理事件通知(如 go net 设计)，由上层代码完成 I/O 并管理 buffer。&lt;/li>
+&lt;/ul>
+&lt;p>两种方式各有优缺，netpoll 采用前者策略，水平触发时效性更好，容错率高，主动 I/O 可以集中内存使用和管理，提供 nocopy 操作并减少 GC。事实上一些热门开源网络库也是采用方式一的设计，如 easygo、evio、gnet 等。&lt;/p>
+&lt;p>但使用 LT 也带来另一个问题，即底层主动 I/O 和上层代码并发操作 buffer，引入额外的并发开销。比如：I/O 读数据写 buffer 和上层代码读 buffer 存在并发读写，反之亦然。为了保证数据正确性，同时不引入锁竞争，现有的开源网络库通常采取 同步处理 buffer(easygo, evio) 或者将 buffer 再 copy 一份提供给上层代码(gnet) 等方式，均不适合业务处理或存在 copy 开销。&lt;/p>
+&lt;p>另一方面，常见的 bytes、bufio、ringbuffer 等 buffer 库，均存在 growth 需要 copy 原数组数据，以及只能扩容无法缩容，占用大量内存等问题。因此我们希望引入一种新的 Buffer 形式，一举解决上述两方面的问题。&lt;/p>
+&lt;h3 id="nocopy-buffer-设计和优势">Nocopy Buffer 设计和优势&lt;/h3>
+&lt;p>Nocopy Buffer 基于链表数组实现，如下图所示，我们将 []byte 数组抽象为 block，并以链表拼接的形式将 block 组合为 Nocopy Buffer，同时引入了引用计数、nocopy API 和对象池。&lt;br>
+&lt;br/>
+&lt;img src="/img/blog/bytedance_gonet_practice_img/buffer.png" alt="image">&lt;br>
+&lt;br/>
+Nocopy Buffer 相比常见的 bytes、bufio、ringbuffer 等有以下优势：&lt;/p>
+&lt;ol>
+&lt;li>读写并行无锁，支持 nocopy 地流式读写
+&lt;ul>
+&lt;li>读写分别操作头尾指针，相互不干扰。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>高效扩缩容
+&lt;ul>
+&lt;li>扩容阶段，直接在尾指针后添加新的 block 即可，无需 copy 原数组。&lt;/li>
+&lt;li>缩容阶段，头指针会直接释放使用完毕的 block 节点，完成缩容。每个 block 都有独立的引用计数，当释放的 block 不再有引用时，主动回收 block 节点。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>灵活切片和拼接 buffer (链表特性)
+&lt;ul>
+&lt;li>支持任意读取分段(nocopy)，上层代码可以 nocopy 地并行处理数据流分段，无需关心生命周期，通过引用计数 GC。&lt;/li>
+&lt;li>支持任意拼接(nocopy)，写 buffer 支持通过 block 拼接到尾指针后的形式，无需 copy，保证数据只写一次。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Nocopy Buffer 池化，减少 GC
+&lt;ul>
+&lt;li>将每个 []byte 数组视为 block 节点，构建对象池维护空闲 block，由此复用 block，减少内存占用和 GC。基于该 Nocopy Buffer，我们实现了 Nocopy Thrift，使得编解码过程内存零分配零拷贝。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;h2 id="连接多路复用">连接多路复用&lt;/h2>
+&lt;p>RPC 调用通常采用短连接或者长连接池的形式，一次调用绑定一个连接，那么当上下游规模很大的情况下，网络中存在的连接数以 MxN 的速度扩张，带来巨大的调度压力和计算开销，给服务治理造成困难。因此，我们希望引入一种 &amp;ldquo;在单一长连接上并行处理调用&amp;rdquo; 的形式，来减少网络中的连接数，这种方案即称为 &amp;ldquo;连接多路复用&amp;rdquo;。&lt;/p>
+&lt;p>当前业界也存在一些开源的连接多路复用方案，掣肘于代码层面的束缚，这些方案均需要 copy buffer 来实现数据分包和合并，导致实际性能并不理想。而上述 Nocopy Buffer 基于其灵活切片和拼接的特性，很好的支持了 nocopy 的数据分包和合并，使得实现高性能连接多路复用方案成为可能。&lt;/p>
+&lt;p>基于 netpoll 的连接多路复用设计如下图所示，我们将 Nocopy Buffer(及其分片) 抽象为虚拟连接，使得上层代码保持同 net.Conn 相同的调用体验。与此同时，在底层代码上通过协议分包将真实连接上的数据灵活的分配到虚拟连接上；或通过协议编码合并发送虚拟连接数据。&lt;br>
+&lt;br/>
+&lt;img src="/img/blog/bytedance_gonet_practice_img/client_server.png" alt="image"> &lt;br>
+&lt;br/>
+连接多路复用方案包含以下核心要素：&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>虚拟连接&lt;/p>
+&lt;ul>
+&lt;li>实质上是 Nocopy Buffer，目的是替换真正的连接，规避内存 copy。&lt;/li>
+&lt;li>上层的业务逻辑/编解码 均在虚拟连接上完成，上层逻辑可以异步独立并行执行。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Shared map&lt;/p>
+&lt;ul>
+&lt;li>引入分片锁来减少锁力度。&lt;/li>
+&lt;li>在调用端使用 sequence id 来标记请求，并使用分片锁存储 id 对应的回调。&lt;/li>
+&lt;li>在接收响应数据后，根据 sequence id 来找到对应回调并执行。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>协议分包和编码&lt;/p>
+&lt;ul>
+&lt;li>如何识别完整的请求响应数据包是连接多路复用方案可行的关键，因此需要引入协议。&lt;/li>
+&lt;li>这里采用 thrift header protocol 协议，通过消息头判断数据包完整性，通过 sequence id 标记请求和响应的对应关系。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;h2 id="zerocopy">ZeroCopy&lt;/h2>
+&lt;p>这里所说的 ZeroCopy，指的是 Linux 所提供的 ZeroCopy 的能力。上一章中我们说了业务层的零拷贝，而众所周知，当我们调用 sendmsg 系统调用发包的时候，实际上仍然是会产生一次数据的拷贝的，并且在大包场景下这个拷贝的消耗非常明显。以 100M 为例，perf 可以看到如下结果： &lt;br/>&lt;br>
+&lt;img src="/img/blog/bytedance_gonet_practice_img/perf.png" alt="image">&lt;br>
+&lt;br/>
+这还仅仅是普通 tcp 发包的占用，在我们的场景下，大部分服务都会接入 Service Mesh，所以在一次发包中，一共会有 3 次拷贝：业务进程到内核、内核到 sidecar、sidecar 再到内核。这使得有大包需求的业务，拷贝所导致的 cpu 占用会特别明显，如下图：&lt;br>
+&lt;br/>
+&lt;img src="/img/blog/bytedance_gonet_practice_img/cpu.png" alt="image">&lt;br>
+&lt;br/>
+为了解决这个问题，我们选择了使用 Linux 提供的 ZeroCopy API（在 4.14 以后支持 send；5.4 以后支持 receive）。但是这引入了一个额外的工程问题：ZeroCopy send API 和原先调用方式不兼容，无法很好地共存。这里简单介绍一下 ZeroCopy send 的工作方式：业务进程调用 sendmsg 之后，sendmsg 会记录下 iovec 的地址并立即返回，这时候业务进程不能释放这段内存，需要通过 epoll 等待内核回调一个信号表明某段 iovec 已经发送成功之后才能释放。由于我们并不希望更改业务方的使用方法，需要对上层提供同步收发的接口，所以很难基于现有的 API 同时提供 ZeroCopy 和非 ZeroCopy 的抽象；而由于 ZeroCopy 在小包场景下是有性能损耗的，所以也不能将这个作为默认的选项。&lt;/p>
+&lt;p>于是，字节跳动框架组和字节跳动内核组合作，由内核组提供了同步的接口：当调用 sendmsg 的时候，内核会监听并拦截内核原先给业务的回调，并且在回调完成后才会让 sendmsg 返回。这使得我们无需更改原有模型，可以很方便地接入 ZeroCopy send。同时，字节跳动内核组还实现了基于 unix domain socket 的 ZeroCopy，可以使得业务进程与 Mesh sidecar 之间的通信也达到零拷贝。&lt;/p>
+&lt;p>在使用了 ZeroCopy send 后，perf 可以看到内核不再有 copy 的占用：&lt;br>
+&lt;br/>
+&lt;img src="/img/blog/bytedance_gonet_practice_img/perf2.png" alt="image">&lt;br>
+&lt;br/>
+从 cpu 占用数值上看，大包场景下 ZeroCopy 能够比非 ZeroCopy 节省一半的 cpu。&lt;/p>
+&lt;h2 id="go-调度导致的延迟问题分享">Go 调度导致的延迟问题分享&lt;/h2>
+&lt;p>在我们实践过程中，发现我们新写的 netpoll 虽然在 avg 延迟上表现胜于 Go 原生的 net 库，但是在 p99 和 max 延迟上要普遍略高于 Go 原生的 net 库，并且尖刺也会更加明显，如下图（Go 1.13，蓝色为 netpoll + 多路复用，绿色为 netpoll + 长连接，黄色为 net 库 + 长连接）：&lt;br>
+&lt;br/>
+&lt;img src="/img/blog/bytedance_gonet_practice_img/delay.png" alt="image">&lt;br>
+&lt;br/>
+我们尝试了很多种办法去优化，但是收效甚微。最终，我们定位出这个延迟并非是由于 netpoll 本身的开销导致的，而是由于 go 的调度导致的，比如说：&lt;/p>
+&lt;ol>
+&lt;li>由于在 netpoll 中，SubReactor 本身也是一个 goroutine，受调度影响，不能保证 EpollWait 回调之后马上执行，所以这一块会有延迟；&lt;/li>
+&lt;li>同时，由于用来处理 I/O 事件的 SubReactor 和用来处理连接监听的 MainReactor 本身也是 goroutine，所以实际上很难保证在多核情况之下，这些 Reactor 能并行执行；甚至在最极端情况之下，可能这些 Reactor 会挂在同一个 P 下，最终变成了串行执行，无法充分利用多核优势；&lt;/li>
+&lt;li>由于 EpollWait 回调之后，SubReactor 内是串行处理 I/O 事件的，导致排在最后的事件可能会有长尾问题；&lt;/li>
+&lt;li>在连接多路复用场景下，由于每个连接绑定了一个 SubReactor，故延迟完全取决于这个 SubReactor 的调度，导致尖刺会更加明显。
+由于 Go 在 runtime 中对于 net 库有做特殊优化，所以 net 库不会有以上情况；同时 net 库是 goroutine-per-connection 的模型，所以能确保请求能并行执行而不会相互影响。&lt;/li>
+&lt;/ol>
+&lt;p>对于以上这个问题，我们目前解决的思路有两个：&lt;/p>
+&lt;ol>
+&lt;li>修改 Go runtime 源码，在 Go runtime 中注册一个回调，每次调度时调用 EpollWait，把获取到的 fd 传递给回调执行；&lt;/li>
+&lt;li>与字节跳动内核组合作，支持同时批量读/写多个连接，解决串行问题。另外，经过我们的测试，Go 1.14 能够使得延迟略有降低同时更加平稳，但是所能达到的极限 QPS 更低。希望我们的思路能够给业界同样遇到此问题的同学提供一些参考。&lt;/li>
+&lt;/ol>
+&lt;h2 id="后记">后记&lt;/h2>
+&lt;p>希望以上的分享能够对社区有所帮助。同时，我们也在加速建设 netpoll 以及基于 netpoll 的新框架 Kitex。欢迎各位感兴趣的同学加入我们，共同建设 Go 语言生态！&lt;/p>
+&lt;h2 id="参考资料">参考资料&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="http://man7.org/linux/man-pages/man7/epoll.7.html">http://man7.org/linux/man-pages/man7/epoll.7.html&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://golang.org/src/runtime/proc.go">https://golang.org/src/runtime/proc.go&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://github.com/panjf2000/gnet">https://github.com/panjf2000/gnet&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://github.com/tidwall/evio">https://github.com/tidwall/evio&lt;/a>&lt;/li>
+&lt;/ul></description></item><item><title>Blog: Kitex v0.0.5 版本发布</title><link>/zh/blog/2021/09/26/kitex-v0.0.5-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</link><pubDate>Sun, 26 Sep 2021 00:00:00 +0000</pubDate><guid>/zh/blog/2021/09/26/kitex-v0.0.5-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</guid><description>
+&lt;h2 id="功能">功能:&lt;/h2>
+&lt;ul>
+&lt;li>增加默认的 ErrorHandler 封装 Error（用户指定会被覆盖）。&lt;/li>
+&lt;li>metainfo 支持反向传递。&lt;/li>
+&lt;li>支持了 JSON 泛化调用，使用指南可参考：&lt;a href="https://www.cloudwego.io/zh/docs/kitex/tutorials/advanced-feature/generic_call/">Kitex 泛化调用使用指南&lt;/a>。&lt;/li>
+&lt;/ul>
+&lt;h2 id="优化">优化:&lt;/h2>
+&lt;ul>
+&lt;li>多路复用场景下使用了新的 netpoll API 来改善吞吐和延迟。&lt;/li>
+&lt;li>多路复用场景下支持 metainfo 的正向和反向传递。&lt;/li>
+&lt;li>Client 会在需要的时候默认使用 RPCTimeout 中间件。&lt;/li>
+&lt;li>连接池配置增加全局空闲连接和单实例空闲连接合法性校验。&lt;/li>
+&lt;li>当更新 QPS 最大限制时会重置计数器。&lt;/li>
+&lt;li>减小 QPS 限流的误差。&lt;/li>
+&lt;/ul>
+&lt;h2 id="bug-修复">Bug 修复:&lt;/h2>
+&lt;ul>
+&lt;li>修复 WithExitWaitTime 没有正确设置退出等待时间的问题。&lt;/li>
+&lt;li>修复更新 QPS 限制器更新间隔时，协程泄漏的问题。&lt;/li>
+&lt;li>服务注册使用真实监听的地址。&lt;/li>
+&lt;/ul>
+&lt;h2 id="工具">工具:&lt;/h2>
+&lt;ul>
+&lt;li>修复了当 protobuf 文件只有 unary 方法时，生成出错的问题。&lt;/li>
+&lt;/ul>
+&lt;h2 id="文档">文档:&lt;/h2>
+&lt;ul>
+&lt;li>提供了英文版的README和其他文档。&lt;/li>
+&lt;li>补充了泛化调用手册： &lt;a href="https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/generic_call/">English&lt;/a> | &lt;a href="https://www.cloudwego.io/zh/docs/kitex/tutorials/advanced-feature/generic_call/">中文&lt;/a>。&lt;/li>
+&lt;li>README 中增加了 landsapce 和 roadmap。&lt;/li>
+&lt;/ul>
+&lt;h2 id="依赖变化">依赖变化:&lt;/h2>
+&lt;ul>
+&lt;li>github.com/cloudwego/netpoll: v0.0.3 -&amp;gt; v0.0.4&lt;/li>
+&lt;li>github.com/bytedance/gopkg: v0.0.0-20210709064845-3c00f9323f09 -&amp;gt; v0.0.0-20210910103821-e4efae9c17c3&lt;/li>
+&lt;/ul></description></item><item><title>Blog: 字节跳动 Go RPC 框架 Kitex 性能优化实践</title><link>/zh/blog/2021/09/23/%E5%AD%97%E8%8A%82%E8%B7%B3%E5%8A%A8-go-rpc-%E6%A1%86%E6%9E%B6-kitex-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E5%AE%9E%E8%B7%B5/</link><pubDate>Thu, 23 Sep 2021 00:00:00 +0000</pubDate><guid>/zh/blog/2021/09/23/%E5%AD%97%E8%8A%82%E8%B7%B3%E5%8A%A8-go-rpc-%E6%A1%86%E6%9E%B6-kitex-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E5%AE%9E%E8%B7%B5/</guid><description>
+&lt;h2 id="前言">前言&lt;/h2>
+&lt;p>Kitex 是字节跳动框架组研发的下一代高性能、强可扩展性的 Go RPC 框架。除具备丰富的服务治理特性外，相比其他框架还有以下特点：集成了自研的网络库 Netpoll；支持多消息协议（Thrift、Protobuf）和多交互方式（Ping-Pong、Oneway、 Streaming）；提供了更加灵活可扩展的代码生成器。&lt;/p>
+&lt;p>目前公司内主要业务线都已经大范围使用 Kitex，据统计当前接入服务数量多达 8k。Kitex 推出后，我们一直在不断地优化性能，本文将分享我们在 Netpoll 和 序列化方面的优化工作。&lt;/p>
+&lt;h2 id="自研网络库-netpoll-优化">自研网络库 Netpoll 优化&lt;/h2>
+&lt;p>自研的基于 epoll 的网络库 —— Netpoll，在性能方面有了较为显著的优化。测试数据表明，当前版本(2020.12) 相比于上次分享时(2020.05)，吞吐能力 ↑30%，延迟 AVG ↓25%，TP99 ↓67%，性能已远超官方 net 库。以下，我们将分享两点显著提升性能的方案。&lt;/p>
+&lt;h3 id="epoll_wait-调度延迟优化">epoll_wait 调度延迟优化&lt;/h3>
+&lt;p>Netpoll 在刚发布时，遇到了延迟 AVG 较低，但 TP99 较高的问题。经过认真研究 epoll_wait，我们发现结合 polling 和 event trigger 两种模式，并优化调度策略，可以显著降低延迟。&lt;/p>
+&lt;p>首先我们来看 Go 官方提供的 syscall.EpollWait 方法：&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-go" data-lang="go">&lt;span style="color:#204a87;font-weight:bold">func&lt;/span> &lt;span style="color:#000">EpollWait&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">epfd&lt;/span> &lt;span style="color:#204a87;font-weight:bold">int&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">events&lt;/span> &lt;span style="color:#000;font-weight:bold">[]&lt;/span>&lt;span style="color:#000">EpollEvent&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">msec&lt;/span> &lt;span style="color:#204a87;font-weight:bold">int&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span> &lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">n&lt;/span> &lt;span style="color:#204a87;font-weight:bold">int&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">err&lt;/span> &lt;span style="color:#204a87;font-weight:bold">error&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>这里共提供 3 个参数，分别表示 epoll 的 fd、回调事件、等待时间，其中只有 msec 是动态可调的。&lt;/p>
+&lt;p>通常情况下，我们主动调用 EpollWait 都会设置 msec=-1，即无限等待事件到来。事实上不少开源网络库也是这么做的。但是我们研究发现，msec=-1 并不是最优解。&lt;/p>
+&lt;p>epoll_wait 内核源码(如下) 表明，msec=-1 比 msec=0 增加了 fetch_events 检查，因此耗时更长。&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-go" data-lang="go">&lt;span style="color:#000">static&lt;/span> &lt;span style="color:#204a87;font-weight:bold">int&lt;/span> &lt;span style="color:#000">ep_poll&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#204a87;font-weight:bold">struct&lt;/span> &lt;span style="color:#000">eventpoll&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">*&lt;/span>&lt;span style="color:#000">ep&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#204a87;font-weight:bold">struct&lt;/span> &lt;span style="color:#000">epoll_event&lt;/span> &lt;span style="color:#000">__user&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">*&lt;/span>&lt;span style="color:#000">events&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span>
+&lt;span style="color:#204a87;font-weight:bold">int&lt;/span> &lt;span style="color:#000">maxevents&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">long&lt;/span> &lt;span style="color:#000">timeout&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span>
+&lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;span style="color:#ce5c00;font-weight:bold">...&lt;/span>
+&lt;span style="color:#204a87;font-weight:bold">if&lt;/span> &lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">timeout&lt;/span> &lt;span style="color:#000;font-weight:bold">&amp;gt;&lt;/span> &lt;span style="color:#0000cf;font-weight:bold">0&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;span style="color:#ce5c00;font-weight:bold">...&lt;/span>
+&lt;span style="color:#000;font-weight:bold">}&lt;/span> &lt;span style="color:#204a87;font-weight:bold">else&lt;/span> &lt;span style="color:#204a87;font-weight:bold">if&lt;/span> &lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">timeout&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">==&lt;/span> &lt;span style="color:#0000cf;font-weight:bold">0&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;span style="color:#ce5c00;font-weight:bold">...&lt;/span>
+&lt;span style="color:#204a87;font-weight:bold">goto&lt;/span> &lt;span style="color:#000">send_events&lt;/span>&lt;span style="color:#000;font-weight:bold">;&lt;/span>
+&lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;span style="color:#000">fetch_events&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>
+&lt;span style="color:#ce5c00;font-weight:bold">...&lt;/span>
+&lt;span style="color:#204a87;font-weight:bold">if&lt;/span> &lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">eavail&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span>
+&lt;span style="color:#204a87;font-weight:bold">goto&lt;/span> &lt;span style="color:#000">send_events&lt;/span>&lt;span style="color:#000;font-weight:bold">;&lt;/span>
+&lt;span style="color:#000">send_events&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>
+&lt;span style="color:#ce5c00;font-weight:bold">...&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Benchmark 表明，在有事件触发的情况下，msec=0 比 msec=-1 调用要快 18% 左右，因此在频繁事件触发场景下，使用 msec=0 调用明显是更优的。&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th style="text-align:left">Benchmark&lt;/th>
+&lt;th style="text-align:left">time/op&lt;/th>
+&lt;th style="text-align:left">bytes/op&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td style="text-align:left">BenchmarkEpollWait, msec=0&lt;/td>
+&lt;td style="text-align:left">270 ns/op&lt;/td>
+&lt;td style="text-align:left">0 B/op&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">BenchmarkEpollWait, msec=-1&lt;/td>
+&lt;td style="text-align:left">328 ns/op&lt;/td>
+&lt;td style="text-align:left">0 B/op&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">EpollWait Delta&lt;/td>
+&lt;td style="text-align:left">-17.68%&lt;/td>
+&lt;td style="text-align:left">~&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>而在无事件触发的场景下，使用 msec=0 显然会造成无限轮询，空耗大量资源。&lt;/p>
+&lt;p>综合考虑后，我们更希望在有事件触发时，使用 msec=0 调用，而在无事件时，使用 msec=-1 来减少轮询开销。伪代码如下：&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-go" data-lang="go">&lt;span style="color:#204a87;font-weight:bold">var&lt;/span> &lt;span style="color:#000">msec&lt;/span> &lt;span style="color:#000;font-weight:bold">=&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">-&lt;/span>&lt;span style="color:#0000cf;font-weight:bold">1&lt;/span>
+&lt;span style="color:#204a87;font-weight:bold">for&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;span style="color:#000">n&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">err&lt;/span> &lt;span style="color:#000;font-weight:bold">=&lt;/span> &lt;span style="color:#000">syscall&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">EpollWait&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">epfd&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">events&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">msec&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span>
+&lt;span style="color:#204a87;font-weight:bold">if&lt;/span> &lt;span style="color:#000">n&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">&amp;lt;=&lt;/span> &lt;span style="color:#0000cf;font-weight:bold">0&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;span style="color:#000">msec&lt;/span> &lt;span style="color:#000;font-weight:bold">=&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">-&lt;/span>&lt;span style="color:#0000cf;font-weight:bold">1&lt;/span>
+&lt;span style="color:#204a87;font-weight:bold">continue&lt;/span>
+&lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;span style="color:#000">msec&lt;/span> &lt;span style="color:#000;font-weight:bold">=&lt;/span> &lt;span style="color:#0000cf;font-weight:bold">0&lt;/span>
+&lt;span style="color:#ce5c00;font-weight:bold">...&lt;/span>
+&lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>那么这样就可以了吗？事实证明优化效果并不明显。&lt;/p>
+&lt;p>我们再做思考：&lt;/p>
+&lt;p>msec=0 仅单次调用耗时减少 50ns，影响太小，如果想要进一步优化，必须要在调度逻辑上做出调整。&lt;/p>
+&lt;p>进一步思考：&lt;/p>
+&lt;p>上述伪代码中，当无事件触发，调整 msec=-1 时，直接 continue 会立即再次执行 EpollWait，而由于无事件，msec=-1，当前 goroutine 会 block 并被 P 切换。但是被动切换效率较低，如果我们在 continue 前主动为 P 切换 goroutine，则可以节约时间。因此我们将上述伪代码改为如下：&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-go" data-lang="go">&lt;span style="color:#204a87;font-weight:bold">var&lt;/span> &lt;span style="color:#000">msec&lt;/span> &lt;span style="color:#000;font-weight:bold">=&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">-&lt;/span>&lt;span style="color:#0000cf;font-weight:bold">1&lt;/span>
+&lt;span style="color:#204a87;font-weight:bold">for&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;span style="color:#000">n&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">err&lt;/span> &lt;span style="color:#000;font-weight:bold">=&lt;/span> &lt;span style="color:#000">syscall&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">EpollWait&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">epfd&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">events&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">msec&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span>
+&lt;span style="color:#204a87;font-weight:bold">if&lt;/span> &lt;span style="color:#000">n&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">&amp;lt;=&lt;/span> &lt;span style="color:#0000cf;font-weight:bold">0&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;span style="color:#000">msec&lt;/span> &lt;span style="color:#000;font-weight:bold">=&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">-&lt;/span>&lt;span style="color:#0000cf;font-weight:bold">1&lt;/span>
+&lt;span style="color:#000">runtime&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Gosched&lt;/span>&lt;span style="color:#000;font-weight:bold">()&lt;/span>
+&lt;span style="color:#204a87;font-weight:bold">continue&lt;/span>
+&lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;span style="color:#000">msec&lt;/span> &lt;span style="color:#000;font-weight:bold">=&lt;/span> &lt;span style="color:#0000cf;font-weight:bold">0&lt;/span>
+&lt;span style="color:#ce5c00;font-weight:bold">...&lt;/span>
+&lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>测试表明，调整代码后，吞吐量 ↑12%，TP99 ↓64%，获得了显著的延迟收益。&lt;/p>
+&lt;h3 id="合理利用-unsafepointer">合理利用 unsafe.Pointer&lt;/h3>
+&lt;p>继续研究 epoll_wait，我们发现 Go 官方对外提供的 syscall.EpollWait 和 runtime 自用的 epollwait 是不同的版本，即两者使用了不同的 EpollEvent。以下我们展示两者的区别：&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-go" data-lang="go">&lt;span style="color:#8f5902;font-style:italic">// @syscall
+&lt;/span>&lt;span style="color:#8f5902;font-style:italic">&lt;/span>&lt;span style="color:#204a87;font-weight:bold">type&lt;/span> &lt;span style="color:#000">EpollEvent&lt;/span> &lt;span style="color:#204a87;font-weight:bold">struct&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;span style="color:#000">Events&lt;/span> &lt;span style="color:#204a87;font-weight:bold">uint32&lt;/span>
+&lt;span style="color:#000">Fd&lt;/span> &lt;span style="color:#204a87;font-weight:bold">int32&lt;/span>
+&lt;span style="color:#000">Pad&lt;/span> &lt;span style="color:#204a87;font-weight:bold">int32&lt;/span>
+&lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;span style="color:#8f5902;font-style:italic">// @runtime
+&lt;/span>&lt;span style="color:#8f5902;font-style:italic">&lt;/span>&lt;span style="color:#204a87;font-weight:bold">type&lt;/span> &lt;span style="color:#000">epollevent&lt;/span> &lt;span style="color:#204a87;font-weight:bold">struct&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;span style="color:#000">events&lt;/span> &lt;span style="color:#204a87;font-weight:bold">uint32&lt;/span>
+&lt;span style="color:#000">data&lt;/span> &lt;span style="color:#000;font-weight:bold">[&lt;/span>&lt;span style="color:#0000cf;font-weight:bold">8&lt;/span>&lt;span style="color:#000;font-weight:bold">]&lt;/span>&lt;span style="color:#204a87;font-weight:bold">byte&lt;/span> &lt;span style="color:#8f5902;font-style:italic">// unaligned uintptr
+&lt;/span>&lt;span style="color:#8f5902;font-style:italic">&lt;/span>&lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>我们看到，runtime 使用的 epollevent 是系统层 epoll 定义的原始结构；而对外版本则对其做了封装，将 epoll_data(epollevent.data) 拆分为固定的两字段：Fd 和 Pad。那么 runtime 又是如何使用的呢？在源码里我们看到这样的逻辑：&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-go" data-lang="go">&lt;span style="color:#ce5c00;font-weight:bold">*&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#ce5c00;font-weight:bold">**&lt;/span>&lt;span style="color:#000">pollDesc&lt;/span>&lt;span style="color:#000;font-weight:bold">)(&lt;/span>&lt;span style="color:#000">unsafe&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Pointer&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#ce5c00;font-weight:bold">&amp;amp;&lt;/span>&lt;span style="color:#000">ev&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">data&lt;/span>&lt;span style="color:#000;font-weight:bold">))&lt;/span> &lt;span style="color:#000;font-weight:bold">=&lt;/span> &lt;span style="color:#000">pd&lt;/span>
+&lt;span style="color:#000">pd&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">:=&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">*&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#ce5c00;font-weight:bold">**&lt;/span>&lt;span style="color:#000">pollDesc&lt;/span>&lt;span style="color:#000;font-weight:bold">)(&lt;/span>&lt;span style="color:#000">unsafe&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Pointer&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#ce5c00;font-weight:bold">&amp;amp;&lt;/span>&lt;span style="color:#000">ev&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">data&lt;/span>&lt;span style="color:#000;font-weight:bold">))&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>显然，runtime 使用 epoll_data(&amp;amp;ev.data) 直接存储了 fd 对应结构体(pollDesc)的指针，这样在事件触发时，可以直接找到结构体对象，并执行相应逻辑。而对外版本则由于只能获得封装后的 Fd 参数，因此需要引入额外的 Map 来增删改查结构体对象，这样性能肯定相差很多。&lt;/p>
+&lt;p>所以我们果断抛弃了 syscall.EpollWait，转而仿照 runtime 自行设计了 EpollWait 调用，同样采用 unsafe.Pointer 存取结构体对象。测试表明，该方案下 吞吐量 ↑10%，TP99 ↓10%，获得了较为明显的收益。&lt;/p>
+&lt;h2 id="thrift-序列化反序列化优化">Thrift 序列化/反序列化优化&lt;/h2>
+&lt;p>序列化是指把数据结构或对象转换成字节序列的过程，反序列化则是相反的过程。RPC 在通信时需要约定好序列化协议，client 在发送请求前进行序列化，字节序列通过网络传输到 server，server 再反序列进行逻辑处理，完成一次 RPC 请求。Thrift 支持 Binary、Compact 和 JSON 序列化协议。目前公司内部使用的基本都是 Binary，这里只介绍 Binary 协议。&lt;/p>
+&lt;p>Binary 采用 TLV 编码实现，即每个字段都由 TLV 结构来描述，TLV 意为：Type 类型， Lenght 长度，Value 值，Value 也可以是个 TLV 结构，其中 Type 和 Length 的长度固定，Value 的长度则由 Length 的值决定。TLV 编码结构简单清晰，并且扩展性较好，但是由于增加了 Type 和 Length，有额外的内存开销，特别是在大部分字段都是基本类型的情况下有不小的空间浪费。&lt;/p>
+&lt;p>序列化和反序列的性能优化从大的方面来看可以从空间和时间两个维度进行优化。从兼容已有的 Binary 协议来看，空间上的优化似乎不太可行，只能从时间维度进行优化，包括：&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>减少内存操作次数，包括内存分配和拷贝，尽量预分配内存，减少不必要的开销；&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>减少函数调用次数，比如可调整代码结构和 inline 等手段进行优化；&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="调研">调研&lt;/h3>
+&lt;p>根据 go_serialization_benchmarks 的压测数据，我们找到了一些性能卓越的序列化方案进行调研，希望能够对我们的优化工作有所启发。&lt;/p>
+&lt;p>通过对 protobuf、gogoprotobuf 和 Cap&amp;rsquo;n Proto 的分析，我们得出以下结论：&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>网络传输中出于 IO 的考虑，都会尽量压缩传输数据，protobuf 采用了 Varint 编码在大部分场景中都有着不错的压缩效果；&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>gogoprotobuf 采用预计算方式，在序列化时能够减少内存分配次数，进而减少了内存分配带来的系统调用、锁和 GC 等代价；&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Cap&amp;rsquo;n Proto 直接操作 buffer，也是减少了内存分配和内存拷贝（少了中间的数据结构），并且在 struct pointer 的设计中把固定长度类型数据和非固定长度类型数据分开处理，针对固定长度类型可以快速处理；&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>从兼容性考虑，不可能改变现有的 TLV 编码格式，因此数据压缩不太现实，但是 2 和 3 对我们的优化工作是有启发的，事实上我们也是采取了类似的思路。&lt;/p>
+&lt;h3 id="思路">思路&lt;/h3>
+&lt;h4 id="减少内存操作">减少内存操作&lt;/h4>
+&lt;p>&lt;strong>buffer 管理&lt;/strong>&lt;/p>
+&lt;p>无论是序列化还是反序列化，都是从一块内存拷贝数据到另一块内存，这就涉及到内存分配和内存拷贝操作，尽量避免内存操作可以减少不必要的系统调用、锁和 GC 等开销。&lt;/p>
+&lt;p>事实上 Kitex 已经提供了 LinkBuffer 用于 buffer 的管理，LinkBuffer 设计上采用链式结构，由多个 block 组成，其中 block 是大小固定的内存块，构建对象池维护空闲 block，由此复用 block，减少内存占用和 GC。&lt;/p>
+&lt;p>刚开始我们简单地采用 sync.Pool 来复用 netpoll 的 LinkBufferNode，但是这样仍然无法解决对于大包场景下的内存复用（大的 Node 不能回收，否则会导致内存泄漏）。目前我们改成了维护一组 sync.Pool，每组中的 buffer size 都不同，新建 block 时根据最接近所需 size 的 pool 中去获取，这样可以尽可能复用内存，从测试来看内存分配和 GC 优化效果明显。&lt;/p>
+&lt;p>&lt;strong>string / binary 零拷贝&lt;/strong>&lt;/p>
+&lt;p>对于有一些业务，比如视频相关的业务，会在请求或者返回中有一个很大的 Binary 二进制数据代表了处理后的视频或者图片数据，同时会有一些业务会返回很大的 String（如全文信息等）。这种场景下，我们通过火焰图看到的热点都在数据的 copy 上，那我们就想了，我们是否可以减少这种拷贝呢？&lt;/p>
+&lt;p>答案是肯定的。既然我们底层使用的 Buffer 是个链表，那么就可以很容易地在链表中间插入一个节点。&lt;/p>
+&lt;p>&lt;img src="/img/blog/buffer-linkerd-list.png" alt="!image">&lt;/p>
+&lt;p>我们就采用了类似的思想，当序列化的过程中遇到了 string 或者 binary 的时候， 将这个节点的 buffer 分成两段，在中间原地插入用户的 string / binary 对应的 buffer，这样可以避免大的 string / binary 的拷贝了。&lt;/p>
+&lt;p>这里再介绍一下，如果我们直接用 []byte(string) 去转换一个 string 到 []byte 的话实际上是会发生一次拷贝的，原因是 Go 的设计中 string 是 immutable 的但是 []byte 是 mutable 的，所以这么转换的时候会拷贝一次；如果要不拷贝转换的话，就需要用到 unsafe 了：&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-go" data-lang="go">&lt;span style="color:#204a87;font-weight:bold">func&lt;/span> &lt;span style="color:#000">StringToSliceByte&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">s&lt;/span> &lt;span style="color:#204a87;font-weight:bold">string&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span> &lt;span style="color:#000;font-weight:bold">[]&lt;/span>&lt;span style="color:#204a87;font-weight:bold">byte&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;span style="color:#000">l&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">:=&lt;/span> &lt;span style="color:#204a87">len&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">s&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span>
+&lt;span style="color:#204a87;font-weight:bold">return&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">*&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#ce5c00;font-weight:bold">*&lt;/span>&lt;span style="color:#000;font-weight:bold">[]&lt;/span>&lt;span style="color:#204a87;font-weight:bold">byte&lt;/span>&lt;span style="color:#000;font-weight:bold">)(&lt;/span>&lt;span style="color:#000">unsafe&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Pointer&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#ce5c00;font-weight:bold">&amp;amp;&lt;/span>&lt;span style="color:#000">reflect&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">SliceHeader&lt;/span>&lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;span style="color:#000">Data&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span> &lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#ce5c00;font-weight:bold">*&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#ce5c00;font-weight:bold">*&lt;/span>&lt;span style="color:#000">reflect&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">StringHeader&lt;/span>&lt;span style="color:#000;font-weight:bold">)(&lt;/span>&lt;span style="color:#000">unsafe&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Pointer&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#ce5c00;font-weight:bold">&amp;amp;&lt;/span>&lt;span style="color:#000">s&lt;/span>&lt;span style="color:#000;font-weight:bold">))).&lt;/span>&lt;span style="color:#000">Data&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span>
+&lt;span style="color:#000">Len&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span> &lt;span style="color:#000">l&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span>
+&lt;span style="color:#000">Cap&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span> &lt;span style="color:#000">l&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span>
+&lt;span style="color:#000;font-weight:bold">}))&lt;/span>
+&lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>这段代码的意思是，先把 string 的地址拿到，再拼装上一个 slice byte 的 header，这样就可以不拷贝数据而将 string 转换成 []byte 了，不过要注意这样生成的 []byte 不可写，否则行为未定义。&lt;/p>
+&lt;p>&lt;strong>预计算&lt;/strong>&lt;br>
+线上存在某些服务有大包传输的场景，这种场景下会引入不小的序列化 / 反序列化开销。一般大包都是容器类型的大小非常大导致的，如果能够提前计算出 buffer，一些 O(n) 的操作就能降到 O(1)，减少了函数调用次数，在大包场景下也大量减少了内存分配的次数，带来的收益是可观的。&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>基本类型&lt;/p>
+&lt;ul>
+&lt;li>如果容器元素为基本类型（bool, byte, i16, i32, i64, double）的话，由于基本类型大小固定，在序列化时是可以提前计算出总的大小，并且一次性分配足够的 buffer，O(n) 的 malloc 操作次数可以降到 O(1)，从而大量减少了 malloc 的次数，同理在反序列化时可以减少 next 的操作次数。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>struct 字段重排&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>上面的优化只能针对容器元素类型为基本类型的有效，那么对于元素类型为 struct 的是否也能优化呢？答案是肯定的。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>沿用上面的思路，假如 struct 中如果存在基本类型的 field，也可以预先计算出这些 field 的大小，在序列化时为这些 field 提前分配 buffer，写的时候也把这些 field 顺序统一放到前面写，这样也能在一定程度上减少 malloc 的次数。&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>一次性计算&lt;/p>
+&lt;ul>
+&lt;li>上面提到的是基本类型的优化，如果在序列化时，先遍历一遍 request 所有 field，便可以计算得到整个 request 的大小，提前分配好 buffer，在序列化和反序列时直接操作 buffer，这样对于非基本类型也能有优化效果。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>定义新的 codec 接口：&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-go" data-lang="go">&lt;span style="color:#204a87;font-weight:bold">type&lt;/span> &lt;span style="color:#000">thriftMsgFastCodec&lt;/span> &lt;span style="color:#204a87;font-weight:bold">interface&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;span style="color:#000">BLength&lt;/span>&lt;span style="color:#000;font-weight:bold">()&lt;/span> &lt;span style="color:#204a87;font-weight:bold">int&lt;/span> &lt;span style="color:#8f5902;font-style:italic">// count length of whole req/resp
+&lt;/span>&lt;span style="color:#8f5902;font-style:italic">&lt;/span> &lt;span style="color:#000">FastWrite&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">buf&lt;/span> &lt;span style="color:#000;font-weight:bold">[]&lt;/span>&lt;span style="color:#204a87;font-weight:bold">byte&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span> &lt;span style="color:#204a87;font-weight:bold">int&lt;/span>
+&lt;span style="color:#000">FastRead&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">buf&lt;/span> &lt;span style="color:#000;font-weight:bold">[]&lt;/span>&lt;span style="color:#204a87;font-weight:bold">byte&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span> &lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#204a87;font-weight:bold">int&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#204a87;font-weight:bold">error&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span>
+&lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>在 Marshal 和 Unmarshal 接口中做相应改造：&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-go" data-lang="go">&lt;span style="color:#204a87;font-weight:bold">func&lt;/span> &lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">c&lt;/span> &lt;span style="color:#000">thriftCodec&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span> &lt;span style="color:#000">Marshal&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">ctx&lt;/span> &lt;span style="color:#000">context&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Context&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">message&lt;/span> &lt;span style="color:#000">remote&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Message&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">out&lt;/span> &lt;span style="color:#000">remote&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">ByteBuffer&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span> &lt;span style="color:#204a87;font-weight:bold">error&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;span style="color:#ce5c00;font-weight:bold">...&lt;/span>
+&lt;span style="color:#204a87;font-weight:bold">if&lt;/span> &lt;span style="color:#000">msg&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">ok&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">:=&lt;/span> &lt;span style="color:#000">data&lt;/span>&lt;span style="color:#000;font-weight:bold">.(&lt;/span>&lt;span style="color:#000">thriftMsgFastCodec&lt;/span>&lt;span style="color:#000;font-weight:bold">);&lt;/span> &lt;span style="color:#000">ok&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;span style="color:#000">msgBeginLen&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">:=&lt;/span> &lt;span style="color:#000">bthrift&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Binary&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">MessageBeginLength&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">methodName&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">thrift&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">TMessageType&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">msgType&lt;/span>&lt;span style="color:#000;font-weight:bold">),&lt;/span> &lt;span style="color:#204a87">int32&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">seqID&lt;/span>&lt;span style="color:#000;font-weight:bold">))&lt;/span>
+&lt;span style="color:#000">msgEndLen&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">:=&lt;/span> &lt;span style="color:#000">bthrift&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Binary&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">MessageEndLength&lt;/span>&lt;span style="color:#000;font-weight:bold">()&lt;/span>
+&lt;span style="color:#000">buf&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">err&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">:=&lt;/span> &lt;span style="color:#000">out&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Malloc&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">msgBeginLen&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">+&lt;/span> &lt;span style="color:#000">msg&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">BLength&lt;/span>&lt;span style="color:#000;font-weight:bold">()&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">+&lt;/span> &lt;span style="color:#000">msgEndLen&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span>&lt;span style="color:#8f5902;font-style:italic">// malloc once
+&lt;/span>&lt;span style="color:#8f5902;font-style:italic">&lt;/span> &lt;span style="color:#204a87;font-weight:bold">if&lt;/span> &lt;span style="color:#000">err&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">!=&lt;/span> &lt;span style="color:#204a87;font-weight:bold">nil&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;span style="color:#204a87;font-weight:bold">return&lt;/span> &lt;span style="color:#000">perrors&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">NewProtocolErrorWithMsg&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">fmt&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Sprintf&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#4e9a06">&amp;#34;thrift marshal, Malloc failed: %s&amp;#34;&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">err&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Error&lt;/span>&lt;span style="color:#000;font-weight:bold">()))&lt;/span>
+&lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;span style="color:#000">offset&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">:=&lt;/span> &lt;span style="color:#000">bthrift&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Binary&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">WriteMessageBegin&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">buf&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">methodName&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">thrift&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">TMessageType&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">msgType&lt;/span>&lt;span style="color:#000;font-weight:bold">),&lt;/span> &lt;span style="color:#204a87">int32&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">seqID&lt;/span>&lt;span style="color:#000;font-weight:bold">))&lt;/span>
+&lt;span style="color:#000">offset&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">+=&lt;/span> &lt;span style="color:#000">msg&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">FastWrite&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">buf&lt;/span>&lt;span style="color:#000;font-weight:bold">[&lt;/span>&lt;span style="color:#000">offset&lt;/span>&lt;span style="color:#000;font-weight:bold">:])&lt;/span>
+&lt;span style="color:#000">bthrift&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Binary&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">WriteMessageEnd&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">buf&lt;/span>&lt;span style="color:#000;font-weight:bold">[&lt;/span>&lt;span style="color:#000">offset&lt;/span>&lt;span style="color:#000;font-weight:bold">:])&lt;/span>
+&lt;span style="color:#204a87;font-weight:bold">return&lt;/span> &lt;span style="color:#204a87;font-weight:bold">nil&lt;/span>
+&lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;span style="color:#ce5c00;font-weight:bold">...&lt;/span>
+&lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;span style="color:#204a87;font-weight:bold">func&lt;/span> &lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">c&lt;/span> &lt;span style="color:#000">thriftCodec&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span> &lt;span style="color:#000">Unmarshal&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">ctx&lt;/span> &lt;span style="color:#000">context&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Context&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">message&lt;/span> &lt;span style="color:#000">remote&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Message&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">in&lt;/span> &lt;span style="color:#000">remote&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">ByteBuffer&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span> &lt;span style="color:#204a87;font-weight:bold">error&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;span style="color:#ce5c00;font-weight:bold">...&lt;/span>
+&lt;span style="color:#000">data&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">:=&lt;/span> &lt;span style="color:#000">message&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Data&lt;/span>&lt;span style="color:#000;font-weight:bold">()&lt;/span>
+&lt;span style="color:#204a87;font-weight:bold">if&lt;/span> &lt;span style="color:#000">msg&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">ok&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">:=&lt;/span> &lt;span style="color:#000">data&lt;/span>&lt;span style="color:#000;font-weight:bold">.(&lt;/span>&lt;span style="color:#000">thriftMsgFastCodec&lt;/span>&lt;span style="color:#000;font-weight:bold">);&lt;/span> &lt;span style="color:#000">ok&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">&amp;amp;&amp;amp;&lt;/span> &lt;span style="color:#000">message&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">PayloadLen&lt;/span>&lt;span style="color:#000;font-weight:bold">()&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">!=&lt;/span> &lt;span style="color:#0000cf;font-weight:bold">0&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;span style="color:#000">msgBeginLen&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">:=&lt;/span> &lt;span style="color:#000">bthrift&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Binary&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">MessageBeginLength&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">methodName&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">msgType&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">seqID&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span>
+&lt;span style="color:#000">buf&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">err&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">:=&lt;/span> &lt;span style="color:#000">tProt&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">next&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">message&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">PayloadLen&lt;/span>&lt;span style="color:#000;font-weight:bold">()&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">-&lt;/span> &lt;span style="color:#000">msgBeginLen&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">-&lt;/span> &lt;span style="color:#000">bthrift&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Binary&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">MessageEndLength&lt;/span>&lt;span style="color:#000;font-weight:bold">())&lt;/span> &lt;span style="color:#8f5902;font-style:italic">// next once
+&lt;/span>&lt;span style="color:#8f5902;font-style:italic">&lt;/span> &lt;span style="color:#204a87;font-weight:bold">if&lt;/span> &lt;span style="color:#000">err&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">!=&lt;/span> &lt;span style="color:#204a87;font-weight:bold">nil&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;span style="color:#204a87;font-weight:bold">return&lt;/span> &lt;span style="color:#000">remote&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">NewTransError&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">remote&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">PROTOCOL_ERROR&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">err&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Error&lt;/span>&lt;span style="color:#000;font-weight:bold">())&lt;/span>
+&lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;span style="color:#000">_&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">err&lt;/span> &lt;span style="color:#000;font-weight:bold">=&lt;/span> &lt;span style="color:#000">msg&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">FastRead&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">buf&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span>
+&lt;span style="color:#204a87;font-weight:bold">if&lt;/span> &lt;span style="color:#000">err&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">!=&lt;/span> &lt;span style="color:#204a87;font-weight:bold">nil&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;span style="color:#204a87;font-weight:bold">return&lt;/span> &lt;span style="color:#000">remote&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">NewTransError&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">remote&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">PROTOCOL_ERROR&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">err&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Error&lt;/span>&lt;span style="color:#000;font-weight:bold">())&lt;/span>
+&lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;span style="color:#000">err&lt;/span> &lt;span style="color:#000;font-weight:bold">=&lt;/span> &lt;span style="color:#000">tProt&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">ReadMessageEnd&lt;/span>&lt;span style="color:#000;font-weight:bold">()&lt;/span>
+&lt;span style="color:#204a87;font-weight:bold">if&lt;/span> &lt;span style="color:#000">err&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">!=&lt;/span> &lt;span style="color:#204a87;font-weight:bold">nil&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;span style="color:#204a87;font-weight:bold">return&lt;/span> &lt;span style="color:#000">remote&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">NewTransError&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">remote&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">PROTOCOL_ERROR&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">err&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Error&lt;/span>&lt;span style="color:#000;font-weight:bold">())&lt;/span>
+&lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;span style="color:#000">tProt&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Recycle&lt;/span>&lt;span style="color:#000;font-weight:bold">()&lt;/span>
+&lt;span style="color:#204a87;font-weight:bold">return&lt;/span> &lt;span style="color:#000">err&lt;/span>
+&lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;span style="color:#ce5c00;font-weight:bold">...&lt;/span>
+&lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>生成代码中也做相应改造：&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-go" data-lang="go">&lt;span style="color:#204a87;font-weight:bold">func&lt;/span> &lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">p&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">*&lt;/span>&lt;span style="color:#000">Demo&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span> &lt;span style="color:#000">BLength&lt;/span>&lt;span style="color:#000;font-weight:bold">()&lt;/span> &lt;span style="color:#204a87;font-weight:bold">int&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;span style="color:#000">l&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">:=&lt;/span> &lt;span style="color:#0000cf;font-weight:bold">0&lt;/span>
+&lt;span style="color:#000">l&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">+=&lt;/span> &lt;span style="color:#000">bthrift&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Binary&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">StructBeginLength&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#4e9a06">&amp;#34;Demo&amp;#34;&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span>
+&lt;span style="color:#204a87;font-weight:bold">if&lt;/span> &lt;span style="color:#000">p&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">!=&lt;/span> &lt;span style="color:#204a87;font-weight:bold">nil&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;span style="color:#000">l&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">+=&lt;/span> &lt;span style="color:#000">p&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">field1Length&lt;/span>&lt;span style="color:#000;font-weight:bold">()&lt;/span>
+&lt;span style="color:#000">l&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">+=&lt;/span> &lt;span style="color:#000">p&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">field2Length&lt;/span>&lt;span style="color:#000;font-weight:bold">()&lt;/span>
+&lt;span style="color:#000">l&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">+=&lt;/span> &lt;span style="color:#000">p&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">field3Length&lt;/span>&lt;span style="color:#000;font-weight:bold">()&lt;/span>
+&lt;span style="color:#ce5c00;font-weight:bold">...&lt;/span>
+&lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;span style="color:#000">l&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">+=&lt;/span> &lt;span style="color:#000">bthrift&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Binary&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">FieldStopLength&lt;/span>&lt;span style="color:#000;font-weight:bold">()&lt;/span>
+&lt;span style="color:#000">l&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">+=&lt;/span> &lt;span style="color:#000">bthrift&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Binary&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">StructEndLength&lt;/span>&lt;span style="color:#000;font-weight:bold">()&lt;/span>
+&lt;span style="color:#204a87;font-weight:bold">return&lt;/span> &lt;span style="color:#000">l&lt;/span>
+&lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;span style="color:#204a87;font-weight:bold">func&lt;/span> &lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">p&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">*&lt;/span>&lt;span style="color:#000">Demo&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span> &lt;span style="color:#000">FastWrite&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">buf&lt;/span> &lt;span style="color:#000;font-weight:bold">[]&lt;/span>&lt;span style="color:#204a87;font-weight:bold">byte&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span> &lt;span style="color:#204a87;font-weight:bold">int&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;span style="color:#000">offset&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">:=&lt;/span> &lt;span style="color:#0000cf;font-weight:bold">0&lt;/span>
+&lt;span style="color:#000">offset&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">+=&lt;/span> &lt;span style="color:#000">bthrift&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Binary&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">WriteStructBegin&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">buf&lt;/span>&lt;span style="color:#000;font-weight:bold">[&lt;/span>&lt;span style="color:#000">offset&lt;/span>&lt;span style="color:#000;font-weight:bold">:],&lt;/span> &lt;span style="color:#4e9a06">&amp;#34;Demo&amp;#34;&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span>
+&lt;span style="color:#204a87;font-weight:bold">if&lt;/span> &lt;span style="color:#000">p&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">!=&lt;/span> &lt;span style="color:#204a87;font-weight:bold">nil&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;span style="color:#000">offset&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">+=&lt;/span> &lt;span style="color:#000">p&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">fastWriteField2&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">buf&lt;/span>&lt;span style="color:#000;font-weight:bold">[&lt;/span>&lt;span style="color:#000">offset&lt;/span>&lt;span style="color:#000;font-weight:bold">:])&lt;/span>
+&lt;span style="color:#000">offset&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">+=&lt;/span> &lt;span style="color:#000">p&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">fastWriteField4&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">buf&lt;/span>&lt;span style="color:#000;font-weight:bold">[&lt;/span>&lt;span style="color:#000">offset&lt;/span>&lt;span style="color:#000;font-weight:bold">:])&lt;/span>
+&lt;span style="color:#000">offset&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">+=&lt;/span> &lt;span style="color:#000">p&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">fastWriteField1&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">buf&lt;/span>&lt;span style="color:#000;font-weight:bold">[&lt;/span>&lt;span style="color:#000">offset&lt;/span>&lt;span style="color:#000;font-weight:bold">:])&lt;/span>
+&lt;span style="color:#000">offset&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">+=&lt;/span> &lt;span style="color:#000">p&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">fastWriteField3&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">buf&lt;/span>&lt;span style="color:#000;font-weight:bold">[&lt;/span>&lt;span style="color:#000">offset&lt;/span>&lt;span style="color:#000;font-weight:bold">:])&lt;/span>
+&lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;span style="color:#000">offset&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">+=&lt;/span> &lt;span style="color:#000">bthrift&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Binary&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">WriteFieldStop&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">buf&lt;/span>&lt;span style="color:#000;font-weight:bold">[&lt;/span>&lt;span style="color:#000">offset&lt;/span>&lt;span style="color:#000;font-weight:bold">:])&lt;/span>
+&lt;span style="color:#000">offset&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">+=&lt;/span> &lt;span style="color:#000">bthrift&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Binary&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">WriteStructEnd&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">buf&lt;/span>&lt;span style="color:#000;font-weight:bold">[&lt;/span>&lt;span style="color:#000">offset&lt;/span>&lt;span style="color:#000;font-weight:bold">:])&lt;/span>
+&lt;span style="color:#204a87;font-weight:bold">return&lt;/span> &lt;span style="color:#000">offset&lt;/span>
+&lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;h4 id="使用-simd-优化-thrift-编码">使用 SIMD 优化 Thrift 编码&lt;/h4>
+&lt;p>公司内广泛使用 list&amp;lt;i64/i32&amp;gt; 类型来承载 ID 列表，并且 list&amp;lt;i64/i32&amp;gt; 的编码方式十分符合向量化的规律，于是我们用了 SIMD 来优化 list&amp;lt;i64/i32&amp;gt; 的编码过程。&lt;/p>
+&lt;p>我们使用了 avx2，优化后的结果比较显著，在大数据量下针对 i64 可以提升 6 倍性能，针对 i32 可以提升 12 倍性能；在小数据量下提升更明显，针对 i64 可以提升 10 倍，针对 i32 可以提升 20 倍。&lt;/p>
+&lt;h4 id="减少函数调用">减少函数调用&lt;/h4>
+&lt;p>&lt;strong>inline&lt;/strong>&lt;/p>
+&lt;p>inline 是在编译期间将一个函数调用原地展开，替换成这个函数的实现，它可以减少函数调用的开销以提高程序的性能。&lt;/p>
+&lt;p>在 Go 中并不是所有函数都能 inline，使用参数-gflags=&amp;quot;-m&amp;quot;运行进程，可显示被 inline 的函数。以下几种情况无法内联：&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>包含循环的函数；&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>包含以下内容的函数：闭包调用，select，for，defer，go 关键字创建的协程；&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>超过一定长度的函数，默认情况下当解析 AST 时，Go 申请了 80 个节点作为内联的预算。每个节点都会消耗一个预算。比如，a = a + 1 这行代码包含了 5 个节点：AS, NAME, ADD, NAME, LITERAL。当一个函数的开销超过了这个预算，就无法内联。&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>编译时通过指定参数-l可以指定编译器对代码内联的强度（go 1.9+），不过这里不推荐大家使用，在我们的测试场景下是 buggy 的，无法正常运行：&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-go" data-lang="go">&lt;span style="color:#8f5902;font-style:italic">// The debug[&amp;#39;l&amp;#39;] flag controls the aggressiveness. Note that main() swaps level 0 and 1, making 1 the default and -l disable. Additional levels (beyond -l) may be buggy and are not supported.
+&lt;/span>&lt;span style="color:#8f5902;font-style:italic">// 0: disabled
+&lt;/span>&lt;span style="color:#8f5902;font-style:italic">// 1: 80-nodes leaf functions, oneliners, panic, lazy typechecking (default)
+&lt;/span>&lt;span style="color:#8f5902;font-style:italic">// 2: (unassigned)
+&lt;/span>&lt;span style="color:#8f5902;font-style:italic">// 3: (unassigned)
+&lt;/span>&lt;span style="color:#8f5902;font-style:italic">// 4: allow non-leaf functions
+&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>内联虽然可以减少函数调用的开销，但是也可能因为存在重复代码，从而导致 CPU 缓存命中率降低，所以并不能盲目追求过度的内联，需要结合 profile 结果来具体分析。&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">go &lt;span style="color:#204a87">test&lt;/span> -gcflags&lt;span style="color:#ce5c00;font-weight:bold">=&lt;/span>&lt;span style="color:#4e9a06">&amp;#39;-m=2&amp;#39;&lt;/span> -v -test.run TestNewCodec 2&amp;gt;&lt;span style="color:#000;font-weight:bold">&amp;amp;&lt;/span>&lt;span style="color:#0000cf;font-weight:bold">1&lt;/span> &lt;span style="color:#000;font-weight:bold">|&lt;/span> grep &lt;span style="color:#4e9a06">&amp;#34;function too complex&amp;#34;&lt;/span> &lt;span style="color:#000;font-weight:bold">|&lt;/span> wc -l
+&lt;span style="color:#0000cf;font-weight:bold">48&lt;/span>
+go &lt;span style="color:#204a87">test&lt;/span> -gcflags&lt;span style="color:#ce5c00;font-weight:bold">=&lt;/span>&lt;span style="color:#4e9a06">&amp;#39;-m=2 -l=4&amp;#39;&lt;/span> -v -test.run TestNewCodec 2&amp;gt;&lt;span style="color:#000;font-weight:bold">&amp;amp;&lt;/span>&lt;span style="color:#0000cf;font-weight:bold">1&lt;/span> &lt;span style="color:#000;font-weight:bold">|&lt;/span> grep &lt;span style="color:#4e9a06">&amp;#34;function too complex&amp;#34;&lt;/span> &lt;span style="color:#000;font-weight:bold">|&lt;/span> wc -l
+&lt;span style="color:#0000cf;font-weight:bold">25&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>从上面的输出结果可以看出，加强内联程度确实减少了一些&amp;quot;function too complex&amp;quot;，看下 benchmark 结果：&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th style="text-align:left">Benchmark&lt;/th>
+&lt;th style="text-align:left">time/op&lt;/th>
+&lt;th style="text-align:left">bytes/op&lt;/th>
+&lt;th style="text-align:left">allocs/op&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td style="text-align:left">BenchmarkOldMarshal-4&lt;/td>
+&lt;td style="text-align:left">309 µs ± 2%&lt;/td>
+&lt;td style="text-align:left">218KB&lt;/td>
+&lt;td style="text-align:left">11&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">BenchmarkNewMarshal-4&lt;/td>
+&lt;td style="text-align:left">310 µs ± 3%&lt;/td>
+&lt;td style="text-align:left">218KB&lt;/td>
+&lt;td style="text-align:left">11&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>上面开启最高程度的内联强度，确实消除了不少因为“function too complex”带来无法内联的函数，但是压测结果显示收益不太明显。&lt;/p>
+&lt;h3 id="测试结果">测试结果&lt;/h3>
+&lt;p>我们构建了基准测试来对比优化前后的性能，下面是测试结果。&lt;/p>
+&lt;p>环境：Go 1.13.5 darwin/amd64 on a 2.5 GHz Intel Core i7 16GB&lt;/p>
+&lt;p>&lt;strong>小包&lt;/strong>&lt;/p>
+&lt;p>data size: 20KB&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th style="text-align:left">Benchmark&lt;/th>
+&lt;th style="text-align:left">time/op&lt;/th>
+&lt;th style="text-align:left">bytes/op&lt;/th>
+&lt;th style="text-align:left">allocs/op&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td style="text-align:left">BenchmarkOldMarshal-4&lt;/td>
+&lt;td style="text-align:left">138 µs ± 3%&lt;/td>
+&lt;td style="text-align:left">25.4KB&lt;/td>
+&lt;td style="text-align:left">19&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">BenchmarkNewMarshal-4&lt;/td>
+&lt;td style="text-align:left">29 µs ± 3%&lt;/td>
+&lt;td style="text-align:left">26.4KB&lt;/td>
+&lt;td style="text-align:left">11&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">Marshal Delta&lt;/td>
+&lt;td style="text-align:left">-78.97%&lt;/td>
+&lt;td style="text-align:left">3.87%&lt;/td>
+&lt;td style="text-align:left">-42.11%&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">BenchmarkOldUnmarshal-4&lt;/td>
+&lt;td style="text-align:left">199 µs ± 3%&lt;/td>
+&lt;td style="text-align:left">4720&lt;/td>
+&lt;td style="text-align:left">1360&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">BenchmarkNewUnmarshal-4&lt;/td>
+&lt;td style="text-align:left">94µs ± 5%&lt;/td>
+&lt;td style="text-align:left">4700&lt;/td>
+&lt;td style="text-align:left">1280&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">Unmarshal Delta&lt;/td>
+&lt;td style="text-align:left">-52.93%&lt;/td>
+&lt;td style="text-align:left">-0.24%&lt;/td>
+&lt;td style="text-align:left">-5.38%&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>&lt;strong>大包&lt;/strong>&lt;/p>
+&lt;p>data size: 6MB&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th style="text-align:left">Benchmark&lt;/th>
+&lt;th style="text-align:left">time/op&lt;/th>
+&lt;th style="text-align:left">bytes/op&lt;/th>
+&lt;th style="text-align:left">allocs/op&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td style="text-align:left">BenchmarkOldMarshal-4&lt;/td>
+&lt;td style="text-align:left">58.7ms ± 5%&lt;/td>
+&lt;td style="text-align:left">6.96MB&lt;/td>
+&lt;td style="text-align:left">3350&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">BenchmarkNewMarshal-4&lt;/td>
+&lt;td style="text-align:left">13.3ms ± 3%&lt;/td>
+&lt;td style="text-align:left">6.84MB&lt;/td>
+&lt;td style="text-align:left">10&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">Marshal Delta&lt;/td>
+&lt;td style="text-align:left">-77.30%&lt;/td>
+&lt;td style="text-align:left">-1.71%&lt;/td>
+&lt;td style="text-align:left">-99.64%&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">BenchmarkOldUnmarshal-4&lt;/td>
+&lt;td style="text-align:left">56.6ms ± 3%&lt;/td>
+&lt;td style="text-align:left">17.4MB&lt;/td>
+&lt;td style="text-align:left">391000&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">BenchmarkNewUnmarshal-4&lt;/td>
+&lt;td style="text-align:left">26.8ms ± 5%&lt;/td>
+&lt;td style="text-align:left">17.5MB&lt;/td>
+&lt;td style="text-align:left">390000&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">Unmarshal Delta&lt;/td>
+&lt;td style="text-align:left">-52.54%&lt;/td>
+&lt;td style="text-align:left">0.09%&lt;/td>
+&lt;td style="text-align:left">-0.37%&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h2 id="无拷贝序列化">无拷贝序列化&lt;/h2>
+&lt;p>在一些 request 和 response 数据较大的服务中，序列化和反序列化的代价较高，有两种优化思路：&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>如前文所述进行序列化和反序列化的优化&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>以无拷贝序列化的方式进行调用&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="调研-1">调研&lt;/h3>
+&lt;p>通过无拷贝序列化进行 RPC 调用，最早出自 Kenton Varda 的 Cap&amp;rsquo;n Proto 项目，Cap&amp;rsquo;n Proto 提供了一套数据交换格式和对应的编解码库。&lt;/p>
+&lt;p>Cap&amp;rsquo;n Proto 本质上是开辟一个 bytes slice 作为 buffer ，所有对数据结构的读写操作都是直接读写 buffer，读写完成后，在头部添加一些 buffer 的信息就可以直接发送，对端收到后即可读取，因为没有 Go 语言结构体作为中间存储，所有无需序列化这个步骤，反序列化亦然。&lt;/p>
+&lt;p>简单总结下 Cap&amp;rsquo;n Proto 的特点：&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>所有数据的读写都是在一段连续内存中&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>将序列化操作前置，在数据 Get/Set 的同时进行编解码&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>在数据交换格式中，通过 pointer（数据存储位置的 offset）机制，使得数据可以存储在连续内存的任意位置，进而使得结构体中的数据可以以任意顺序读写&lt;/p>
+&lt;ul>
+&lt;li>对于结构体的固定大小字段，通过重新排列，使得这些字段存储在一块连续内存中&lt;/li>
+&lt;li>对于结构体的不定大小字段（如 list），则通过一个固定大小的 pointer 来表示，pointer 中存储了包括数据位置在内的一些信息&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;p>首先 Cap&amp;rsquo;n Proto 没有 Go 语言结构体作为中间载体，得以减少一次拷贝，然后 Cap&amp;rsquo;n Proto 是在一段连续内存上进行操作，编码数据的读写可以一次完成，因为这两个原因，使得 Cap' Proto 的性能表现优秀。&lt;/p>
+&lt;p>下面是相同数据结构下 Thrift 和 Cap&amp;rsquo;n Proto 的 Benchmark，考虑到 Cap&amp;rsquo;n Proto 是将编解码操作前置了，所以对比的是包括数据初始化在内的完整过程，即结构体数据初始化+（序列化）+写入 buffer +从 buffer 读出+（反序列化）+从结构体读出数据。&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-Thrift" data-lang="Thrift">&lt;span style="color:#204a87;font-weight:bold">struct&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000">MyTest&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000;font-weight:bold">{&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#0000cf;font-weight:bold">1&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#204a87;font-weight:bold">i64&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000">Num&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#0000cf;font-weight:bold">2&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000">Ano&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000">Ano&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#0000cf;font-weight:bold">3&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#204a87;font-weight:bold">list&lt;/span>&lt;span style="color:#000;font-weight:bold">&amp;lt;&lt;/span>&lt;span style="color:#204a87;font-weight:bold">i64&lt;/span>&lt;span style="color:#000;font-weight:bold">&amp;gt;&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000">Nums&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#8f5902;font-style:italic">// 长度131072 大小1MB
+&lt;/span>&lt;span style="color:#8f5902;font-style:italic">&lt;/span>&lt;span style="color:#000;font-weight:bold">}&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">&lt;/span>&lt;span style="color:#204a87;font-weight:bold">struct&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000">Ano&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000;font-weight:bold">{&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#0000cf;font-weight:bold">1&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#204a87;font-weight:bold">i64&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000">Num&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">&lt;/span>&lt;span style="color:#000;font-weight:bold">}&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th style="text-align:left">Benchmark&lt;/th>
+&lt;th style="text-align:left">Iter&lt;/th>
+&lt;th style="text-align:left">time/op&lt;/th>
+&lt;th style="text-align:left">bytes/op&lt;/th>
+&lt;th style="text-align:left">alloc/op&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td style="text-align:left">BenchmarkThriftReadWrite&lt;/td>
+&lt;td style="text-align:left">172&lt;/td>
+&lt;td style="text-align:left">6855840 ns/op&lt;/td>
+&lt;td style="text-align:left">3154209 B/op&lt;/td>
+&lt;td style="text-align:left">545 allocs/op&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">BenchmarkCapnpReadWrite&lt;/td>
+&lt;td style="text-align:left">1500&lt;/td>
+&lt;td style="text-align:left">844924 ns/op&lt;/td>
+&lt;td style="text-align:left">2085713 B/op&lt;/td>
+&lt;td style="text-align:left">9 allocs/op&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">ReadWrite Delta&lt;/td>
+&lt;td style="text-align:left">/&lt;/td>
+&lt;td style="text-align:left">-87.68%&lt;/td>
+&lt;td style="text-align:left">-33.88%&lt;/td>
+&lt;td style="text-align:left">-98.35%&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>（反序列化）+读出数据，视包大小，Cap&amp;rsquo;n Proto 性能大约是 Thrift 的 8-9 倍。写入数据+（序列化），视包大小，Cap&amp;rsquo;n Proto 性能大约是 Thrift 的 2-8 倍。整体性能 Cap' Proto 性能大约是 Thrift 的 4-8 倍。&lt;/p>
+&lt;p>前面说了 Cap&amp;rsquo;n Proto 的优势，下面总结一下 Cap&amp;rsquo;n Proto 存在的一些问题：&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>Cap&amp;rsquo;n Proto 的连续内存存储这一特性带来的一个问题：当对不定大小数据进行 resize ，且需要的空间大于原有空间时，只能在后面重新分配一块空间，导致原来数据的空间成为了一个无法去掉的 hole 。这个问题随着调用链路的不断 resize 会越来越严重，要解决只能在整个链路上严格约束：尽量避免对不定大小字段的 resize ，当不得不 resize 的时候，重新构建一个结构体并对数据进行深拷贝。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Cap&amp;rsquo;n Proto 因为没有 Go 语言结构体作为中间载体，使得所有的字段都只能通过接口进行读写，用户体验较差。&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="thrift-协议兼容的无拷贝序列化">Thrift 协议兼容的无拷贝序列化&lt;/h3>
+&lt;p>Cap&amp;rsquo;n Proto 为了更好更高效地支持无拷贝序列化，使用了一套自研的编解码格式，但在现在 Thrift 和 ProtoBuf 占主流的环境中难以铺开。为了能在协议兼容的同时获得无拷贝序列化的性能，我们开始了 Thrift 协议兼容的无拷贝序列化的探索。&lt;/p>
+&lt;p>Cap&amp;rsquo;n Proto 作为无拷贝序列化的标杆，那么我们就看看 Cap&amp;rsquo;n Proto 上的优化能否应用到 Thrift 上：&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>自然是无拷贝序列化的核心，不使用 Go 语言结构体作为中间载体，减少一次拷贝。此优化点是协议无关的，能够适用于任何已有的协议，自然也能和 Thrift 协议兼容，但是从 Cap&amp;rsquo;n Proto 的使用上来看，用户体验还需要仔细打磨一下。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Cap&amp;rsquo;n Proto 是在一段连续内存上进行操作，编码数据的读写可以一次完成。Cap&amp;rsquo;n Proto 得以在连续内存上操作的原因：有 pointer 机制，数据可以存储在任意位置，允许字段可以以任意顺序写入而不影响解码。但是一方面，在连续内存上容易因为误操作，导致在 resize 的时候留下 hole，另一方面，Thrift 没有类似于 pointer 的机制，故而对数据布局有着更严格的要求。这里有两个思路：&lt;/p>
+&lt;ul>
+&lt;li>坚持在连续内存上进行操作，并对用户使用提出严格要求：1. resize 操作必须重新构建数据结构 2. 当存在结构体嵌套时，对字段写入顺序有着严格要求（可以想象为把一个存在嵌套的结构体从外往里展开，写入时需要按展开顺序写入），且因为 Binary 等 TLV 编码的关系，在每个嵌套开始写入时，需要用户主动声明（如 StartWriteFieldX）。&lt;/li>
+&lt;li>不完全在连续内存上操作，局部内存连续，可变字段则单独分配一块内存，既然内存不是完全连续的，自然也无法做到一次写操作便完成输出。为了尽可能接近一次写完数据的性能，我们采取了一种链式 buffer 的方案，一方面当可变字段 resize 时只需替换链式 buffer 的一个节点，无需像 Cap&amp;rsquo;n Proto 一样重新构建结构体，另一方面在需要输出时无需像 Thrift 一样需要感知实际的结构，只要把整个链路上的 buffer 写入即可。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;p>先总结下目前确定的两个点：1. 不使用 Go 语言结构体作为中间载体，通过接口直接操作底层内存，在 Get/Set 时完成编解码 2. 通过链式 buffer 存储数据&lt;/p>
+&lt;p>然后让我们看下目前还有待解决的问题：&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>不使用 Go 语言结构体后带来的用户体验劣化&lt;/p>
+&lt;ul>
+&lt;li>解决方案：改善 Get/Set 接口的使用体验，尽可能做到和 Go 语言结构体同等的易用&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Cap&amp;rsquo;n Proto 的 Binary Format 是针对无拷贝序列化场景专门设计的，虽然每次 Get 时都会进行一次解码，但是解码代价非常小。而 Thrift 的协议（以 Binary 为例），没有类似于 pointer 的机制，当存在多个不定大小字段或者存在嵌套时，必须顺序解析而无法直接通过计算偏移拿到字段数据所在的位置，而每次 Get 都进行顺序解析的代价过于高昂。&lt;/p>
+&lt;ul>
+&lt;li>解决方案：我们在表示结构体的时候，除了记录结构体的 buffer 节点，还加了一个索引，里面记录了每个不定大小字段开始的 buffer 节点的指针。下面是目前的无拷贝序列化方案与 FastRead/Write，在 4 核下的极限性能对比测试：&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th style="text-align:left">包大小&lt;/th>
+&lt;th style="text-align:left">类型&lt;/th>
+&lt;th style="text-align:left">QPS&lt;/th>
+&lt;th style="text-align:left">TP90&lt;/th>
+&lt;th style="text-align:left">TP99&lt;/th>
+&lt;th style="text-align:left">TP999&lt;/th>
+&lt;th style="text-align:left">CPU&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td style="text-align:left">1KB&lt;/td>
+&lt;td style="text-align:left">无序列化&lt;/td>
+&lt;td style="text-align:left">70,700&lt;/td>
+&lt;td style="text-align:left">1 ms&lt;/td>
+&lt;td style="text-align:left">3 ms&lt;/td>
+&lt;td style="text-align:left">6 ms&lt;/td>
+&lt;td style="text-align:left">/&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">&lt;/td>
+&lt;td style="text-align:left">FastWrite/FastRead&lt;/td>
+&lt;td style="text-align:left">82,490&lt;/td>
+&lt;td style="text-align:left">1 ms&lt;/td>
+&lt;td style="text-align:left">2 ms&lt;/td>
+&lt;td style="text-align:left">4 ms&lt;/td>
+&lt;td style="text-align:left">/&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">2KB&lt;/td>
+&lt;td style="text-align:left">无序列化&lt;/td>
+&lt;td style="text-align:left">65,000&lt;/td>
+&lt;td style="text-align:left">1 ms&lt;/td>
+&lt;td style="text-align:left">4 ms&lt;/td>
+&lt;td style="text-align:left">9 ms&lt;/td>
+&lt;td style="text-align:left">/&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">&lt;/td>
+&lt;td style="text-align:left">FastWrite/FastRead&lt;/td>
+&lt;td style="text-align:left">72,000&lt;/td>
+&lt;td style="text-align:left">1 ms&lt;/td>
+&lt;td style="text-align:left">2 ms&lt;/td>
+&lt;td style="text-align:left">8 ms&lt;/td>
+&lt;td style="text-align:left">/&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">4KB&lt;/td>
+&lt;td style="text-align:left">无序列化&lt;/td>
+&lt;td style="text-align:left">56,400&lt;/td>
+&lt;td style="text-align:left">2 ms&lt;/td>
+&lt;td style="text-align:left">5 ms&lt;/td>
+&lt;td style="text-align:left">10 ms&lt;/td>
+&lt;td style="text-align:left">380%&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">&lt;/td>
+&lt;td style="text-align:left">FastWrite/FastRead&lt;/td>
+&lt;td style="text-align:left">52,700&lt;/td>
+&lt;td style="text-align:left">2 ms&lt;/td>
+&lt;td style="text-align:left">4 ms&lt;/td>
+&lt;td style="text-align:left">10 ms&lt;/td>
+&lt;td style="text-align:left">380%&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">32KB&lt;/td>
+&lt;td style="text-align:left">无序列化&lt;/td>
+&lt;td style="text-align:left">27,400&lt;/td>
+&lt;td style="text-align:left">/&lt;/td>
+&lt;td style="text-align:left">/&lt;/td>
+&lt;td style="text-align:left">/&lt;/td>
+&lt;td style="text-align:left">/&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">&lt;/td>
+&lt;td style="text-align:left">FastWrite/FastRead&lt;/td>
+&lt;td style="text-align:left">19,500&lt;/td>
+&lt;td style="text-align:left">/&lt;/td>
+&lt;td style="text-align:left">/&lt;/td>
+&lt;td style="text-align:left">/&lt;/td>
+&lt;td style="text-align:left">/&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">1MB&lt;/td>
+&lt;td style="text-align:left">无序列化&lt;/td>
+&lt;td style="text-align:left">986&lt;/td>
+&lt;td style="text-align:left">53 ms&lt;/td>
+&lt;td style="text-align:left">56 ms&lt;/td>
+&lt;td style="text-align:left">59 ms&lt;/td>
+&lt;td style="text-align:left">260%&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">&lt;/td>
+&lt;td style="text-align:left">FastWrite/FastRead&lt;/td>
+&lt;td style="text-align:left">942&lt;/td>
+&lt;td style="text-align:left">55 ms&lt;/td>
+&lt;td style="text-align:left">59 ms&lt;/td>
+&lt;td style="text-align:left">62 ms&lt;/td>
+&lt;td style="text-align:left">290%&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">10MB&lt;/td>
+&lt;td style="text-align:left">无序列化&lt;/td>
+&lt;td style="text-align:left">82&lt;/td>
+&lt;td style="text-align:left">630 ms&lt;/td>
+&lt;td style="text-align:left">640 ms&lt;/td>
+&lt;td style="text-align:left">645 ms&lt;/td>
+&lt;td style="text-align:left">240%&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">&lt;/td>
+&lt;td style="text-align:left">FastWrite/FastRead&lt;/td>
+&lt;td style="text-align:left">82&lt;/td>
+&lt;td style="text-align:left">630 ms&lt;/td>
+&lt;td style="text-align:left">640 ms&lt;/td>
+&lt;td style="text-align:left">640 ms&lt;/td>
+&lt;td style="text-align:left">270%&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>测试结果概述：&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>小包场景，无序列化性能表现较差，约为 FastWrite/FastRead 的 85%。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>大包场景，无序列化性能表现较好，4K 以上的包较 FastWrite/FastRead 提升 7%-40%。&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="后记">后记&lt;/h2>
+&lt;p>希望以上的分享能够对社区有所帮助。同时，我们也在尝试 share memory-based IPC、io_uring、tcp zero copy 、RDMA 等，更好地提升 Kitex 性能；重点优化同机、同容器的通讯场景。欢迎各位感兴趣的同学加入我们，共同建设 Go 语言生态！&lt;/p>
+&lt;h2 id="参考资料">参考资料&lt;/h2>
+&lt;ul>
+&lt;li>
+&lt;p>&lt;a href="https://github.com/alecthomas/go_serialization_benchmarks">https://github.com/alecthomas/go_serialization_benchmarks&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a href="https://capnproto.org/">https://capnproto.org/&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a href="https://software.intel.com/content/www/us/en/develop/documentation/cpp-compiler-developer-guide-and-reference/top/compiler-reference/intrinsics/intrinsics-for-intel-advanced-vector-extensions-2/intrinsics-for-shuffle-operations-1/mm256-shuffle-epi8.html">Intel® C++ Compiler Classic Developer Guide and Reference&lt;/a>&lt;/p>
+&lt;/li>
+&lt;/ul></description></item><item><title>Blog: Netpoll v0.0.4 版本发布</title><link>/zh/blog/2021/09/16/netpoll-v0.0.4-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</link><pubDate>Thu, 16 Sep 2021 00:00:00 +0000</pubDate><guid>/zh/blog/2021/09/16/netpoll-v0.0.4-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</guid><description>
+&lt;h2 id="优化">优化:&lt;/h2>
+&lt;ul>
+&lt;li>默认支持 TCP_NODELAY。&lt;/li>
+&lt;li>支持在一个循环中读写。&lt;/li>
+&lt;li>返回 nocopy rw 的真实错误。&lt;/li>
+&lt;li>更改了循环策略的默认数量。&lt;/li>
+&lt;li>重新定义了 EventLoop.Serve arg: Listener -&amp;gt; net.Listener。&lt;/li>
+&lt;li>在 DisableGopool 中增加了API。&lt;/li>
+&lt;li>删除了读锁。&lt;/li>
+&lt;li>连接 Flush API 调整为阻塞的。&lt;/li>
+&lt;/ul>
+&lt;h2 id="bug-修复">Bug 修复:&lt;/h2>
+&lt;ul>
+&lt;li>设置剩余待读取大小。&lt;/li>
+&lt;/ul></description></item><item><title>Blog: 字节跳动开源内部微服务中间件 CloudWeGo</title><link>/zh/blog/2021/09/07/%E5%AD%97%E8%8A%82%E8%B7%B3%E5%8A%A8%E5%BC%80%E6%BA%90%E5%86%85%E9%83%A8%E5%BE%AE%E6%9C%8D%E5%8A%A1%E4%B8%AD%E9%97%B4%E4%BB%B6-cloudwego/</link><pubDate>Tue, 07 Sep 2021 00:00:00 +0000</pubDate><guid>/zh/blog/2021/09/07/%E5%AD%97%E8%8A%82%E8%B7%B3%E5%8A%A8%E5%BC%80%E6%BA%90%E5%86%85%E9%83%A8%E5%BE%AE%E6%9C%8D%E5%8A%A1%E4%B8%AD%E9%97%B4%E4%BB%B6-cloudwego/</guid><description>
+&lt;h2 id="开源背景">开源背景&lt;/h2>
+&lt;p>&lt;a href="https://github.com/cloudwego">CloudWeGo&lt;/a> 是一套由字节跳动开源的、以 Go 语言为核心的、可快速构建企业级云原生架构的中间件集合，专注于微服务通信与治理，具备高性能、可扩展、高可靠的特点。&lt;/p>
+&lt;p>字节跳动内部使用 Golang 作为主要的业务开发语言，我们支持着数万个 Golang 微服务的可靠通信，经过数量众多的微服务和海量流量的验证，我们已经有了较为成熟的微服务最佳实践，于是考虑将内部的实践开源出去丰富社区生态。但微服务相关的项目较多，每个项目单独开源对外部用户并不友好，为了更好地让大家聚焦于微服务，我们以 CloudWeGo 作为项目名，逐步将内部微服务体系的项目开源，内外统一使用开源库，各项目以开源库为主进行迭代。&lt;/p>
+&lt;p>内外维护一套代码，统一迭代演进，是我们开源前明确的原则，但毕竟涉及到代码库的调整，我们要保证内部用户尽可能无感知的迁移到开源库，本着对内部和开源用户负责的态度，我们要先确认内部可以平滑过渡，所以开源时并未对外宣传。让我们欣慰的是，在未宣传的情况下，一个月内 Kitex 收获了 1.2k stars，Netpoll 收获了700+ stars。&lt;/p>
+&lt;p>CloudWeGo 不仅仅是一个对外的开源项目，也是一个真实的超大规模企业级实践项目。&lt;/p>
+&lt;p>我们希望通过 CloudWeGo 丰富云原生社区的 Golang 产品体系，助力其他企业快速构建云原生架构，也希望吸引外部开发者共建，促进面向多元场景支持的演进，丰富产品能力。&lt;/p>
+&lt;p>因为 CloudWeGo 下的项目会依赖很多内部的基础工具库，我们也推动将内部常用的 Golang 基础工具库开源出去，统一在 &lt;a href="https://github.com/bytedance/gopkg">bytedance/gopkg&lt;/a> 维护。&lt;/p>
+&lt;h2 id="cloudwego-开源项目">CloudWeGo 开源项目&lt;/h2>
+&lt;p>CloudWeGo 第一批以 Kitex RPC 框架和 Netpoll 网络库为主开源四个项目。Kitex 和 Netpoll 开源前我们发布过两篇文章 &lt;a href="https://mp.weixin.qq.com/s/Xoaoiotl7ZQoG2iXo9_DWg">字节跳动 Go RPC 框架 Kitex 性能优化实践&lt;/a> 和 &lt;a href="https://mp.weixin.qq.com/s?__biz=MzI1MzYzMjE0MQ==&amp;amp;mid=2247485756&amp;amp;idx=1&amp;amp;sn=4d2712e4bfb9be27a790fa15159a7be1&amp;amp;chksm=e9d0c2dedea74bc8179af39888a5b2b99266587cad32744ad11092b91ec2e2babc74e69090e6&amp;amp;scene=21#wechat_redirect">字节跳动在 Go 网络库上的实践&lt;/a> 分享我们的实践，文章发布后大家都在关注我们什么时候开源，因为我们希望将成熟的实践开源出去，所以没有过早的推动开源。&lt;/p>
+&lt;h3 id="kitex">Kitex&lt;/h3>
+&lt;p>Kitex 是字节跳动内部的 Golang 微服务 RPC 框架，具有高性能、强可扩展的主要特点。在 Kitex 之前内部的 Golang 框架是 Kite，但 Kite 与 Thrift 深度耦合、生成代码逻辑重，很难从网络模型或编解码层面改造优化，继续支持新特性势必会造成代码越发臃肿迭代受阻问题，于是我们针对曾经的痛点设计了新的框架 Kitex。虽然 Kitex 是新框架，但已经在线上应用一年多，目前字节内部超过 50% 的 Golang 微服务使用 Kitex。&lt;/p>
+&lt;p>以下简述 Kitex 的一些特性：&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>高性能：网络传输模块 Kitex 默认集成了自研的网络库 Netpoll，性能相较使用 go net 有显著优势；除了网络库带来的性能收益，Kitex 对 Thrift 编解码也做了优化，详见 &lt;a href="https://mp.weixin.qq.com/s/Xoaoiotl7ZQoG2iXo9_DWg">优化实践&lt;/a>。关于性能数据可参考 &lt;a href="https://github.com/cloudwego/kitex-benchmark">kitex-benchmark&lt;/a>。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>扩展性：Kitex 设计上做了模块划分，提供了较多的扩展接口以及默认的扩展实现，使用者也可以根据需要自行定制扩展，更多扩展能力参见 &lt;a href="https://www.cloudwego.io/zh/docs/kitex/tutorials/framework-exten/">文档&lt;/a>。Kitex 也并未耦合 Netpoll，开发者也可以选择其它网络库扩展使用。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>消息协议：RPC 消息协议默认支持 Thrift、Kitex Protobuf、gRPC。Thrift 支持 Buffered 和 Framed 二进制协议；Kitex Protobuf 是 Kitex 自定义的 Protobuf 消息协议，协议格式类似 Thrift；gRPC 是对 gRPC 消息协议的支持，可以与 gRPC 互通。除此之外，使用者也可以扩展自己的消息协议。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>传输协议：传输协议封装消息协议进行 RPC 互通，传输协议可以额外透传元信息，用于服务治理，Kitex 支持的传输协议有 TTHeader、HTTP2。TTHeader 可以和 Thrift、Kitex Protobuf 结合使用；HTTP2 目前主要是结合 gRPC 协议使用，后续也会支持 Thrift。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>多消息类型：支持 PingPong、Oneway、双向 Streaming。其中 Oneway 目前只对 Thrift 协议支持，双向 Streaming 只对 gRPC 支持，后续会考虑支持 Thrift 的双向 Streaming。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>服务治理：支持服务注册/发现、负载均衡、熔断、限流、重试、监控、链路跟踪、日志、诊断等服务治理模块，大部分均已提供默认扩展，使用者可选择集成。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Kitex 内置代码生成工具，可支持生成 Thrift、Protobuf 以及脚手架代码。原生的 Thrift 代码由本次一起开源的 Thriftgo 生成，Kitex 对 Thrift 的优化由 Kitex Tool 作为插件支持。Protobuf 代码由 Kitex 作为官方 protoc 插件生成 ，目前暂未单独支持 Protobuf IDL 的解析和代码生成。&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="netpoll">Netpoll&lt;/h3>
+&lt;p>Netpoll 是字节跳动内部的 Golang 高性能、I/O 非阻塞的网络库，专注于 RPC 场景。&lt;/p>
+&lt;p>RPC 通常有较重的处理逻辑（业务逻辑、编解码），耗时长，不能像 Redis 一样采用串行处理(必须异步)。而 Go 的标准库 net 设计了 BIO(Blocking I/O) 模式的 API，为了保证异步处理，RPC 框架设计上需要为每个连接都分配一个 goroutine，这在空闲连接较多时，产生大量的空闲 goroutine，增加调度开销。此外，&lt;a href="https://github.com/golang/go/blob/master/src/net/net.go">net.Conn&lt;/a> 没有提供检查连接活性的 API，很难设计出高效的连接池，池中的失效连接无法及时清理，复用低效。&lt;/p>
+&lt;p>开源社区目前缺少专注于 RPC 方案的 Go 网络库。类似的项目如：&lt;a href="https://github.com/tidwall/evio">evio&lt;/a> , &lt;a href="https://github.com/panjf2000/gnet">gnet&lt;/a> 等，均面向 Redis, Haproxy 这样的场景。&lt;/p>
+&lt;p>因此 Netpoll 应运而生，它借鉴了 evio 和 Netty 的优秀设计，具有出色的 &lt;a href="https://github.com/cloudwego/netpoll/blob/main/README_CN.md#%e6%80%a7%e8%83%bd">性能&lt;/a>，更适用于微服务架构。 同时，Netpoll 还提供了一些 &lt;a href="https://github.com/cloudwego/netpoll/blob/main/README_CN.md#%e7%89%b9%e6%80%a7">特性&lt;/a>，推荐在 RPC 框架中作为底层网络库。&lt;/p>
+&lt;h3 id="thriftgo">Thriftgo&lt;/h3>
+&lt;p>Thriftgo 是 Go 语言实现的 Thrift IDL 解析和代码生成器，支持完善的 Thrift IDL 语法和语义检查，相较 Apache Thrift 官方的 Golang 生成代码，Thriftgo 做了一些问题修复且支持插件机制，用户可根据需求自定义生成代码。&lt;/p>
+&lt;p>Kitex 的代码生成工具就是 Thriftgo 的插件，CloudWeGo 近期也会开源另一个 Thriftgo 的插件 thrift-gen-validator，支持 IDL Validator，用于字段值校验，解决开发者需要自行实现代码校验逻辑的负担，弥补 Thrift 缺失的能力。&lt;/p>
+&lt;p>Thriftgo 目前虽然仅支持生成 Golang Thrift 代码，但其定位是可支持各语言的 Thrift 代码生成，未来如果有需求，我们也会考虑生成其他语言的代码，同时我们也将尝试将其回馈至 Apache Thrift 社区。&lt;/p>
+&lt;h3 id="netpoll-http2">Netpoll-http2&lt;/h3>
+&lt;p>Netpoll-http2 是基于 Golang 标准库 golang.org/x/net/http2 的源码替换 go net 为 Netpoll，目前用于 Kitex 对 gRPC 协议的支持，对 HTTP2 有需求的外部开发者也可以使用此库。&lt;/p>
+&lt;h2 id="内外版本维护">内外版本维护&lt;/h2>
+&lt;p>完整的微服务体系离不开基础的云生态，无论在公有云、私有云还是基于自己的基础设施开发微服务，都需要搭建额外的服务以很好的支持微服务的治理，比如治理平台、监控、链路跟踪、注册/发现、配置中心、服务网格等，而且还存在一些定制的规范。字节跳动自然也有完善的内部服务支持微服务体系，但这些服务短期还无法开源，那 CloudWeGo 如何内外维护一套代码，统一迭代呢？&lt;/p>
+&lt;p>CloudWeGo 下与内部生态没有耦合的项目，如 Netpoll，直接迁移到开源库，内部依赖调整为开源库。&lt;/p>
+&lt;p>而需要集成治理能力融入微服务体系的 Kitex 则基于其扩展性，将内外部的代码做了拆分，Kitex 的核心代码迁移到开源库，内部库封装一层壳保证内部用户无感知升级。集成内部治理特性的模块则作为 Kitex 的扩展保留在内部库，同时对于一些新的特性也会优先在内部库支持，稳定后迁移到开源库。&lt;/p>
+&lt;p>对于使用 Kitex 的开源用户，同样可以对 Kitex 进行扩展，将 Kitex 融入自己的微服务体系中，也希望开发者能贡献自己的扩展到 &lt;a href="https://github.com/kitex-contrib">kitex-contrib&lt;/a>，为更多用户提供便利。&lt;/p>
+&lt;h2 id="未来展望">未来展望&lt;/h2>
+&lt;p>&lt;strong>继续开源其他内部项目&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>我们会继续开源其他内部项目，如 HTTP 框架 Hertz、基于共享内存的 IPC 通信库 ShmIPC 等，提供更多场景的微服务需求支持。&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>逐步开源经验证的、稳定的特性&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>CloudWeGo 的主要项目均为字节内部微服务提供支持，新的特性通常会在内部验证，相对成熟后我们会逐步开源出去，比如对 ShmIPC 的集成、无序列化、无生成代码的支持等等。&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>结合内外部用户需求，持续迭代&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>CloudWeGo 开源后除向内部提供支持外，我们也希望 CloudWeGo 能为外部用户提供良好的支持，帮助大家快速搭建自己的微服务体系，所以我们会面向内外部用户迭代。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>就开源一个月的反馈看，大家对 Protobuf 的诉求较为强烈。坦诚来说 Kitex 虽然支持多协议，但字节内部 RPC 通信协议是 Thrift，对 Protobuf 无论是 Kitex Protobuf 还是兼容 gRPC 更多的是支持少部分内部用户的需求，所以暂时未开展性能优化，生成代码也是直接使用 Protobuf 官方的二进制（gogo/protobuf 是基于生成代码优化 Protobuf 序列化性能的优秀开源库，但很遗憾该库目前是停止维护状态，所以 Kitex 并未选择 gogo），但鉴于大家强烈的诉求，我们会计划开展 Kitex 对 Protobuf 支持的性能优化。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>欢迎大家向 CloudWeGo 提交 issue 和 PR 共建 CloudWeGo，我们诚心期待更多的开发者加入，也期待 CloudWeGo 助力越来越多的企业快速构建云原生架构。如果企业客户想内部试用，我们可以排期提供专项技术支持和交流，欢迎入群咨询。&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>&lt;img src="/img/blog/LarkGroup.png" alt="!image">&lt;/p></description></item><item><title>Blog: Kitex v0.0.4 版本发布</title><link>/zh/blog/2021/08/26/kitex-v0.0.4-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</link><pubDate>Thu, 26 Aug 2021 00:00:00 +0000</pubDate><guid>/zh/blog/2021/08/26/kitex-v0.0.4-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</guid><description>
+&lt;h2 id="优化">优化:&lt;/h2>
+&lt;ul>
+&lt;li>transMetaHandler 在自定义 boundHandlers 之前执行，保证自定义 boundHandlers 可以拿到 RPCInfo 信息。&lt;/li>
+&lt;li>TransError 暴露封装 error 的 typeID 用于支持自定义 Error 回传错误码。&lt;/li>
+&lt;/ul>
+&lt;h2 id="bug-修复">Bug 修复:&lt;/h2>
+&lt;ul>
+&lt;li>复用 RPCInfo 不对 stats level 重置， 以修复在使用 netpollmux 时 metric 丢失问题。&lt;/li>
+&lt;li>清理不存在节点的连接池。&lt;/li>
+&lt;li>Streaming 中增加 Netpoll EOF 错误判断来清除冗余的 warning 日志。&lt;/li>
+&lt;li>修改熔断错误统计类型，非 Ignorable 错误类型均做熔断统计，以修复开源版本熔断无法正确生效和内部版本在开启mesh后重试熔断无法生效问题。&lt;/li>
+&lt;/ul>
+&lt;h2 id="工具">工具:&lt;/h2>
+&lt;ul>
+&lt;li>调整了 Protobuf unary 方法的生成代码，来同时支持 Kitex Protobuf 和 gRPC。&lt;/li>
+&lt;li>升级了 thriftgo 版本来修复 golint。&lt;/li>
+&lt;li>修复了生成代码中的错误。&lt;/li>
+&lt;li>修复了流生成的代码缺少传输选项的错误。&lt;/li>
+&lt;/ul>
+&lt;h2 id="文档">文档:&lt;/h2>
+&lt;ul>
+&lt;li>添加了 Golong 配置部分的文档以及 Golang 版本要求。&lt;/li>
+&lt;li>更新了一些现有文档。&lt;/li>
+&lt;li>添加了一些英文文档。&lt;/li>
+&lt;/ul>
+&lt;h2 id="依赖变化">依赖变化:&lt;/h2>
+&lt;ol>
+&lt;li>Thriftgo: v0.0.2-0.20210726073420-0145861fcd04 -&amp;gt; v0.1.2&lt;/li>
+&lt;li>Netpoll: v0.0.2 -&amp;gt; v0.0.3&lt;/li>
+&lt;/ol></description></item><item><title>Blog: Kitex v0.0.3 版本发布</title><link>/zh/blog/2021/08/01/kitex-v0.0.3-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</link><pubDate>Sun, 01 Aug 2021 00:00:00 +0000</pubDate><guid>/zh/blog/2021/08/01/kitex-v0.0.3-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</guid><description>
+&lt;h2 id="bug-修复">Bug 修复:&lt;/h2>
+&lt;ul>
+&lt;li>防止连接池被覆盖。&lt;/li>
+&lt;/ul></description></item><item><title>Blog: Kitex v0.0.2 版本发布</title><link>/zh/blog/2021/07/30/kitex-v0.0.2-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</link><pubDate>Fri, 30 Jul 2021 00:00:00 +0000</pubDate><guid>/zh/blog/2021/07/30/kitex-v0.0.2-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</guid><description>
+&lt;h2 id="优化">优化：&lt;/h2>
+&lt;ul>
+&lt;li>Kitex 在没有 tracer 时关闭 stats 分阶段耗时采集，避免无 Trace 时额外的性能消耗。&lt;/li>
+&lt;li>Kitex client 默认使用连接池。&lt;/li>
+&lt;/ul>
+&lt;h2 id="bug-修复">Bug 修复:&lt;/h2>
+&lt;ul>
+&lt;li>修复了一个 lbcache 中 nil-pointer 的错误。&lt;/li>
+&lt;li>修复了一个 retry 重试（Backup Request）中的 data race 问题。&lt;/li>
+&lt;/ul>
+&lt;h2 id="工具">工具:&lt;/h2>
+&lt;ul>
+&lt;li>Kitex 工具去掉默认生成的配置文件。&lt;/li>
+&lt;li>Kitex 工具现在使用最新的 thriftgo API 以避免老版 API 在生成代码时的几个边角案例。&lt;/li>
+&lt;li>Kitex 工具现在会检查代码中是否包含 go 命令，不再假设它的存在。感谢 @anqiansong 的贡献。&lt;/li>
+&lt;/ul>
+&lt;h2 id="文档">文档:&lt;/h2>
+&lt;ul>
+&lt;li>我们在这个版本中更新了一些文档。&lt;/li>
+&lt;li>我们修改了一些拼写错误和错别字。感谢 @rleungx @Huangxuny1 @JeffreyBool 的贡献。&lt;/li>
+&lt;/ul></description></item><item><title>Blog: Kitex v0.0.1 版本发布</title><link>/zh/blog/2021/07/12/kitex-v0.0.1-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</link><pubDate>Mon, 12 Jul 2021 00:00:00 +0000</pubDate><guid>/zh/blog/2021/07/12/kitex-v0.0.1-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</guid><description>
+&lt;p>Kitex 项目初始化。&lt;/p></description></item></channel></rss>

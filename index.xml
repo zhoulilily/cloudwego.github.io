@@ -1,0 +1,1136 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>CloudWeGo – CloudWeGo</title><link>/</link><description>Recent content on CloudWeGo</description><generator>Hugo -- gohugo.io</generator><atom:link href="/index.xml" rel="self" type="application/rss+xml"/><item><title>Blog: Kitex Release v0.1.0</title><link>/blog/2021/12/13/kitex-release-v0.1.0/</link><pubDate>Mon, 13 Dec 2021 00:00:00 +0000</pubDate><guid>/blog/2021/12/13/kitex-release-v0.1.0/</guid><description>
+&lt;h2 id="feature">Feature&lt;/h2>
+&lt;h3 id="generic-call">Generic Call&lt;/h3>
+&lt;ul>
+&lt;li>Support combined services&lt;/li>
+&lt;li>Export SetSeqID and add GetSeqID for binary generic call of server side&lt;/li>
+&lt;li>Support close generic client to avoid memory leak&lt;/li>
+&lt;/ul>
+&lt;h3 id="log">Log&lt;/h3>
+&lt;ul>
+&lt;li>Use key=value style in log messages&lt;/li>
+&lt;li>Use klog as global log in some logs&lt;/li>
+&lt;li>Use the global default logger across kitex&lt;/li>
+&lt;li>Print detail loginfo by ctx&lt;/li>
+&lt;li>Pass service info to go func which is used to output for troubleshooting&lt;/li>
+&lt;/ul>
+&lt;h3 id="option">Option&lt;/h3>
+&lt;ul>
+&lt;li>Add NewThriftCodecDisableFastMode to disable FastWrite/Read&lt;/li>
+&lt;li>Add server option - WithReusePort&lt;/li>
+&lt;li>Default rpc timeout = 0&lt;/li>
+&lt;/ul>
+&lt;h3 id="proxy">Proxy&lt;/h3>
+&lt;ul>
+&lt;li>Proxy add ContextHandler interface to support passing initialization context to mwBuilder&lt;/li>
+&lt;li>Register Dump in lbcache to diagnosis&lt;/li>
+&lt;li>Pass RPCConfig to proxy.Config&lt;/li>
+&lt;/ul>
+&lt;h2 id="improvement">Improvement&lt;/h2>
+&lt;ul>
+&lt;li>Reduce heap allocation&lt;/li>
+&lt;li>Optimize mux performance&lt;/li>
+&lt;li>Recycle grpc codec buffer by close linkbuffer&lt;/li>
+&lt;li>Distinguish ErrRPCFinish in cost info of backup request&lt;/li>
+&lt;li>Move mux.ShardQueue to netpoll, rename sharedMap to shardMap&lt;/li>
+&lt;li>Add container length encoding guard in fast api&lt;/li>
+&lt;/ul>
+&lt;h2 id="bugfix">Bugfix&lt;/h2>
+&lt;ul>
+&lt;li>Enable server error handle middleware&lt;/li>
+&lt;li>Adjust Balancer initialization in lbcache&lt;/li>
+&lt;li>Init TraceCtl when it is nil (only affect unit test)&lt;/li>
+&lt;li>Set default rpctimeout and disable timeout logic if rpctimeout == 0&lt;/li>
+&lt;li>Defaultlogger wrong calldepth&lt;/li>
+&lt;li>Rename BackwardProxy to ReverseProxy&lt;/li>
+&lt;li>Avoid nil panic in grpc keepalive&lt;/li>
+&lt;li>Fix hidden dangers about grpc&lt;/li>
+&lt;li>Fix exception missing in void method&lt;/li>
+&lt;li>Fix mistake dump info when instances change.&lt;/li>
+&lt;/ul>
+&lt;h2 id="docs">Docs&lt;/h2>
+&lt;ul>
+&lt;li>Fix link in readme_zh&lt;/li>
+&lt;li>Remove docs; mantain cloudwego.io only&lt;/li>
+&lt;/ul>
+&lt;h2 id="netpoll-api-change">Netpoll API Change&lt;/h2>
+&lt;ul>
+&lt;li>Adapt netpoll.Writer.Append API&lt;/li>
+&lt;/ul>
+&lt;h2 id="dependency-change">Dependency Change&lt;/h2>
+&lt;ul>
+&lt;li>github.com/cloudwego/netpoll: v0.0.4 -&amp;gt; v0.1.2&lt;/li>
+&lt;/ul></description></item><item><title>Blog: Netpoll Release v0.1.2</title><link>/blog/2021/12/13/netpoll-release-v0.1.2/</link><pubDate>Mon, 13 Dec 2021 00:00:00 +0000</pubDate><guid>/blog/2021/12/13/netpoll-release-v0.1.2/</guid><description>
+&lt;h2 id="hotfix">Hotfix&lt;/h2>
+&lt;ul>
+&lt;li>check args in LinkBuffer API&lt;/li>
+&lt;/ul></description></item><item><title>Blog: Netpoll Release v0.1.1</title><link>/blog/2021/12/09/netpoll-release-v0.1.1/</link><pubDate>Thu, 09 Dec 2021 00:00:00 +0000</pubDate><guid>/blog/2021/12/09/netpoll-release-v0.1.1/</guid><description>
+&lt;h2 id="improvement">Improvement&lt;/h2>
+&lt;ul>
+&lt;li>enhance mux shard queue&lt;/li>
+&lt;/ul>
+&lt;h2 id="bugfix">Bugfix&lt;/h2>
+&lt;ul>
+&lt;li>book never reset readnode&lt;/li>
+&lt;/ul>
+&lt;h2 id="chore">Chore&lt;/h2>
+&lt;ul>
+&lt;li>update readme&lt;/li>
+&lt;/ul></description></item><item><title>Blog: Netpoll Release v0.1.0</title><link>/blog/2021/12/01/netpoll-release-v0.1.0/</link><pubDate>Wed, 01 Dec 2021 00:00:00 +0000</pubDate><guid>/blog/2021/12/01/netpoll-release-v0.1.0/</guid><description>
+&lt;h2 id="improvement">Improvement&lt;/h2>
+&lt;ul>
+&lt;li>add mux.ShardQueue to support connection multiplexing&lt;/li>
+&lt;li>input at a single LinkBuffer Node to improve performance&lt;/li>
+&lt;li>fix waitReadSize logic bug and enhance input trigger&lt;/li>
+&lt;li>reduce timeout issues when waitRead and inputAck have competition&lt;/li>
+&lt;li>unify and simplify conn locks&lt;/li>
+&lt;/ul>
+&lt;h2 id="bugfix">Bugfix&lt;/h2>
+&lt;ul>
+&lt;li>ensure EventLoop object will not be finalized before serve return&lt;/li>
+&lt;/ul>
+&lt;h2 id="chore">Chore&lt;/h2>
+&lt;ul>
+&lt;li>update readme&lt;/li>
+&lt;li>update issue templates&lt;/li>
+&lt;/ul>
+&lt;h2 id="breaking-change">Breaking Change&lt;/h2>
+&lt;ul>
+&lt;li>remove Append and WriteBuffer returned parameter n&lt;/li>
+&lt;/ul></description></item><item><title>Blog: Getting Started With RPC Practices: Performance Testing Guide</title><link>/blog/2021/11/24/getting-started-with-rpc-practices-performance-testing-guide/</link><pubDate>Wed, 24 Nov 2021 00:00:00 +0000</pubDate><guid>/blog/2021/11/24/getting-started-with-rpc-practices-performance-testing-guide/</guid><description>
+&lt;blockquote>
+&lt;p>On September 8, 2021, ByteDance announced the launch of CloudWeGo open source project. CloudWeGo is a set of microservice middleware developed by ByteDance with high performance, scalability, and stability. It focuses on microservice communication and governance, and meets the demands of different services in various scenarios. CloudWeGo currently has 4 Repos: Kitex, Netpoll, Thriftgo and Netpoll-HTTP2, featuring the RPC framework &amp;ndash; Kitex and the network library &amp;ndash; Netpoll.&lt;/p>
+&lt;/blockquote>
+&lt;p>Recently, ByteDance Service Framework Team officially announced the open source of CloudWeGo. It includes the Golang microservice RPC framework &amp;ndash; Kitex, which has been widely used in Douyin and Toutiao.
+The purpose of this article is to share the scenarios and technical issues that developers need to know when stress testing Kitex. These guides will help users adjust and optimize Kitex to better match their business needs, and maximize Kitex&amp;rsquo;s performance in real RPC scenarios. Users can also refer to the official stress test project &amp;ndash; &lt;a href="https://github.com/cloudwego/kitex-benchmark">kitex-benchmark&lt;/a> for more details.&lt;/p>
+&lt;h2 id="the-charaterstics-of-microservice-scenario">The Charaterstics of Microservice Scenario&lt;/h2>
+&lt;ul>
+&lt;li>
+&lt;p>&lt;strong>RPC Communication Model&lt;/strong>&lt;br>
+The communication between microservices is usually based on PingPong model. So, in addition to the conventional throughput performance index, developers also need to consider the average latency of each RPC.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>Complex Call Chain&lt;/strong>&lt;br>
+A RPC request usually requires multiple microservices to work together. With downstream services having their own dependencies, it leads the whole call chain to become a complex network structure. In these kind of complex call chains, the latency fluctuation of one intermediate node may be transmitted to the whole and lead to increase of overall latency. When there are many nodes on the chain, even if the latency of each node is less likely to fluctuate, the overall timeout probability of the chain could be amplified. Therefore, the latency fluctuation of a single service, notably P99, is also a key indicator that has a significant impact on online services.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>Size of Data Package&lt;/strong>&lt;br>
+Although the size of transmitted data packages depends on the actual business scenario, the internal statistics of ByteDance found that most online requests are small packages (&amp;lt;2KB). So we focused on optimizing the performance in the small data package scenarios while taking the large package scenarios into account.&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="stress-test-for-microservice-scenarios">Stress Test for Microservice Scenarios&lt;/h2>
+&lt;h3 id="determine-stress-test-objects">Determine Stress Test Objects&lt;/h3>
+&lt;p>Measuring the performance of an RPC framework requires consideration from two perspectives: Client and Server. In large-scale business architectures, upstream clients are not necessarily using the same frameworks as downstream, and same goes to the downstream services scheduled by developers. The situation becomes more complicated when Service Mesh is involved.
+Some stress test projects often generate performance data for the &lt;strong>entire framework&lt;/strong> by mixing Client and Server processes. The outcome may not be consistent with the framework&amp;rsquo;s actual performance online.
+If you want to stress test Server, you should give Client as many resources as possible to push Server to its limit, and vice versa. If both Client and Server are only provided 4-core CPUS for stress tests, it will be impossible for developers to determine the performance data is referring to either Client or Server. Thus, the test result will not have practical value for online services.&lt;/p>
+&lt;h3 id="alignment-of-connection-model">Alignment of Connection Model&lt;/h3>
+&lt;p>Conventional RPCs have three major connection models:&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>Short connection&lt;/strong>: Each request creates a new connection and closes the connection immediately after the return is received.&lt;/li>
+&lt;li>&lt;strong>Persistent connection pool&lt;/strong>: A connection can process only one complete request &amp;amp; return at once.&lt;/li>
+&lt;li>&lt;strong>Connection multiplexing&lt;/strong>: A single connection can process multiple requests &amp;amp; returns asynchronously at the same time.&lt;/li>
+&lt;/ul>
+&lt;p>Each type of connection model is not absolutely good or bad, it depends on the use case. Although connection multiplexing generally performs the best, some older framework services may not support multiplexing calls. Because to make it work, the dependency protocol must support the package serial number.
+In order to ensure maximum compatibility, Kitex initially used short connections on the Client side by default, while other mainstream open source frameworks used connection multiplexing by default. It resulted in large performance data deviations for some users when stress testing with default configuration.
+Later, in order to accommodate the common scenario of open source users, Kitex supported &lt;a href="https://github.com/cloudwego/kitex/pull/40/files">persistent connection&lt;/a> by default in v0.0.2.&lt;/p>
+&lt;h3 id="alignment-of-serialization-strategy">Alignment of Serialization Strategy&lt;/h3>
+&lt;p>For RPC frameworks, regardless of service governance, the computation overhead is mainly generated by serialization and deserialization.
+Kitex uses the &lt;a href="https://github.com/golang/protobuf">Go protobuf library&lt;/a> to serialize Protobuf. And for serialization of Thrift, Kitex has specific performance optimization, which is introduced in the &lt;a href="https://www.cloudwego.io/blog/2021/09/23/performance-optimization-on-kitex/#serializationdeserialization-optimization-of-thrift">blog post&lt;/a> on our official web.
+Most of current open source frameworks support Protobuf in preference, and some of the built-in Protobuf are actually &lt;a href="https://github.com/gogo/protobuf">gogo/protobuf&lt;/a> versions with performance optimizations. However, gogo/protobuf is currently at risk of &lt;a href="https://github.com/gogo/protobuf/issues/691">maintenance absence&lt;/a>. Therefore, due to maintainability concerns, we decided to use the official protobuf library only. Certainly, we will make plans for optimizing Protobuf in the future.&lt;/p>
+&lt;h3 id="use-cpu-exclusively">Use CPU Exclusively&lt;/h3>
+&lt;p>Although multiple processes would usually utilize the CPU capability at the same time for online applications. But in stress test scenarios, both Client and Server processes are extremely busy. Sharing the CPU will result in a large number of context switches, which makes the output data less reliable and prone to large fluctuations.
+Therefore, we recommend that the Client and Server processes should be isolated on different CPU or machine. If you want to further avoid the impact of multiple processes, you can add the nice -n -20 command to prioritize the scheduling priority of the stress testing process.
+In addition, if possible, using physical machines makes the test results more precise and reproducible compared to using virtual machines on cloud platforms.&lt;/p>
+&lt;h2 id="performance-data-demonstration">Performance Data Demonstration&lt;/h2>
+&lt;p>In order to meet the above requirements, we compared the stress test results of multiple frameworks using Protobuf. The stress test source code can be found in &lt;a href="https://github.com/gogo/protobuf/issues/691">kitex-benchmark&lt;/a> repo. When Servier is fully loaded, P99 Latency of Kitex in connection pool mode is the lowest of all frameworks. In multiplexing mode, Kitex also performs well in each indicator.&lt;/p>
+&lt;p>&lt;strong>Configuration&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>Client 16 CPUs，Server 4 CPUs&lt;/li>
+&lt;li>1KB Request Package Size, Echo Scenario&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>Reference Data&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>KITEX: Connection Pool Model (Default Setting)&lt;/li>
+&lt;li>KITEX-MUX: Connection Multiplexing&lt;/li>
+&lt;li>Connection Multiplexing for all other Frameworks&lt;/li>
+&lt;/ul>
+&lt;p>&lt;img src="/img/blog/kitex_performance_testing/qps.png" alt="image">&lt;br>
+&lt;img src="/img/blog/kitex_performance_testing/tp99.png" alt="image">&lt;/p>
+&lt;h2 id="summary">Summary&lt;/h2>
+&lt;p>Each mainstream Golang open source RPC framework actually has its own focus in terms of design goals: some focus on generality, some on scenarios with light business logic like Redis, some on throughput performance, and some on P99 delay.
+In the daily iteration of ByteDance&amp;rsquo;s business, it is common for a feature to cause one indicator to rise and another indicator to decline. Therefore, Kitex was more inclined to solve various problems in large-scale microservice scenarios at the beginning of its design.&lt;/p>
+&lt;p>Since the launch of Kitex, we have received a large amount of self-testing data from our users. We appreciate the community for their attention and support. We also encourage developers to use the testing guide provided in this article, and select appropriate tools for their own scenarios. For more questions, please make an Issue on GitHub.&lt;/p>
+&lt;h2 id="pertinent-links">Pertinent Links&lt;/h2>
+&lt;ul>
+&lt;li>CloudWeGo Official Website: &lt;a href="https://www.cloudwego.io">https://www.cloudwego.io&lt;/a>&lt;/li>
+&lt;li>Kitex: &lt;a href="https://github.com/cloudwego/kitex">https://github.com/cloudwego/kitex&lt;/a>&lt;/li>
+&lt;li>Netpoll: &lt;a href="https://github.com/cloudwego/netpoll">https://github.com/cloudwego/netpoll&lt;/a>&lt;/li>
+&lt;li>kitex-benchmark: &lt;a href="https://github.com/cloudwego/kitex-benchmark">https://github.com/cloudwego/kitex-benchmark&lt;/a>&lt;/li>
+&lt;li>netpoll-benchmark: &lt;a href="https://github.com/cloudwego/netpoll-benchmark">https://github.com/cloudwego/netpoll-benchmark&lt;/a>&lt;/li>
+&lt;/ul></description></item><item><title>Blog: Kitex Release v0.0.8</title><link>/blog/2021/11/05/kitex-release-v0.0.8/</link><pubDate>Fri, 05 Nov 2021 00:00:00 +0000</pubDate><guid>/blog/2021/11/05/kitex-release-v0.0.8/</guid><description>
+&lt;h2 id="improvement">Improvement:&lt;/h2>
+&lt;ul>
+&lt;li>Use shard rings to reduce lock overhead in connpool.&lt;/li>
+&lt;li>Fill upstream information to rpcinfo from TTheader, for printing useful log when decode error happened.&lt;/li>
+&lt;li>Move unlink uds operation to CreateListener.&lt;/li>
+&lt;li>Replace sync.Mutex by sync.RWMutex of event.go and ring_single.go.&lt;/li>
+&lt;/ul>
+&lt;h2 id="bugfix">Bugfix:&lt;/h2>
+&lt;ul>
+&lt;li>Fix netpollmux shard index overflow.&lt;/li>
+&lt;li>Remove reflection of &lt;code>WithCircuitBreaker&lt;/code> option arguments to prevent data-race.&lt;/li>
+&lt;li>Fix rpc finished error may happen small probability in failure retry scenario &amp;amp;&amp;amp; add sample check for retry circuit breaking.&lt;/li>
+&lt;li>Fix a test case mistake in endpoint_test.go.&lt;/li>
+&lt;li>Modify longconn variable name to conn.&lt;/li>
+&lt;/ul>
+&lt;h2 id="tool">Tool:&lt;/h2>
+&lt;ul>
+&lt;li>Kitex codegen tool supports passing through thrift-go plugin arguments.&lt;/li>
+&lt;/ul>
+&lt;h2 id="docs">Docs:&lt;/h2>
+&lt;ul>
+&lt;li>Use a link to the the kitex-benchmark repository to replace the performance section in README.&lt;/li>
+&lt;/ul>
+&lt;h2 id="dependency-change">Dependency Change:&lt;/h2>
+&lt;ul>
+&lt;li>github.com/tidwall/gjson: v1.8.0 -&amp;gt; v1.9.3&lt;/li>
+&lt;/ul></description></item><item><title>Blog: ByteDance Practices on Go Network Library</title><link>/blog/2021/10/09/bytedance-practices-on-go-network-library/</link><pubDate>Sat, 09 Oct 2021 00:00:00 +0000</pubDate><guid>/blog/2021/10/09/bytedance-practices-on-go-network-library/</guid><description>
+&lt;blockquote>
+&lt;p>This article is excerpted from the ByteDance Architecture Practice series.&lt;/p>
+&lt;p>&amp;ldquo;ByteDance Architecture Practice&amp;rdquo; is a series of articles produced by the technical teams and experts from the ByteDance Architecture Team, to share the team&amp;rsquo;s practical experience and lessons learnt from the development of infra-architecture, for the purpose of enhancing communication and growth of the developers.&lt;/p>
+&lt;p>As an important part of R&amp;amp;D system, RPC framework carries almost all service traffics. This paper will briefly introduce the design and practice of the ByteDance in-house developed network library &amp;ndash; Netpoll, as well as the problems and solutions that arise during our practices. This article can be used as a reference to help the tech-community&amp;rsquo;s further practices and experiments.&lt;/p>
+&lt;/blockquote>
+&lt;h2 id="preface">Preface&lt;/h2>
+&lt;p>As an important part of the R&amp;amp;D system, RPC framework carries almost all service traffics. As Golang is used more and more widely in ByteDance, the business has higher requirements on its framework. However, the &amp;ldquo;Go net&amp;rdquo; library cannot provide sufficient performance and control to support the business, notably inability to perceive the connection state, low utilization due to the large number of connections, and inability to control the number of goroutines. In order to obtain control of the network layer, it&amp;rsquo;s necessary to make some exploration prospectively, and finally empower the business. The Service Framework Team launched a new self-developed network library &amp;ndash; &amp;ldquo;Netpoll&amp;rdquo; based on &amp;ldquo;epoll&amp;rdquo;, and developed a new-generation Golang framework &amp;ndash; &amp;ldquo;Kitex&amp;rdquo; based on &amp;ldquo;Netpoll&amp;rdquo;.&lt;/p>
+&lt;p>Since there are many articles discussing the principles of &amp;ldquo;epoll&amp;rdquo;, this article will briefly introduce the design of &amp;ldquo;Netpoll&amp;rdquo; only. We&amp;rsquo;ll then try to put together some of our practices regarding &amp;ldquo;Netpoll&amp;rdquo;. Finally, we&amp;rsquo;ll share a problem we encountered during our practices and how we solved it. In the meantime, we welcome peers who are also interested in Golang and Go framework to join us!&lt;/p>
+&lt;h2 id="design-of-the-new-network-library">Design of the New Network Library&lt;/h2>
+&lt;h3 id="reactor---event-monitoring-and-the-core-of-scheduling">Reactor - Event Monitoring and the Core of Scheduling&lt;/h3>
+&lt;p>The core of &amp;ldquo;Netpoll&amp;rdquo; is the event monitoring scheduler &amp;ndash; &amp;ldquo;Reactor&amp;rdquo;, which uses &amp;ldquo;epoll&amp;rdquo; to monitor the &amp;ldquo;File Descriptor (fd)&amp;rdquo; of the connection and triggers the read, write and close events on the connection through the callback mechanism. &lt;br/>&lt;br>
+&lt;img src="/img/blog/bytedance_gonet_practice_img/reactor.png" alt="image">&lt;/p>
+&lt;h3 id="server---mainreactor--subreactor-implementation">Server - MainReactor &amp;amp; SubReactor Implementation&lt;/h3>
+&lt;p>Netpoll combines Reactors in a 1: N master-slave pattern:&lt;/p>
+&lt;ol>
+&lt;li>&amp;ldquo;MainReactor&amp;rdquo; mainly manages the &amp;ldquo;Listener&amp;rdquo;, responsible for monitoring ports and establishing new connections.&lt;/li>
+&lt;li>The &amp;ldquo;SubReactor&amp;rdquo; manages the &amp;ldquo;Connection&amp;rdquo;, listens all assigned connections, and submits all triggered events to the goroutine pool for processing.&lt;/li>
+&lt;li>&amp;ldquo;Netpoll&amp;rdquo; supports &amp;ldquo;NoCopy RPC&amp;rdquo; by introducing active memory management in I/O tasks and providing an &amp;ldquo;NoCopy&amp;rdquo; invocation interface to the upper layer.&lt;/li>
+&lt;li>Add a goroutine pool to centrally process I/O tasks, reducing number of goroutines and scheduling overhead.
+&lt;br/>&lt;/li>
+&lt;/ol>
+&lt;p>&lt;img src="/img/blog/bytedance_gonet_practice_img/server_reactor.png" alt="image">&lt;/p>
+&lt;h3 id="client---shares-the-capability-of-reactor">Client - Shares the Capability of Reactor&lt;/h3>
+&lt;p>SubReactor is shared between client and server. Netpoll also implements &amp;ldquo;Dialer&amp;rdquo; and provides the feature for establishing connections. On the client, similar to &amp;ldquo;net.Conn&amp;rdquo;, Netpoll provides underlaying support for &amp;ldquo;write -&amp;gt; wait read callback&amp;rdquo;.&lt;br>
+&lt;br/>
+&lt;img src="/img/blog/bytedance_gonet_practice_img/client_reactor.png" alt="image">&lt;/p>
+&lt;h2 id="nocopy-buffer">Nocopy Buffer&lt;/h2>
+&lt;h3 id="why-nocopy-buffer">Why Nocopy Buffer?&lt;/h3>
+&lt;p>As mentioned earlier, the way epoll is triggered affects the design of I/O and buffer, which can be generally divided into two approaches:&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>Level Trigger (LT)&lt;/strong>. It is necessary to complete I/O actively after the event is triggered, and provides buffers directly to the upper code.&lt;/li>
+&lt;li>&lt;strong>Edge Trigger (ET)&lt;/strong>. You can choose to manage the event notification only (e.g. go net), with the upper layer code for I/O completion and buffers management.&lt;/li>
+&lt;/ul>
+&lt;p>Both ways have their advantages and disadvantages. &amp;ldquo;Netpoll&amp;rdquo; adopts the first strategy, with level trigger, it has better timeliness and higher fault tolerance rate. Active I/O can centralize memory usage and management, provide nocopy operation, and reduce GC. In fact, some popular open source network libraries, such as &amp;ldquo;easygo&amp;rdquo;, &amp;ldquo;evio&amp;rdquo;, &amp;ldquo;gnet&amp;rdquo;, etc. are also designed in this way.&lt;/p>
+&lt;p>However, using LT also introduces a problem, namely the additional concurrency overhead caused by the underlying active I/O and the concurrent buffer operations by the upper code. For example, there are concurrent read and write when I/O read(data)/write(buffer) and the upper code reads the buffer, vice versa. In order to ensure data correctness and avoid lock contention, existing open source network libraries usually adopt synchronous processing of buffer (&amp;ldquo;easygo&amp;rdquo;, &amp;ldquo;evio&amp;rdquo;) or provide a copy of buffer to the upper layer code (&amp;ldquo;gnet&amp;rdquo;), which are not suitable for business processing or have considerable copy overhead.&lt;/p>
+&lt;p>On the other hand, common buffer libraries such as &amp;ldquo;bytes&amp;rdquo;, &amp;ldquo;bufio&amp;rdquo;, and &amp;ldquo;ringbuffer&amp;rdquo; have problems such as &amp;ldquo;growth&amp;rdquo; requiring copy of data from the original array; capacity can only be expanded but can&amp;rsquo;t be reduced; occupying a large amount of memory etc. Therefore, we hope to introduce a new form of buffer to solve the two problems above.&lt;/p>
+&lt;h3 id="the-design-and-advantages-of-nocopy-buffer">The Design and Advantages of Nocopy Buffer&lt;/h3>
+&lt;p>Nocopy Buffer is implemented based on linked-list of array. As shown in the figure below, we abstract []byte array into blocks and combine blocks into Nocopy Buffer in the form of a linked list. Meanwhile, reference counting mechanism, Nocopy API and object pool are introduced.&lt;br>
+&lt;br/>
+&lt;img src="/img/blog/bytedance_gonet_practice_img/buffer.png" alt="image"> &lt;br/> &lt;br>
+Nocopy Buffer has the following advantages over some common buffer libraries like &amp;ldquo;bytes&amp;rdquo;, &amp;ldquo;bufio&amp;rdquo;, and &amp;ldquo;ringbuffer&amp;rdquo;:&lt;/p>
+&lt;ol>
+&lt;li>Read and write in parallel without lock, and supports stream read/write with nocopy
+&lt;ul>
+&lt;li>Read and write operate the head pointer and tail pointer separately without interfering with each other.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Efficient capacity expansion and reduction
+&lt;ul>
+&lt;li>For capacity expansion, you can add new blocks directly after the tail pointer without copying the original array.&lt;/li>
+&lt;li>For capacity reduction, the head pointer directly releases the used block node to complete the capacity reduction. Each block has an independent reference count, and when the freed block is no longer referenced, the block node is actively reclaimed.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Flexible slicing and splicing of buffer (the characteristic of linked list)
+&lt;ul>
+&lt;li>Support Arbitrary read slicing (nocopy), and the upper layer code can process data stream slicing in parallel with nocopy by reference counting GC, regardless of the lifecycle&lt;/li>
+&lt;li>Support arbitrary splicing (nocopy). Buffer write supports splicing block after the tail pointer, without copy, and ensuring that data is written only once.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Nocopy Buffer is pooled to reduce GC
+&lt;ul>
+&lt;li>Treat each []byte array as a block node, and build an object pool to maintain free blocks, thus reuse blocks, reduce memory footprint and GC. Based on the Nocopy Buffer, we implemented Nocopy Thrift, so that the codec process allocates zero memory with zero copy.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;h2 id="connection-multiplexing">Connection Multiplexing&lt;/h2>
+&lt;p>RPC scheduling is usually in the form of short connection or persistent connection pool, and each call is bound to one connection. Therefore, when the scale of upstream and downstream is large, the number of existing connections in the network increases in the speed of MxN, which brings huge scheduling pressure and computing overhead, and makes service governance difficult. Therefore, we want to introduce a mechanism for &amp;ldquo;parallel processing of calls on a single persistent connection&amp;rdquo; to reduce the number of connections in the network. This mechanism is called connection multiplexing.&lt;/p>
+&lt;p>There are some existing open source connection multiplexing solutions. But they are limited by code level constraints. They all require copy buffer for data subcontracting and merging, resulting in poor performance. On the other hand, with its flexible slicing and splicing, &amp;ldquo;Nocopy Buffer&amp;rdquo; well supports data subcontracting and merging with nocopy, making it possible to achieve high-performance connection multiplexing schemes.&lt;/p>
+&lt;p>The design of Netpoll-based connection multiplexing is shown in the figure below. We abstract the Nocopy Buffer(and its sharding) into virtual connections so that the upper layer code retains the same scheduling experience as &amp;ldquo;net.Conn&amp;rdquo;. At the same time, the data on the real connection can be flexibly allocated to the virtual connection through protocol subcontracting in the underlying code. Or send virtual connection data through protocol encoding.&lt;br>
+&lt;br/>
+&lt;img src="/img/blog/bytedance_gonet_practice_img/client_server.png" alt="image"> &lt;br/>&lt;/p>
+&lt;p>The connection multiplexing scheme contains the following core elements:&lt;/p>
+&lt;ol>
+&lt;li>The virtual connection
+&lt;ul>
+&lt;li>It is essentially a &amp;ldquo;Nocopy Buffer&amp;rdquo; that replaces real connections and avoids memory copy.&lt;/li>
+&lt;li>The upper-layer service logic/codec is executed on the virtual connection, and the upper-layer logic can be executed in parallel asynchronously and independently.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Shared map
+&lt;ul>
+&lt;li>Shared locking is introduced to reduce the lock intensity.&lt;/li>
+&lt;li>The Sequence ID is used to mark the request on the caller side and the shared lock is used to store the callback corresponding to the ID.&lt;/li>
+&lt;li>After receiving the response data, find the corresponding callback based on the sequence ID and execute it.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Data subcontracting and encoding
+&lt;ul>
+&lt;li>To identify the complete request-response data package is the key to make the connection multiplexing scheme feasible, so the protocol needs to be introduced.&lt;/li>
+&lt;li>The &amp;ldquo;Thrift Header Protocol&amp;rdquo; is used to check the data package integrity through the message header, and sequence ids are used to mark the corresponding relations between request and response.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;h2 id="zerocopy">ZeroCopy&lt;/h2>
+&lt;p>&amp;ldquo;ZeroCopy&amp;rdquo; refers to the ZeroCopy capability provided by Linux. In the previous chapter we discussed about nocopy of the service layer. But as we know, when we schedule &amp;ldquo;sendmsg&amp;rdquo; system-call to send a data package, actually there is still a copy of the data, and the overhead of such copies is considerable when the data packages are large. For example, when the data package has the size of 100M, we can see the following result: &lt;br/>&lt;br>
+&lt;img src="/img/blog/bytedance_gonet_practice_img/perf.png" alt="image"> &lt;br/>&lt;br>
+The previous example is merely the overhead of tcp package sending. In our scenario, most services are connected to the &amp;ldquo;Service Mesh&amp;rdquo;. Therefore, there are three copies in a package sending: Service process to kernel, kernel to sidecar, sidecar to kernel. This makes the CPU usage caused by copying especially heavy for services demanding large package transactions, as shown in the following figure:&lt;br>
+&lt;br/>
+&lt;img src="/img/blog/bytedance_gonet_practice_img/service_mesh_copy.png" alt="image"> &lt;br/>&lt;br>
+To solve this problem, we chose to use the ZeroCopy API provided by Linux (send is supported after 4.14; receive is supported after 5.4). But this introduces an additional engineering problem: the ZeroCopy send API is incompatible with the original call method and does not coexist well. Here&amp;rsquo;s how ZeroCopy Send works: After the service process calls &amp;ldquo;sendmsg&amp;rdquo;, &amp;ldquo;sendmsg&amp;rdquo; records the address of the &amp;ldquo;iovec&amp;rdquo; and returns it immediately. In this case, the service process cannot release the memory and needs to use &amp;ldquo;epoll&amp;rdquo; to wait for the kernel to send a signal indicating that a certain &amp;ldquo;iovec&amp;rdquo; has been successfully sent. Since we don&amp;rsquo;t want to change the way the business side uses it, we need to provide a synchronous sending and receiving interface to the upper layer, so it is difficult to provide both ZeroCopy and non-Zerocopy abstraction based on the existing API. Since ZeroCopy has performance degradation in small package scenarios, this is not the optimal option.&lt;/p>
+&lt;p>Thus, the ByteDance Service Framework Team collaborated with the ByteDance Kernel Team. The Kernel Team provided the synchronous interface: when &amp;ldquo;sendmsg&amp;rdquo; is called, the kernel listens and intercepts the original kernel callback to the service, and doesn&amp;rsquo;t let &amp;ldquo;sendmsg&amp;rdquo; return values until the callback is complete. This allows us to easily plug in &amp;ldquo;ZeroCopy send&amp;rdquo; without changing the original model. Meanwhile, the ByteDance Kernel Team also implements ZeroCopy based on Unix domain socket, which enables zero-copy communication between service processes and Mesh sidecar.&lt;/p>
+&lt;p>After using &amp;ldquo;ZeroCopy send&amp;rdquo;, we can see that the kernel is no longer occupied by copy through perf:&lt;br>
+&lt;br/>
+&lt;img src="/img/blog/bytedance_gonet_practice_img/perf2.png" alt="image"> &lt;br/>&lt;br>
+In terms of CPU usage, with ZeroCopy, CPU is occupied half as much as non-Zerocopy only, in the large package scenario.&lt;/p>
+&lt;h2 id="delay-caused-by-go-scheduling">Delay Caused By Go Scheduling&lt;/h2>
+&lt;p>In our practice, we found that although our newly written &amp;ldquo;Netpoll&amp;rdquo; outperformed the &amp;ldquo;Go net&amp;rdquo; library in terms of avg delay, it was generally higher than the &amp;ldquo;Go net&amp;rdquo; library in terms of p99 and max delay, and the spikes would be more obvious, as shown in the following figure (Go 1.13, Netpoll + multiplexing in blue, Netpoll + persistent connection in green, Go net library + persistent connection in yellow):&lt;br>
+&lt;br/>
+&lt;img src="/img/blog/bytedance_gonet_practice_img/delay.png" alt="image"> &lt;br/>&lt;/p>
+&lt;p>We tried many ways to optimize it, but the outcomes were unsatifactory. Finally, we locate that the delay was not due to the overhead of &amp;ldquo;Netpoll&amp;rdquo; itself, but caused by the scheduling of Go, for example:&lt;/p>
+&lt;ol>
+&lt;li>In &amp;ldquo;Netpoll&amp;rdquo;, the &amp;ldquo;SubReactor&amp;rdquo; itself is also a &amp;ldquo;goroutine&amp;rdquo;, which is affected by scheduling and cannot be guaranteed to be executed immediately after the &amp;ldquo;EpollWait&amp;rdquo; callback, so there would be a delay here.&lt;/li>
+&lt;li>Also, since the &amp;ldquo;SubReactor&amp;rdquo; used to handle I/O events and the &amp;ldquo;MainReactor&amp;rdquo; used to handle connection listening are &amp;ldquo;goroutines&amp;rdquo; themselves, it is impossible to ensure that these reactors can be executed in parallel under multi-kernel conditions. Even in the most extreme cases, these reactors may be under the same P, and eventually become sequential execution. Resulting in lower efficiency and unable to take the full advantage of multi-kernel;&lt;/li>
+&lt;li>After &amp;ldquo;EpollWait callback&amp;rdquo;, I/O events are processed serially in the &amp;ldquo;SubReactor&amp;rdquo;, so the last event may have a long tail problem.&lt;/li>
+&lt;li>In connection multiplexing scenarios, since each connection is bound to a &amp;ldquo;SubReactor&amp;rdquo;, the delay is entirely dependent on the scheduling of the &amp;ldquo;SubReactor&amp;rdquo;, resulting in more pronounced spikes. Because Go has specific optimizations for the net library in runtime, this does not happen in the net library. At the same time, the NET library is also a &amp;ldquo;goroutine-per-connection&amp;rdquo; model, so it ensures that requests can be executed in parallel without interfering with each other.&lt;/li>
+&lt;/ol>
+&lt;p>For the above problems, we have two solutions at present:&lt;/p>
+&lt;ol>
+&lt;li>Modify the Go runtime source code, register a callback in the Go runtime, call EpollWait each time, and pass the fd to the callback execution;&lt;/li>
+&lt;li>Working with the ByteDance Kernel Team to support simultaneous batch read/write of multiple connections to solve sequential problems. In addition, in our tests, Go 1.14 reduces the latency slightly lower and smoother, but the max QPS that can be achieved is lower. I hope our ideas can provide some references to peers in the industry who also encountered this problem.&lt;/li>
+&lt;/ol>
+&lt;h2 id="postscript">Postscript&lt;/h2>
+&lt;p>Hope the above sharing can be helpful to the community. At the same time, we are accelerating the development of &amp;ldquo;Netpoll&amp;rdquo; and &amp;ldquo;Kitex&amp;rdquo; &amp;ndash; a new framework based on &amp;ldquo;Netpoll&amp;rdquo;. You are welcome to join us and build Golang ecology together!&lt;/p>
+&lt;h2 id="reference">Reference&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="http://man7.org/linux/man-pages/man7/epoll.7.html">http://man7.org/linux/man-pages/man7/epoll.7.html&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://golang.org/src/runtime/proc.go">https://golang.org/src/runtime/proc.go&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://github.com/panjf2000/gnet">https://github.com/panjf2000/gnet&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://github.com/tidwall/evio">https://github.com/tidwall/evio&lt;/a>&lt;/li>
+&lt;/ul></description></item><item><title>Blog: Kitex Release v0.0.5</title><link>/blog/2021/09/26/kitex-release-v0.0.5/</link><pubDate>Sun, 26 Sep 2021 00:00:00 +0000</pubDate><guid>/blog/2021/09/26/kitex-release-v0.0.5/</guid><description>
+&lt;h2 id="feature">Feature:&lt;/h2>
+&lt;ul>
+&lt;li>Add default ErrorHandler to wrap remote error when no ErrorHandler is specified.&lt;/li>
+&lt;li>Backward metainfo is supported.&lt;/li>
+&lt;li>JSON generic call is supported. Usage guide: &lt;a href="https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/generic_call/#4-json-mapping-generic-call">link&lt;/a>.&lt;/li>
+&lt;/ul>
+&lt;h2 id="improvement">Improvement:&lt;/h2>
+&lt;ul>
+&lt;li>Use new netpoll API to improve throughput and reduce latency for mux.&lt;/li>
+&lt;li>Backward and forward metainfo is supported for mux.&lt;/li>
+&lt;li>Client will use RPCTimeout middleware when necessary.&lt;/li>
+&lt;li>Add validity verification of idle connection in ConnecitonPool.&lt;/li>
+&lt;li>QPS limiter token will be reset when QPS limit updates.&lt;/li>
+&lt;li>Reduce the deviation of QPS Limiter.&lt;/li>
+&lt;/ul>
+&lt;h2 id="bugfix">Bugfix:&lt;/h2>
+&lt;ul>
+&lt;li>Fix WithExitWaitTime won&amp;rsquo;t set exit wait time correctly.&lt;/li>
+&lt;li>Fix goroutine leak when update interval of QPS limiter.&lt;/li>
+&lt;li>Use actual listen address to build registry info.&lt;/li>
+&lt;/ul>
+&lt;h2 id="tool">Tool:&lt;/h2>
+&lt;ul>
+&lt;li>Fix code generating error when no stream method in protobuf file.&lt;/li>
+&lt;/ul>
+&lt;h2 id="docs">Docs:&lt;/h2>
+&lt;ul>
+&lt;li>English is available for README and all other documents.&lt;/li>
+&lt;li>Guide for generic call. &lt;a href="https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/generic_call">English&lt;/a> | &lt;a href="https://www.cloudwego.io/zh/docs/kitex/tutorials/advanced-feature/generic_call/">中文&lt;/a>&lt;/li>
+&lt;li>Landscape and Roadmap in README.&lt;/li>
+&lt;/ul>
+&lt;h2 id="dependency-change">Dependency Change:&lt;/h2>
+&lt;ul>
+&lt;li>github.com/cloudwego/netpoll: v0.0.3 -&amp;gt; v0.0.4&lt;/li>
+&lt;li>github.com/bytedance/gopkg: v0.0.0-20210709064845-3c00f9323f09 -&amp;gt; v0.0.0-20210910103821-e4efae9c17c3&lt;/li>
+&lt;/ul></description></item><item><title>Blog: Performance Optimization on Kitex</title><link>/blog/2021/09/23/performance-optimization-on-kitex/</link><pubDate>Thu, 23 Sep 2021 00:00:00 +0000</pubDate><guid>/blog/2021/09/23/performance-optimization-on-kitex/</guid><description>
+&lt;h2 id="preface">Preface&lt;/h2>
+&lt;p>Kitex is the next generation high-performance and extensible Go RPC framework developed by Bytedance Service Framework Team. Compared with other RPC frameworks, in addition to its rich features for service governance, it has the following characteristics: Integrated with the in-house developed network library - Netpoll; Supports multiple Message Protocols (Thrift, Protobuf) and Interactive Models (Ping-Pong, Oneway, Streaming); Provides a more flexible and extensible code generator.&lt;/p>
+&lt;p>Currently, Kitex has been widely used by the major lines of business in ByteDance, and statistics shows that the number of service access is up to 8K. We&amp;rsquo;ve been continuously optimizing Kitex&amp;rsquo;s performance since its launch. This article will share our work on optimizing Netpoll and serialization.&lt;/p>
+&lt;h2 id="optimization-of-the-network-library---netpoll">Optimization of the Network Library - Netpoll&lt;/h2>
+&lt;p>Netpoll, the self-developed network library based on Epoll. Compared with the previous version and the go net library, its performance has been significantly improved. Test results indicated that compared with the last version (2020.05), the latest version (2020.12) has ↑30% throughput capacity, ↓ 25% AVG latency, and ↓67% TP99 . Its performance is far better than the Go Net library. Below, we&amp;rsquo;ll share two solutions that can significantly improve its performance.&lt;/p>
+&lt;h3 id="optimizing-scheduling-delays-when-calling-epoll_wait">Optimizing Scheduling Delays When Calling &amp;ldquo;epoll_wait&amp;rdquo;&lt;/h3>
+&lt;p>When Netpoll was newly released, it encountered the problem of low AVG latency but high TP99. Through our research and analysis on &amp;ldquo;epoll_wait&amp;rdquo;, we found that such a problem could be mitigated by integrating &amp;ldquo;polling&amp;rdquo; and &amp;ldquo;event trigger&amp;rdquo;. With such improvements in scheduling strategy, the latency can be reduced considerably.&lt;/p>
+&lt;p>Let&amp;rsquo;s have a look at the &amp;ldquo;syscall.EpollWait&amp;rdquo; method provided by Go first:&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-go" data-lang="go">&lt;span style="color:#204a87;font-weight:bold">func&lt;/span> &lt;span style="color:#000">EpollWait&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">epfd&lt;/span> &lt;span style="color:#204a87;font-weight:bold">int&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">events&lt;/span> &lt;span style="color:#000;font-weight:bold">[]&lt;/span>&lt;span style="color:#000">EpollEvent&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">msec&lt;/span> &lt;span style="color:#204a87;font-weight:bold">int&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span> &lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">n&lt;/span> &lt;span style="color:#204a87;font-weight:bold">int&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">err&lt;/span> &lt;span style="color:#204a87;font-weight:bold">error&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Three parameters are provided here, they represent &amp;ldquo;epoll fd&amp;rdquo;, “callback events”, and &amp;ldquo;milliseconds to wait&amp;rdquo; respectively. Only &amp;ldquo;msec&amp;rdquo; is dynamic.&lt;/p>
+&lt;p>Normally, we would set &amp;ldquo;msec = -1&amp;rdquo; when we are actively calling &amp;ldquo;EpollWait&amp;rdquo;, as we want to wait for the event infinitely. In fact, many open source net libraries were also using it in this way. But our research showed that setting &amp;ldquo;msec =-1&amp;rdquo; was not the optimal solution.&lt;/p>
+&lt;p>The kernel source (below) of &amp;ldquo;epoll_wait&amp;rdquo; shows that setting &amp;ldquo;msec = -1&amp;rdquo; arises extra &amp;ldquo;fetch_events&amp;rdquo; checks than setting &amp;ldquo;msec = 0&amp;rdquo;, and therefore consumes more time.&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-go" data-lang="go">&lt;span style="color:#000">static&lt;/span> &lt;span style="color:#204a87;font-weight:bold">int&lt;/span> &lt;span style="color:#000">ep_poll&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#204a87;font-weight:bold">struct&lt;/span> &lt;span style="color:#000">eventpoll&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">*&lt;/span>&lt;span style="color:#000">ep&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#204a87;font-weight:bold">struct&lt;/span> &lt;span style="color:#000">epoll_event&lt;/span> &lt;span style="color:#000">__user&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">*&lt;/span>&lt;span style="color:#000">events&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span>
+&lt;span style="color:#204a87;font-weight:bold">int&lt;/span> &lt;span style="color:#000">maxevents&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">long&lt;/span> &lt;span style="color:#000">timeout&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span>
+&lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;span style="color:#ce5c00;font-weight:bold">...&lt;/span>
+&lt;span style="color:#204a87;font-weight:bold">if&lt;/span> &lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">timeout&lt;/span> &lt;span style="color:#000;font-weight:bold">&amp;gt;&lt;/span> &lt;span style="color:#0000cf;font-weight:bold">0&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;span style="color:#ce5c00;font-weight:bold">...&lt;/span>
+&lt;span style="color:#000;font-weight:bold">}&lt;/span> &lt;span style="color:#204a87;font-weight:bold">else&lt;/span> &lt;span style="color:#204a87;font-weight:bold">if&lt;/span> &lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">timeout&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">==&lt;/span> &lt;span style="color:#0000cf;font-weight:bold">0&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;span style="color:#ce5c00;font-weight:bold">...&lt;/span>
+&lt;span style="color:#204a87;font-weight:bold">goto&lt;/span> &lt;span style="color:#000">send_events&lt;/span>&lt;span style="color:#000;font-weight:bold">;&lt;/span>
+&lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;span style="color:#000">fetch_events&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>
+&lt;span style="color:#ce5c00;font-weight:bold">...&lt;/span>
+&lt;span style="color:#204a87;font-weight:bold">if&lt;/span> &lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">eavail&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span>
+&lt;span style="color:#204a87;font-weight:bold">goto&lt;/span> &lt;span style="color:#000">send_events&lt;/span>&lt;span style="color:#000;font-weight:bold">;&lt;/span>
+&lt;span style="color:#000">send_events&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>
+&lt;span style="color:#ce5c00;font-weight:bold">...&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>The Benchmark shows that when an event is triggered, setting &amp;ldquo;msec = 0&amp;rdquo; is 18% faster than setting &amp;ldquo;msec = -1&amp;rdquo;. Thus, when triggering complex events, setting &amp;ldquo;msec = 0&amp;rdquo; is obviously a better choice.&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th style="text-align:left">Benchmark&lt;/th>
+&lt;th style="text-align:left">time/op&lt;/th>
+&lt;th style="text-align:left">bytes/op&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td style="text-align:left">BenchmarkEpollWait, msec=0&lt;/td>
+&lt;td style="text-align:left">270 ns/op&lt;/td>
+&lt;td style="text-align:left">0 B/op&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">BenchmarkEpollWait, msec=-1&lt;/td>
+&lt;td style="text-align:left">328 ns/op&lt;/td>
+&lt;td style="text-align:left">0 B/op&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">EpollWait Delta&lt;/td>
+&lt;td style="text-align:left">-17.68%&lt;/td>
+&lt;td style="text-align:left">~&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>However, setting &amp;ldquo;msec = 0&amp;rdquo; would lead to infinite polling when no event is triggered, consumes lots of resources.&lt;/p>
+&lt;p>Taking the previously mentioned factors into account, it&amp;rsquo;s preferred to set &amp;ldquo;msec = 0&amp;rdquo; when an event is triggered and &amp;ldquo;msec = -1&amp;rdquo; when no event is triggered to reduce polling. The pseudocode is demonstrated as follow:&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-go" data-lang="go">&lt;span style="color:#204a87;font-weight:bold">var&lt;/span> &lt;span style="color:#000">msec&lt;/span> &lt;span style="color:#000;font-weight:bold">=&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">-&lt;/span>&lt;span style="color:#0000cf;font-weight:bold">1&lt;/span>
+&lt;span style="color:#204a87;font-weight:bold">for&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;span style="color:#000">n&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">err&lt;/span> &lt;span style="color:#000;font-weight:bold">=&lt;/span> &lt;span style="color:#000">syscall&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">EpollWait&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">epfd&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">events&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">msec&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span>
+&lt;span style="color:#204a87;font-weight:bold">if&lt;/span> &lt;span style="color:#000">n&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">&amp;lt;=&lt;/span> &lt;span style="color:#0000cf;font-weight:bold">0&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;span style="color:#000">msec&lt;/span> &lt;span style="color:#000;font-weight:bold">=&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">-&lt;/span>&lt;span style="color:#0000cf;font-weight:bold">1&lt;/span>
+&lt;span style="color:#204a87;font-weight:bold">continue&lt;/span>
+&lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;span style="color:#000">msec&lt;/span> &lt;span style="color:#000;font-weight:bold">=&lt;/span> &lt;span style="color:#0000cf;font-weight:bold">0&lt;/span>
+&lt;span style="color:#ce5c00;font-weight:bold">...&lt;/span>
+&lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Neverthless, our experiments have proved that the improvement is insignificant. Setting &amp;ldquo;msec = 0&amp;rdquo; merely reduces the delay of a single call by 50ns, which is not a considerable improvement. If we want to further reduce latency, adjustment must be made in Go runtime scheduling.
+Thus, let&amp;rsquo;s further explore this issue:
+In the pseudocode above, setting &amp;ldquo;msec= -1&amp;rdquo; with no triggered event, and &amp;ldquo;continue&amp;rdquo; directly will immediately execute &amp;ldquo;EpollWait&amp;rdquo; again. Since there is no triggered event while &amp;ldquo;msec = -1&amp;rdquo;, the current &amp;ldquo;goroutine&amp;rdquo; will block and be switched by &amp;ldquo;P&amp;rdquo; passively. However, it is less efficient, and we can save time if we actively switch &amp;ldquo;goroutine&amp;rdquo; for &amp;ldquo;P&amp;rdquo; before &amp;ldquo;continue&amp;rdquo;. So we modified the above pseudocode as follow:&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-go" data-lang="go">&lt;span style="color:#204a87;font-weight:bold">var&lt;/span> &lt;span style="color:#000">msec&lt;/span> &lt;span style="color:#000;font-weight:bold">=&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">-&lt;/span>&lt;span style="color:#0000cf;font-weight:bold">1&lt;/span>
+&lt;span style="color:#204a87;font-weight:bold">for&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;span style="color:#000">n&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">err&lt;/span> &lt;span style="color:#000;font-weight:bold">=&lt;/span> &lt;span style="color:#000">syscall&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">EpollWait&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">epfd&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">events&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">msec&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span>
+&lt;span style="color:#204a87;font-weight:bold">if&lt;/span> &lt;span style="color:#000">n&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">&amp;lt;=&lt;/span> &lt;span style="color:#0000cf;font-weight:bold">0&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;span style="color:#000">msec&lt;/span> &lt;span style="color:#000;font-weight:bold">=&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">-&lt;/span>&lt;span style="color:#0000cf;font-weight:bold">1&lt;/span>
+&lt;span style="color:#000">runtime&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Gosched&lt;/span>&lt;span style="color:#000;font-weight:bold">()&lt;/span>
+&lt;span style="color:#204a87;font-weight:bold">continue&lt;/span>
+&lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;span style="color:#000">msec&lt;/span> &lt;span style="color:#000;font-weight:bold">=&lt;/span> &lt;span style="color:#0000cf;font-weight:bold">0&lt;/span>
+&lt;span style="color:#ce5c00;font-weight:bold">...&lt;/span>
+&lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>The test results of the modified code showed that throughput ↑12% and TP99 ↓64%. The latency was significantly reduced.&lt;/p>
+&lt;h3 id="utilizing-unsafepointer">Utilizing &amp;ldquo;unsafe.Pointer&amp;rdquo;&lt;/h3>
+&lt;p>Through further study of &amp;ldquo;epoll_wait&amp;rdquo;, we find that the &amp;ldquo;syscall.EpollWait&amp;rdquo; published by Go and the &amp;ldquo;epollwait&amp;rdquo; used by &amp;ldquo;runtime&amp;rdquo; are two different versions, as they use different &amp;ldquo;EpollEvent&amp;rdquo;. They are demonstrated as follow:&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-go" data-lang="go">&lt;span style="color:#8f5902;font-style:italic">// @syscall
+&lt;/span>&lt;span style="color:#8f5902;font-style:italic">&lt;/span>&lt;span style="color:#204a87;font-weight:bold">type&lt;/span> &lt;span style="color:#000">EpollEvent&lt;/span> &lt;span style="color:#204a87;font-weight:bold">struct&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;span style="color:#000">Events&lt;/span> &lt;span style="color:#204a87;font-weight:bold">uint32&lt;/span>
+&lt;span style="color:#000">Fd&lt;/span> &lt;span style="color:#204a87;font-weight:bold">int32&lt;/span>
+&lt;span style="color:#000">Pad&lt;/span> &lt;span style="color:#204a87;font-weight:bold">int32&lt;/span>
+&lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;span style="color:#8f5902;font-style:italic">// @runtime
+&lt;/span>&lt;span style="color:#8f5902;font-style:italic">&lt;/span>&lt;span style="color:#204a87;font-weight:bold">type&lt;/span> &lt;span style="color:#000">epollevent&lt;/span> &lt;span style="color:#204a87;font-weight:bold">struct&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;span style="color:#000">events&lt;/span> &lt;span style="color:#204a87;font-weight:bold">uint32&lt;/span>
+&lt;span style="color:#000">data&lt;/span> &lt;span style="color:#000;font-weight:bold">[&lt;/span>&lt;span style="color:#0000cf;font-weight:bold">8&lt;/span>&lt;span style="color:#000;font-weight:bold">]&lt;/span>&lt;span style="color:#204a87;font-weight:bold">byte&lt;/span> &lt;span style="color:#8f5902;font-style:italic">// unaligned uintptr
+&lt;/span>&lt;span style="color:#8f5902;font-style:italic">&lt;/span>&lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>As we can see, the &amp;ldquo;epollevent&amp;rdquo; used by &amp;ldquo;runtime&amp;rdquo; is in its original structure defined by &amp;ldquo;epoll&amp;rdquo; at system layer. The published version warps it and splits &amp;ldquo;epoll_data(epollevent.data)&amp;rdquo; into two fixed fields: &amp;ldquo;Fd&amp;rdquo; and &amp;ldquo;Pad&amp;rdquo;. For &amp;ldquo;runtime&amp;rdquo;, in its source code we found the following logic:&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-go" data-lang="go">&lt;span style="color:#ce5c00;font-weight:bold">*&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#ce5c00;font-weight:bold">**&lt;/span>&lt;span style="color:#000">pollDesc&lt;/span>&lt;span style="color:#000;font-weight:bold">)(&lt;/span>&lt;span style="color:#000">unsafe&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Pointer&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#ce5c00;font-weight:bold">&amp;amp;&lt;/span>&lt;span style="color:#000">ev&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">data&lt;/span>&lt;span style="color:#000;font-weight:bold">))&lt;/span> &lt;span style="color:#000;font-weight:bold">=&lt;/span> &lt;span style="color:#000">pd&lt;/span>
+&lt;span style="color:#000">pd&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">:=&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">*&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#ce5c00;font-weight:bold">**&lt;/span>&lt;span style="color:#000">pollDesc&lt;/span>&lt;span style="color:#000;font-weight:bold">)(&lt;/span>&lt;span style="color:#000">unsafe&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Pointer&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#ce5c00;font-weight:bold">&amp;amp;&lt;/span>&lt;span style="color:#000">ev&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">data&lt;/span>&lt;span style="color:#000;font-weight:bold">))&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Obviously, &amp;ldquo;runtime&amp;rdquo; uses &amp;ldquo;epoll_data(&amp;amp;ev.data)&amp;rdquo; to store a pointer of the &amp;ldquo;fd&amp;rdquo; corresponding structure - &amp;ldquo;(pollDesc)&amp;rdquo; directly. Thus, when an event is triggered, the &amp;ldquo;struct&amp;rdquo; object can be found directly with the corresponding logic being executed. However, the external version can only obtain the warped &amp;ldquo;fd&amp;rdquo; parameters. So it needs to introduce additional &amp;ldquo;Map&amp;rdquo; to manipulate the &amp;ldquo;struct&amp;rdquo; object, and the performance will be diminished.&lt;/p>
+&lt;p>Therefore, we abandoned &amp;ldquo;syscall.EpollWait&amp;rdquo; and designed our own &amp;ldquo;EpollWait&amp;rdquo; call by referring to &amp;ldquo;runtime&amp;rdquo;. We also use &amp;ldquo;unsafe.Pointer&amp;rdquo; to access &amp;ldquo;struct&amp;rdquo; objects. The test results showed that our &amp;ldquo;EpollWait&amp;rdquo; call contributed to ↑10% throughput and ↓10% TP99 , which has significantly improved efficiency.&lt;/p>
+&lt;h2 id="serializationdeserialization-optimization-of-thrift">Serialization/Deserialization Optimization of Thrift&lt;/h2>
+&lt;p>Serialization refers to the process of converting a data structure or object into a binary or textual form. Deserialization is the opposite process. A serialization protocol needs to be agreed during RPC communication. The serialization process is executed before the client sends requests. The bytes are transmitted to the server over the network, and the server will logic-process the bytes to complete an RPC request. Thrift supports &amp;ldquo;Binary&amp;rdquo;, &amp;ldquo;Compact&amp;rdquo;, and &amp;ldquo;JSON&amp;rdquo; serialization protocols. Since &amp;ldquo;Binary&amp;rdquo; is the most common protocol used in Bytedance, we will only discuss about &amp;ldquo;Binary&amp;rdquo; protocol.&lt;/p>
+&lt;p>&amp;ldquo;Binary&amp;rdquo; protocol is &amp;ldquo;TLV&amp;rdquo; (&amp;ldquo;Type&amp;rdquo;, &amp;ldquo;Length&amp;rdquo;, &amp;ldquo;Value&amp;rdquo;) encoded, that is, each field is described using &amp;ldquo;TLV&amp;rdquo; structure. It emphasizes that the &amp;ldquo;Value&amp;rdquo; can also be a &amp;ldquo;TLV&amp;rdquo; structure, where the &amp;ldquo;Type&amp;rdquo; and &amp;ldquo;Length&amp;rdquo; are fixed in length, and the length of &amp;ldquo;Value&amp;rdquo; is determined by the input value of &amp;ldquo;Length&amp;rdquo;. TLV coding structure is simple, clear, and scalable. However, since it requires the input of &amp;ldquo;Type&amp;rdquo; and &amp;ldquo;Length&amp;rdquo;, there is extra memory overhead incurred. It wastes considerable memory especially when most fields are in base types.&lt;/p>
+&lt;p>The performance of serilization and deserialization can be optimized from two dimensions - &amp;ldquo;time&amp;rdquo; &amp;amp; &amp;ldquo;space&amp;rdquo;. To be compatible with the existing &amp;ldquo;binary&amp;rdquo; protocols, optimization in &amp;ldquo;space&amp;rdquo; seems to be infeasible. Improvement can only be made in &amp;ldquo;time&amp;rdquo;, it includes:&lt;/p>
+&lt;ul>
+&lt;li>Reduce the frequency of operations on memory, notably memory allocation and replication. Try to allocate memory proactively to reduce unnecessary time consumption.&lt;/li>
+&lt;li>Reduce the frequency of function calls by adjusting code structure or using &amp;ldquo;inline&amp;rdquo; etc.&lt;/li>
+&lt;/ul>
+&lt;h3 id="research-on-serilization-strategy">Research on Serilization Strategy&lt;/h3>
+&lt;p>Based on &amp;ldquo;go_serialization_benchmarks&amp;rdquo;, we investigated a number of serialization schemes that performed well to guide the optimization of our serialization strategy.&lt;/p>
+&lt;p>Analysis of &amp;ldquo;protobuf&amp;rdquo;, &amp;ldquo;gogoprotobuf&amp;rdquo;, and &amp;ldquo;Cap &amp;lsquo;n Proto&amp;rdquo; has provided us the following results:&lt;/p>
+&lt;ul>
+&lt;li>Considering I/O, the transmitted data is usually compressed in size during online transactions. &amp;ldquo;protobuf&amp;rdquo; uses &amp;ldquo;Varint&amp;rdquo; encoding and has good data compression capabilities in most scenarios.&lt;/li>
+&lt;li>&amp;ldquo;gogoprotobuf&amp;rdquo; uses precomputation to reduce memory allocations and replications during serialization. Thus, it eliminates the cost of system calls, locks and GC arise from memory allocations.&lt;/li>
+&lt;li>&amp;ldquo;Cap &amp;lsquo;n Proto&amp;rdquo; directly operates buffer, which also reduces memory allocations and replications. In addition, it also designs &amp;ldquo;struct pointer&amp;rdquo; in a way that processes fixed-length data and non-fixed-length data separately. Which enables fast processing for fixed-length data.
+For compatibility reasons, it is impossible to change the existing &amp;ldquo;TLV&amp;rdquo; encoding format, so data compression is not feasible. But finding 2 and 3 are inspiring to our optimization work, and in fact we have taken a similar approach.&lt;/li>
+&lt;/ul>
+&lt;h3 id="approaches">Approaches&lt;/h3>
+&lt;h4 id="reducing-operations-on-memory">Reducing Operations on Memory&lt;/h4>
+&lt;p>&lt;strong>Buffer management&lt;/strong>&lt;br>
+Both serialization and deserialization involve copying data from one piece of memory to another. It involves memory allocation and replications. Avoiding memory operations can reduce unnecessary overhead such as system calls, locks, and GC.&lt;/p>
+&lt;p>In fact, Kitex has provided &amp;ldquo;LinkBuffer&amp;rdquo; for buffer management purposes. &amp;ldquo;LinkBuffer&amp;rdquo; is designed with a linked structure and consists of multiple blocks, among which blocks are memory chunks with a fixed size. Object pool is constructed to maintain unoccupied block and support block multiplexing, thus, reduce memory usage and GC.&lt;/p>
+&lt;p>Initially we simply used &amp;ldquo;sync.Pool&amp;rdquo; to multiplex the &amp;ldquo;LinkBufferNode&amp;rdquo; of netpoll, but it didn&amp;rsquo;t significantly contribute to multiplexing in large data package scenarios (large nodes can&amp;rsquo;t be reclaimed or it would cause memory leaking). At present, we have changed our strategy to maintain a group of &amp;ldquo;sync.Pool&amp;rdquo;, and the buffer sizes in each chunk are different. When new blocks are created, it is obtained from the pool with the closest size to the required size, so that the memory can be multiplexed as much as possible. And the test results also proved that it contributed to significant improvement in terms of memory allocation and GC.&lt;/p>
+&lt;p>&lt;strong>Copy-free String / Binary&lt;/strong>&lt;br>
+For some operations, such as video-related services, during its request or return processes, large-size &amp;ldquo;Binary&amp;rdquo; data will be arisen, representing the processed video or image data. Meanwhile, some operations will return large-size &amp;ldquo;String&amp;rdquo; data (such as full-text information, etc.). In this scenario, all the hot spots we see through the flame graph are on the copy of the data, so we thought, can we reduce the frequency of such copies?&lt;/p>
+&lt;p>The answer is positive. Since our underlying buffer is a linked list, it is easy to insert a node in the middle of the list.&lt;/p>
+&lt;p>&lt;img src="/img/blog/buffer-linkerd-list.png" alt="!image">&lt;/p>
+&lt;p>Thus, we have taken a similar approach, when a &amp;ldquo;string&amp;rdquo; or &amp;ldquo;binary&amp;rdquo; data exists during serialization processes. First, split the node&amp;rsquo;s buffer into two segments and then insert the buffer of the &amp;ldquo;string&amp;rdquo; / &amp;ldquo;binary&amp;rdquo; objects in the middle correspondingly. This avoids the copy of large &amp;ldquo;string&amp;rdquo; / &amp;ldquo;binary&amp;rdquo; .&lt;/p>
+&lt;p>Furthermore, a copy will occur if we convert a string to &amp;ldquo;[]byte&amp;rdquo; using &amp;ldquo;[]byte(string)&amp;rdquo;. Because &amp;ldquo;string&amp;rdquo; is immutable and &amp;ldquo;[]byte&amp;rdquo; is mutable in Golang language. &amp;ldquo;unsafe&amp;rdquo; is needed if you don&amp;rsquo;t want to copy during the conversion:&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-go" data-lang="go">&lt;span style="color:#204a87;font-weight:bold">func&lt;/span> &lt;span style="color:#000">StringToSliceByte&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">s&lt;/span> &lt;span style="color:#204a87;font-weight:bold">string&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span> &lt;span style="color:#000;font-weight:bold">[]&lt;/span>&lt;span style="color:#204a87;font-weight:bold">byte&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;span style="color:#000">l&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">:=&lt;/span> &lt;span style="color:#204a87">len&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">s&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span>
+&lt;span style="color:#204a87;font-weight:bold">return&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">*&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#ce5c00;font-weight:bold">*&lt;/span>&lt;span style="color:#000;font-weight:bold">[]&lt;/span>&lt;span style="color:#204a87;font-weight:bold">byte&lt;/span>&lt;span style="color:#000;font-weight:bold">)(&lt;/span>&lt;span style="color:#000">unsafe&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Pointer&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#ce5c00;font-weight:bold">&amp;amp;&lt;/span>&lt;span style="color:#000">reflect&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">SliceHeader&lt;/span>&lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;span style="color:#000">Data&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span> &lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#ce5c00;font-weight:bold">*&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#ce5c00;font-weight:bold">*&lt;/span>&lt;span style="color:#000">reflect&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">StringHeader&lt;/span>&lt;span style="color:#000;font-weight:bold">)(&lt;/span>&lt;span style="color:#000">unsafe&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Pointer&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#ce5c00;font-weight:bold">&amp;amp;&lt;/span>&lt;span style="color:#000">s&lt;/span>&lt;span style="color:#000;font-weight:bold">))).&lt;/span>&lt;span style="color:#000">Data&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span>
+&lt;span style="color:#000">Len&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span> &lt;span style="color:#000">l&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span>
+&lt;span style="color:#000">Cap&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span> &lt;span style="color:#000">l&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span>
+&lt;span style="color:#000;font-weight:bold">}))&lt;/span>
+&lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>The demonstrated code first takes the address of the string, then gives it a slice byte header, and finally converts the &amp;ldquo;string&amp;rdquo; to &amp;ldquo;[]byte&amp;rdquo; without copying the data. Note that the resulting &amp;ldquo;[]byte&amp;rdquo; is not writable, or the behavior is undefined.&lt;/p>
+&lt;p>&lt;strong>Pre-Calculation&lt;/strong>&lt;br>
+Some services support transmissions of large data package, which incurs considerable serialization / deserialization overhead. Generally, large packets are associated with the large size of the container type. If the buffer can be pre-calculated, some O(n) operations can be reduced to O(1), and further reduce the frequency of function calls. In the case of large data packages, the number of memory allocation can also be greatly reduced, bringing considerable benefits.&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>Base types&lt;/p>
+&lt;ul>
+&lt;li>If the container element is defined as base type (bool, byte, i16, i32, i64, double), the total size can be pre-calculated during serialization as its size is fixed, and enough buffer can be allocated at once. The number of &amp;ldquo;malloc&amp;rdquo; operations of O(n) can be reduced to O(1), thus greatly reducing the frequency of &amp;ldquo;malloc&amp;rdquo; operations. Similarly, the number of &amp;ldquo;next&amp;rdquo; operations can be reduced during deserialization.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Rearrangement of &amp;ldquo;Struct&amp;rdquo; Fields&lt;/p>
+&lt;ul>
+&lt;li>The above optimizations are valid only for container elements that are defined as base types. Can they be optimized for &amp;ldquo;struct&amp;rdquo; elements? The answer is yes.&lt;/li>
+&lt;li>If there are fields of base type in &amp;ldquo;struct&amp;rdquo;, we can pre-calculate the size of these fields, then allocate buffer for these fields in advance during serialization and write these fields in the first order. We can also reduce the frequency of &amp;ldquo;malloc&amp;rdquo;.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Size calculation&lt;/p>
+&lt;ul>
+&lt;li>The optimization mentioned above is for base types. If you first iterate over all the fields of the request during serialization, you can calculate the size of the entire request, allocate buffer in advance, and directly manipulate buffer during serialization and unsequence, so that the optimization effect can be achieved for non-base types.&lt;/li>
+&lt;li>Define a new &amp;ldquo;codec&amp;rdquo; interface:&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-go" data-lang="go">&lt;span style="color:#204a87;font-weight:bold">type&lt;/span> &lt;span style="color:#000">thriftMsgFastCodec&lt;/span> &lt;span style="color:#204a87;font-weight:bold">interface&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;span style="color:#000">BLength&lt;/span>&lt;span style="color:#000;font-weight:bold">()&lt;/span> &lt;span style="color:#204a87;font-weight:bold">int&lt;/span> &lt;span style="color:#8f5902;font-style:italic">// count length of whole req/resp
+&lt;/span>&lt;span style="color:#8f5902;font-style:italic">&lt;/span> &lt;span style="color:#000">FastWrite&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">buf&lt;/span> &lt;span style="color:#000;font-weight:bold">[]&lt;/span>&lt;span style="color:#204a87;font-weight:bold">byte&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span> &lt;span style="color:#204a87;font-weight:bold">int&lt;/span>
+&lt;span style="color:#000">FastRead&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">buf&lt;/span> &lt;span style="color:#000;font-weight:bold">[]&lt;/span>&lt;span style="color:#204a87;font-weight:bold">byte&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span> &lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#204a87;font-weight:bold">int&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#204a87;font-weight:bold">error&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span>
+&lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Change the &amp;ldquo;Marshal&amp;rdquo; and &amp;ldquo;Unmarshal&amp;rdquo; interfaces accordingly:&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-go" data-lang="go">&lt;span style="color:#204a87;font-weight:bold">func&lt;/span> &lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">c&lt;/span> &lt;span style="color:#000">thriftCodec&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span> &lt;span style="color:#000">Marshal&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">ctx&lt;/span> &lt;span style="color:#000">context&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Context&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">message&lt;/span> &lt;span style="color:#000">remote&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Message&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">out&lt;/span> &lt;span style="color:#000">remote&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">ByteBuffer&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span> &lt;span style="color:#204a87;font-weight:bold">error&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;span style="color:#ce5c00;font-weight:bold">...&lt;/span>
+&lt;span style="color:#204a87;font-weight:bold">if&lt;/span> &lt;span style="color:#000">msg&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">ok&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">:=&lt;/span> &lt;span style="color:#000">data&lt;/span>&lt;span style="color:#000;font-weight:bold">.(&lt;/span>&lt;span style="color:#000">thriftMsgFastCodec&lt;/span>&lt;span style="color:#000;font-weight:bold">);&lt;/span> &lt;span style="color:#000">ok&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;span style="color:#000">msgBeginLen&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">:=&lt;/span> &lt;span style="color:#000">bthrift&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Binary&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">MessageBeginLength&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">methodName&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">thrift&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">TMessageType&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">msgType&lt;/span>&lt;span style="color:#000;font-weight:bold">),&lt;/span> &lt;span style="color:#204a87">int32&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">seqID&lt;/span>&lt;span style="color:#000;font-weight:bold">))&lt;/span>
+&lt;span style="color:#000">msgEndLen&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">:=&lt;/span> &lt;span style="color:#000">bthrift&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Binary&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">MessageEndLength&lt;/span>&lt;span style="color:#000;font-weight:bold">()&lt;/span>
+&lt;span style="color:#000">buf&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">err&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">:=&lt;/span> &lt;span style="color:#000">out&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Malloc&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">msgBeginLen&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">+&lt;/span> &lt;span style="color:#000">msg&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">BLength&lt;/span>&lt;span style="color:#000;font-weight:bold">()&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">+&lt;/span> &lt;span style="color:#000">msgEndLen&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span>&lt;span style="color:#8f5902;font-style:italic">// malloc once
+&lt;/span>&lt;span style="color:#8f5902;font-style:italic">&lt;/span> &lt;span style="color:#204a87;font-weight:bold">if&lt;/span> &lt;span style="color:#000">err&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">!=&lt;/span> &lt;span style="color:#204a87;font-weight:bold">nil&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;span style="color:#204a87;font-weight:bold">return&lt;/span> &lt;span style="color:#000">perrors&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">NewProtocolErrorWithMsg&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">fmt&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Sprintf&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#4e9a06">&amp;#34;thrift marshal, Malloc failed: %s&amp;#34;&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">err&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Error&lt;/span>&lt;span style="color:#000;font-weight:bold">()))&lt;/span>
+&lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;span style="color:#000">offset&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">:=&lt;/span> &lt;span style="color:#000">bthrift&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Binary&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">WriteMessageBegin&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">buf&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">methodName&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">thrift&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">TMessageType&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">msgType&lt;/span>&lt;span style="color:#000;font-weight:bold">),&lt;/span> &lt;span style="color:#204a87">int32&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">seqID&lt;/span>&lt;span style="color:#000;font-weight:bold">))&lt;/span>
+&lt;span style="color:#000">offset&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">+=&lt;/span> &lt;span style="color:#000">msg&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">FastWrite&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">buf&lt;/span>&lt;span style="color:#000;font-weight:bold">[&lt;/span>&lt;span style="color:#000">offset&lt;/span>&lt;span style="color:#000;font-weight:bold">:])&lt;/span>
+&lt;span style="color:#000">bthrift&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Binary&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">WriteMessageEnd&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">buf&lt;/span>&lt;span style="color:#000;font-weight:bold">[&lt;/span>&lt;span style="color:#000">offset&lt;/span>&lt;span style="color:#000;font-weight:bold">:])&lt;/span>
+&lt;span style="color:#204a87;font-weight:bold">return&lt;/span> &lt;span style="color:#204a87;font-weight:bold">nil&lt;/span>
+&lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;span style="color:#ce5c00;font-weight:bold">...&lt;/span>
+&lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;span style="color:#204a87;font-weight:bold">func&lt;/span> &lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">c&lt;/span> &lt;span style="color:#000">thriftCodec&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span> &lt;span style="color:#000">Unmarshal&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">ctx&lt;/span> &lt;span style="color:#000">context&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Context&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">message&lt;/span> &lt;span style="color:#000">remote&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Message&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">in&lt;/span> &lt;span style="color:#000">remote&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">ByteBuffer&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span> &lt;span style="color:#204a87;font-weight:bold">error&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;span style="color:#ce5c00;font-weight:bold">...&lt;/span>
+&lt;span style="color:#000">data&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">:=&lt;/span> &lt;span style="color:#000">message&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Data&lt;/span>&lt;span style="color:#000;font-weight:bold">()&lt;/span>
+&lt;span style="color:#204a87;font-weight:bold">if&lt;/span> &lt;span style="color:#000">msg&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">ok&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">:=&lt;/span> &lt;span style="color:#000">data&lt;/span>&lt;span style="color:#000;font-weight:bold">.(&lt;/span>&lt;span style="color:#000">thriftMsgFastCodec&lt;/span>&lt;span style="color:#000;font-weight:bold">);&lt;/span> &lt;span style="color:#000">ok&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">&amp;amp;&amp;amp;&lt;/span> &lt;span style="color:#000">message&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">PayloadLen&lt;/span>&lt;span style="color:#000;font-weight:bold">()&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">!=&lt;/span> &lt;span style="color:#0000cf;font-weight:bold">0&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;span style="color:#000">msgBeginLen&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">:=&lt;/span> &lt;span style="color:#000">bthrift&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Binary&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">MessageBeginLength&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">methodName&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">msgType&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">seqID&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span>
+&lt;span style="color:#000">buf&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">err&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">:=&lt;/span> &lt;span style="color:#000">tProt&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">next&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">message&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">PayloadLen&lt;/span>&lt;span style="color:#000;font-weight:bold">()&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">-&lt;/span> &lt;span style="color:#000">msgBeginLen&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">-&lt;/span> &lt;span style="color:#000">bthrift&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Binary&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">MessageEndLength&lt;/span>&lt;span style="color:#000;font-weight:bold">())&lt;/span> &lt;span style="color:#8f5902;font-style:italic">// next once
+&lt;/span>&lt;span style="color:#8f5902;font-style:italic">&lt;/span> &lt;span style="color:#204a87;font-weight:bold">if&lt;/span> &lt;span style="color:#000">err&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">!=&lt;/span> &lt;span style="color:#204a87;font-weight:bold">nil&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;span style="color:#204a87;font-weight:bold">return&lt;/span> &lt;span style="color:#000">remote&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">NewTransError&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">remote&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">PROTOCOL_ERROR&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">err&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Error&lt;/span>&lt;span style="color:#000;font-weight:bold">())&lt;/span>
+&lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;span style="color:#000">_&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">err&lt;/span> &lt;span style="color:#000;font-weight:bold">=&lt;/span> &lt;span style="color:#000">msg&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">FastRead&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">buf&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span>
+&lt;span style="color:#204a87;font-weight:bold">if&lt;/span> &lt;span style="color:#000">err&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">!=&lt;/span> &lt;span style="color:#204a87;font-weight:bold">nil&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;span style="color:#204a87;font-weight:bold">return&lt;/span> &lt;span style="color:#000">remote&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">NewTransError&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">remote&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">PROTOCOL_ERROR&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">err&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Error&lt;/span>&lt;span style="color:#000;font-weight:bold">())&lt;/span>
+&lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;span style="color:#000">err&lt;/span> &lt;span style="color:#000;font-weight:bold">=&lt;/span> &lt;span style="color:#000">tProt&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">ReadMessageEnd&lt;/span>&lt;span style="color:#000;font-weight:bold">()&lt;/span>
+&lt;span style="color:#204a87;font-weight:bold">if&lt;/span> &lt;span style="color:#000">err&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">!=&lt;/span> &lt;span style="color:#204a87;font-weight:bold">nil&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;span style="color:#204a87;font-weight:bold">return&lt;/span> &lt;span style="color:#000">remote&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">NewTransError&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">remote&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">PROTOCOL_ERROR&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">err&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Error&lt;/span>&lt;span style="color:#000;font-weight:bold">())&lt;/span>
+&lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;span style="color:#000">tProt&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Recycle&lt;/span>&lt;span style="color:#000;font-weight:bold">()&lt;/span>
+&lt;span style="color:#204a87;font-weight:bold">return&lt;/span> &lt;span style="color:#000">err&lt;/span>
+&lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;span style="color:#ce5c00;font-weight:bold">...&lt;/span>
+&lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Modify the generated code accordingly:&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-go" data-lang="go">&lt;span style="color:#204a87;font-weight:bold">func&lt;/span> &lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">p&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">*&lt;/span>&lt;span style="color:#000">Demo&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span> &lt;span style="color:#000">BLength&lt;/span>&lt;span style="color:#000;font-weight:bold">()&lt;/span> &lt;span style="color:#204a87;font-weight:bold">int&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;span style="color:#000">l&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">:=&lt;/span> &lt;span style="color:#0000cf;font-weight:bold">0&lt;/span>
+&lt;span style="color:#000">l&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">+=&lt;/span> &lt;span style="color:#000">bthrift&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Binary&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">StructBeginLength&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#4e9a06">&amp;#34;Demo&amp;#34;&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span>
+&lt;span style="color:#204a87;font-weight:bold">if&lt;/span> &lt;span style="color:#000">p&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">!=&lt;/span> &lt;span style="color:#204a87;font-weight:bold">nil&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;span style="color:#000">l&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">+=&lt;/span> &lt;span style="color:#000">p&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">field1Length&lt;/span>&lt;span style="color:#000;font-weight:bold">()&lt;/span>
+&lt;span style="color:#000">l&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">+=&lt;/span> &lt;span style="color:#000">p&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">field2Length&lt;/span>&lt;span style="color:#000;font-weight:bold">()&lt;/span>
+&lt;span style="color:#000">l&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">+=&lt;/span> &lt;span style="color:#000">p&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">field3Length&lt;/span>&lt;span style="color:#000;font-weight:bold">()&lt;/span>
+&lt;span style="color:#ce5c00;font-weight:bold">...&lt;/span>
+&lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;span style="color:#000">l&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">+=&lt;/span> &lt;span style="color:#000">bthrift&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Binary&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">FieldStopLength&lt;/span>&lt;span style="color:#000;font-weight:bold">()&lt;/span>
+&lt;span style="color:#000">l&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">+=&lt;/span> &lt;span style="color:#000">bthrift&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Binary&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">StructEndLength&lt;/span>&lt;span style="color:#000;font-weight:bold">()&lt;/span>
+&lt;span style="color:#204a87;font-weight:bold">return&lt;/span> &lt;span style="color:#000">l&lt;/span>
+&lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;span style="color:#204a87;font-weight:bold">func&lt;/span> &lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">p&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">*&lt;/span>&lt;span style="color:#000">Demo&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span> &lt;span style="color:#000">FastWrite&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">buf&lt;/span> &lt;span style="color:#000;font-weight:bold">[]&lt;/span>&lt;span style="color:#204a87;font-weight:bold">byte&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span> &lt;span style="color:#204a87;font-weight:bold">int&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;span style="color:#000">offset&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">:=&lt;/span> &lt;span style="color:#0000cf;font-weight:bold">0&lt;/span>
+&lt;span style="color:#000">offset&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">+=&lt;/span> &lt;span style="color:#000">bthrift&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Binary&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">WriteStructBegin&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">buf&lt;/span>&lt;span style="color:#000;font-weight:bold">[&lt;/span>&lt;span style="color:#000">offset&lt;/span>&lt;span style="color:#000;font-weight:bold">:],&lt;/span> &lt;span style="color:#4e9a06">&amp;#34;Demo&amp;#34;&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span>
+&lt;span style="color:#204a87;font-weight:bold">if&lt;/span> &lt;span style="color:#000">p&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">!=&lt;/span> &lt;span style="color:#204a87;font-weight:bold">nil&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;span style="color:#000">offset&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">+=&lt;/span> &lt;span style="color:#000">p&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">fastWriteField2&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">buf&lt;/span>&lt;span style="color:#000;font-weight:bold">[&lt;/span>&lt;span style="color:#000">offset&lt;/span>&lt;span style="color:#000;font-weight:bold">:])&lt;/span>
+&lt;span style="color:#000">offset&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">+=&lt;/span> &lt;span style="color:#000">p&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">fastWriteField4&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">buf&lt;/span>&lt;span style="color:#000;font-weight:bold">[&lt;/span>&lt;span style="color:#000">offset&lt;/span>&lt;span style="color:#000;font-weight:bold">:])&lt;/span>
+&lt;span style="color:#000">offset&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">+=&lt;/span> &lt;span style="color:#000">p&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">fastWriteField1&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">buf&lt;/span>&lt;span style="color:#000;font-weight:bold">[&lt;/span>&lt;span style="color:#000">offset&lt;/span>&lt;span style="color:#000;font-weight:bold">:])&lt;/span>
+&lt;span style="color:#000">offset&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">+=&lt;/span> &lt;span style="color:#000">p&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">fastWriteField3&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">buf&lt;/span>&lt;span style="color:#000;font-weight:bold">[&lt;/span>&lt;span style="color:#000">offset&lt;/span>&lt;span style="color:#000;font-weight:bold">:])&lt;/span>
+&lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;span style="color:#000">offset&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">+=&lt;/span> &lt;span style="color:#000">bthrift&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Binary&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">WriteFieldStop&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">buf&lt;/span>&lt;span style="color:#000;font-weight:bold">[&lt;/span>&lt;span style="color:#000">offset&lt;/span>&lt;span style="color:#000;font-weight:bold">:])&lt;/span>
+&lt;span style="color:#000">offset&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">+=&lt;/span> &lt;span style="color:#000">bthrift&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Binary&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">WriteStructEnd&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">buf&lt;/span>&lt;span style="color:#000;font-weight:bold">[&lt;/span>&lt;span style="color:#000">offset&lt;/span>&lt;span style="color:#000;font-weight:bold">:])&lt;/span>
+&lt;span style="color:#204a87;font-weight:bold">return&lt;/span> &lt;span style="color:#000">offset&lt;/span>
+&lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;h4 id="optimize-thrift-encoding-using-simd">Optimize Thrift Encoding Using SIMD&lt;/h4>
+&lt;p>&amp;ldquo;list&amp;lt;i64/i32&amp;gt;&amp;rdquo; is widely used in the company to carry the ID list, and the encoding method of &amp;ldquo;list&amp;lt;i64/i32&amp;gt;&amp;rdquo; is highly consistent with the rule of vectorization. Thus, we use SIMD to optimize the encoding process of list&amp;lt;i64/i32&amp;gt;.&lt;/p>
+&lt;p>We implement &amp;ldquo;avx2&amp;rdquo; to optimize the encoding process, and the optimized results are significant. When dealing with large amounts of data, the performance can be improved by 6 times for i64 and 12 times for i32. In the case of small data volume, the improvement is more obvious, which achieves 10 times for i64 and 20 times for I32.&lt;/p>
+&lt;h4 id="reducing-function-calls">Reducing Function Calls&lt;/h4>
+&lt;p>&lt;strong>inline&lt;/strong>&lt;br>
+The purpose of &amp;ldquo;inline&amp;rdquo; is to expand a function call during its compliance and replace it with the implementation of the function. It improves program performance by reducing the overhead of the function call.&lt;/p>
+&lt;p>&amp;ldquo;inline&amp;rdquo; can&amp;rsquo;t be implemented on all functions in Go. Run the process with the argument - (gflags=&amp;quot;-m&amp;quot;) to display the functions that are inline. The following conditions cannot be inlined:&lt;/p>
+&lt;ul>
+&lt;li>A function containing a loop;&lt;/li>
+&lt;li>Functions that include: closure calls, select, for, defer, coroutines created by the go keyword;&lt;/li>
+&lt;li>Functions over a certain length, by default when parsing the AST, Go applies 80 nodes. Each node consumes one unit of inline budget. For example, a = a + 1 contains five nodes: AS, NAME, ADD, NAME, LITERAL. When the overhead of a function exceeds this budget, it cannot be inlined.&lt;/li>
+&lt;/ul>
+&lt;p>You can specify the intensity (go 1.9+) of the compiler&amp;rsquo;s inlined code by specifying -l at compile time. But it is not recommended, as in our test scenario, it is buggy and does not work:&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-go" data-lang="go">&lt;span style="color:#8f5902;font-style:italic">// The debug[&amp;#39;l&amp;#39;] flag controls the aggressiveness. Note that main() swaps level 0 and 1, making 1 the default and -l disable. Additional levels (beyond -l) may be buggy and are not supported.
+&lt;/span>&lt;span style="color:#8f5902;font-style:italic">// 0: disabled
+&lt;/span>&lt;span style="color:#8f5902;font-style:italic">// 1: 80-nodes leaf functions, oneliners, panic, lazy typechecking (default)
+&lt;/span>&lt;span style="color:#8f5902;font-style:italic">// 2: (unassigned)
+&lt;/span>&lt;span style="color:#8f5902;font-style:italic">// 3: (unassigned)
+&lt;/span>&lt;span style="color:#8f5902;font-style:italic">// 4: allow non-leaf functions
+&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Although using &amp;ldquo;inline&amp;rdquo; can reduce the overhead of function calls, it may also lead to lower CPU cache hit rate due to code redundancy. Therefore, excessive usage of &amp;ldquo;inline&amp;rdquo; should not be blindly pursued, and specific analysis should be carried out based on &amp;ldquo;profile&amp;rdquo; results.&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">go &lt;span style="color:#204a87">test&lt;/span> -gcflags&lt;span style="color:#ce5c00;font-weight:bold">=&lt;/span>&lt;span style="color:#4e9a06">&amp;#39;-m=2&amp;#39;&lt;/span> -v -test.run TestNewCodec 2&amp;gt;&lt;span style="color:#000;font-weight:bold">&amp;amp;&lt;/span>&lt;span style="color:#0000cf;font-weight:bold">1&lt;/span> &lt;span style="color:#000;font-weight:bold">|&lt;/span> grep &lt;span style="color:#4e9a06">&amp;#34;function too complex&amp;#34;&lt;/span> &lt;span style="color:#000;font-weight:bold">|&lt;/span> wc -l
+&lt;span style="color:#0000cf;font-weight:bold">48&lt;/span>
+go &lt;span style="color:#204a87">test&lt;/span> -gcflags&lt;span style="color:#ce5c00;font-weight:bold">=&lt;/span>&lt;span style="color:#4e9a06">&amp;#39;-m=2 -l=4&amp;#39;&lt;/span> -v -test.run TestNewCodec 2&amp;gt;&lt;span style="color:#000;font-weight:bold">&amp;amp;&lt;/span>&lt;span style="color:#0000cf;font-weight:bold">1&lt;/span> &lt;span style="color:#000;font-weight:bold">|&lt;/span> grep &lt;span style="color:#4e9a06">&amp;#34;function too complex&amp;#34;&lt;/span> &lt;span style="color:#000;font-weight:bold">|&lt;/span> wc -l
+&lt;span style="color:#0000cf;font-weight:bold">25&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>As you can see from the output above, increasing the inline intensity does reduce the &amp;ldquo;function too complex&amp;rdquo;. Following are the benchmark results:&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th style="text-align:left">Benchmark&lt;/th>
+&lt;th style="text-align:left">time/op&lt;/th>
+&lt;th style="text-align:left">bytes/op&lt;/th>
+&lt;th style="text-align:left">allocs/op&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td style="text-align:left">BenchmarkOldMarshal-4&lt;/td>
+&lt;td style="text-align:left">309 µs ± 2%&lt;/td>
+&lt;td style="text-align:left">218KB&lt;/td>
+&lt;td style="text-align:left">11&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">BenchmarkNewMarshal-4&lt;/td>
+&lt;td style="text-align:left">310 µs ± 3%&lt;/td>
+&lt;td style="text-align:left">218KB&lt;/td>
+&lt;td style="text-align:left">11&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>It reveals that turning on the highest level of inlining intensity does eliminate many functions that cannot be inlined due to &amp;ldquo;function too complex&amp;rdquo;, but the test results show that the improvement is insignificant.&lt;/p>
+&lt;h3 id="testing-results">Testing Results&lt;/h3>
+&lt;p>We built benchmarks to compare performance before and after optimization, and here are the results.
+Testing Enviornment:
+Go 1.13.5 darwin/amd64 on a 2.5 GHz Intel Core i7 16GB&lt;/p>
+&lt;p>&lt;strong>Small Data Size&lt;/strong>&lt;/p>
+&lt;p>Data size: 20KB&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th style="text-align:left">Benchmark&lt;/th>
+&lt;th style="text-align:left">time/op&lt;/th>
+&lt;th style="text-align:left">bytes/op&lt;/th>
+&lt;th style="text-align:left">allocs/op&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td style="text-align:left">BenchmarkOldMarshal-4&lt;/td>
+&lt;td style="text-align:left">138 µs ± 3%&lt;/td>
+&lt;td style="text-align:left">25.4KB&lt;/td>
+&lt;td style="text-align:left">19&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">BenchmarkNewMarshal-4&lt;/td>
+&lt;td style="text-align:left">29 µs ± 3%&lt;/td>
+&lt;td style="text-align:left">26.4KB&lt;/td>
+&lt;td style="text-align:left">11&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">Marshal Delta&lt;/td>
+&lt;td style="text-align:left">-78.97%&lt;/td>
+&lt;td style="text-align:left">3.87%&lt;/td>
+&lt;td style="text-align:left">-42.11%&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">BenchmarkOldUnmarshal-4&lt;/td>
+&lt;td style="text-align:left">199 µs ± 3%&lt;/td>
+&lt;td style="text-align:left">4720&lt;/td>
+&lt;td style="text-align:left">1360&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">BenchmarkNewUnmarshal-4&lt;/td>
+&lt;td style="text-align:left">94µs ± 5%&lt;/td>
+&lt;td style="text-align:left">4700&lt;/td>
+&lt;td style="text-align:left">1280&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">Unmarshal Delta&lt;/td>
+&lt;td style="text-align:left">-52.93%&lt;/td>
+&lt;td style="text-align:left">-0.24%&lt;/td>
+&lt;td style="text-align:left">-5.38%&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>&lt;strong>Large Data Size&lt;/strong>&lt;/p>
+&lt;p>Data size: 6MB&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th style="text-align:left">Benchmark&lt;/th>
+&lt;th style="text-align:left">time/op&lt;/th>
+&lt;th style="text-align:left">bytes/op&lt;/th>
+&lt;th style="text-align:left">allocs/op&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td style="text-align:left">BenchmarkOldMarshal-4&lt;/td>
+&lt;td style="text-align:left">58.7ms ± 5%&lt;/td>
+&lt;td style="text-align:left">6.96MB&lt;/td>
+&lt;td style="text-align:left">3350&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">BenchmarkNewMarshal-4&lt;/td>
+&lt;td style="text-align:left">13.3ms ± 3%&lt;/td>
+&lt;td style="text-align:left">6.84MB&lt;/td>
+&lt;td style="text-align:left">10&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">Marshal Delta&lt;/td>
+&lt;td style="text-align:left">-77.30%&lt;/td>
+&lt;td style="text-align:left">-1.71%&lt;/td>
+&lt;td style="text-align:left">-99.64%&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">BenchmarkOldUnmarshal-4&lt;/td>
+&lt;td style="text-align:left">56.6ms ± 3%&lt;/td>
+&lt;td style="text-align:left">17.4MB&lt;/td>
+&lt;td style="text-align:left">391000&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">BenchmarkNewUnmarshal-4&lt;/td>
+&lt;td style="text-align:left">26.8ms ± 5%&lt;/td>
+&lt;td style="text-align:left">17.5MB&lt;/td>
+&lt;td style="text-align:left">390000&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">Unmarshal Delta&lt;/td>
+&lt;td style="text-align:left">-52.54%&lt;/td>
+&lt;td style="text-align:left">0.09%&lt;/td>
+&lt;td style="text-align:left">-0.37%&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h2 id="copy-free-serialization">Copy-free Serialization&lt;/h2>
+&lt;p>In some services with large request and response data, the cost of serialization and deserialization is high. There are two ways for optimization:&lt;/p>
+&lt;ul>
+&lt;li>Implement the optimization strategy on serialization and deserialization as described earlier.&lt;/li>
+&lt;li>Scheduling by copy-free serialization.&lt;/li>
+&lt;/ul>
+&lt;h3 id="research-on-copy-free-serilization">Research on Copy-free Serilization&lt;/h3>
+&lt;p>RPC through copy-free serialization, which originated from the &amp;ldquo;Cap &amp;lsquo;n Proto&amp;rdquo; project of Kenton Varda. &amp;ldquo;Cap &amp;lsquo;n Proto&amp;rdquo; provides a set of data exchange formats and corresponding codec libraries.&lt;/p>
+&lt;p>In essence, &amp;ldquo;Cap &amp;lsquo;n Proto&amp;rdquo; creates a bytes slice as buffer, and all read &amp;amp; write operations on data structures are directly operated on buffer. After reading &amp;amp; writing, information contained by the buffer is added to the head and can be sent directly. And the peer end can read it after receiving it. Since there is no Go structure as an intermediate storage, serialization and deserialization are not required.&lt;/p>
+&lt;p>To briefly summarize the characteristics of &amp;ldquo;Cap &amp;lsquo;n Proto&amp;rdquo;:&lt;/p>
+&lt;ul>
+&lt;li>All data is read and written to a contiguous memory.&lt;/li>
+&lt;li>The serialization operation is preceded. &amp;ldquo;Get/Set&amp;rdquo; data and encoding process in parallel.&lt;/li>
+&lt;li>In the data exchange format, pointer (&amp;ldquo;offset&amp;rdquo; at the data memory) mechanism is used to store data at any location in the contiguous memory, so that data in the structure can be read and written in any order.
+&lt;ul>
+&lt;li>Fixed-size fields of a structure are rearranged so that they are stored in contiguous memory.&lt;/li>
+&lt;li>Fields with indeterminate size of a structure (e.g. list), are represented by a fixed-size pointer that stores information including the location of the data.
+First of all, &amp;ldquo;Cap &amp;lsquo;n Proto&amp;rdquo; has no Go language structure as an intermediate carrier, which can reduce a copy. Then, &amp;ldquo;Cap &amp;lsquo;n Proto&amp;rdquo; operates on a contiguous memory, and the read and write of coded data can be completed at once. Because of these two reasons, Cap &amp;lsquo;n Proto has excellent performance.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;p>Here are the benchmarks of &amp;ldquo;Thrift&amp;rdquo; and &amp;ldquo;Cap &amp;lsquo;n Proto&amp;rdquo; for the same data structure. Considering that &amp;ldquo;Cap &amp;lsquo;n Proto&amp;rdquo; presets the codec operation, we compare the complete process including data initialization. That is, structure data initialization + (serialization) + write buffer + read from buffer + (deserialization) + read from structure.&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-Thrift" data-lang="Thrift">&lt;span style="color:#204a87;font-weight:bold">struct&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000">MyTest&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000;font-weight:bold">{&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#0000cf;font-weight:bold">1&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#204a87;font-weight:bold">i64&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000">Num&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#0000cf;font-weight:bold">2&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000">Ano&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000">Ano&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#0000cf;font-weight:bold">3&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#204a87;font-weight:bold">list&lt;/span>&lt;span style="color:#000;font-weight:bold">&amp;lt;&lt;/span>&lt;span style="color:#204a87;font-weight:bold">i64&lt;/span>&lt;span style="color:#000;font-weight:bold">&amp;gt;&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000">Nums&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#8f5902;font-style:italic">// 长度131072 大小1MB
+&lt;/span>&lt;span style="color:#8f5902;font-style:italic">&lt;/span>&lt;span style="color:#000;font-weight:bold">}&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">&lt;/span>&lt;span style="color:#204a87;font-weight:bold">struct&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000">Ano&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000;font-weight:bold">{&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#0000cf;font-weight:bold">1&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#204a87;font-weight:bold">i64&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000">Num&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">&lt;/span>&lt;span style="color:#000;font-weight:bold">}&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th style="text-align:left">Benchmark&lt;/th>
+&lt;th style="text-align:left">Iter&lt;/th>
+&lt;th style="text-align:left">time/op&lt;/th>
+&lt;th style="text-align:left">bytes/op&lt;/th>
+&lt;th style="text-align:left">alloc/op&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td style="text-align:left">BenchmarkThriftReadWrite&lt;/td>
+&lt;td style="text-align:left">172&lt;/td>
+&lt;td style="text-align:left">6855840 ns/op&lt;/td>
+&lt;td style="text-align:left">3154209 B/op&lt;/td>
+&lt;td style="text-align:left">545 allocs/op&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">BenchmarkCapnpReadWrite&lt;/td>
+&lt;td style="text-align:left">1500&lt;/td>
+&lt;td style="text-align:left">844924 ns/op&lt;/td>
+&lt;td style="text-align:left">2085713 B/op&lt;/td>
+&lt;td style="text-align:left">9 allocs/op&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">ReadWrite Delta&lt;/td>
+&lt;td style="text-align:left">/&lt;/td>
+&lt;td style="text-align:left">-87.68%&lt;/td>
+&lt;td style="text-align:left">-33.88%&lt;/td>
+&lt;td style="text-align:left">-98.35%&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>(deserialization) + read data, depending on the size of data package,&amp;ldquo;Cap &amp;lsquo;n Proto&amp;rdquo; performance is about 8-9 times better than &amp;ldquo;Thrift&amp;rdquo;. Write data + (serialization), depending on the size of data package, &amp;ldquo;Cap &amp;lsquo;n Proto&amp;rdquo; performance is approximately 2-8 times better than &amp;ldquo;Thrift&amp;rdquo;. Overall performance of &amp;ldquo;Cap &amp;lsquo;n Proto&amp;rdquo; is approximately 4-8 times better than &amp;ldquo;Thrift&amp;rdquo;.&lt;/p>
+&lt;p>Previously, we discussed the advantages of &amp;ldquo;Cap &amp;lsquo;n Proto&amp;rdquo;. We will then summarize some problems existing in &amp;ldquo;Cap &amp;lsquo;n Proto&amp;rdquo;:&lt;/p>
+&lt;ul>
+&lt;li>One problem with the contiguous memory of Cap &amp;lsquo;n Proto is that when the data of variable size is resized and the required space is larger than the original space, the space of the original data can only be reallocated later. As a result, the original space becomes a hole that cannot be removed. This problem gets worse as the call link is resized, and can only be solved with strict constraints throughout the link: avoid resizing fields with indefined size, and when resize is necessary, rebuild a structure and make a deep copy of the data.&lt;/li>
+&lt;li>&amp;ldquo;Cap &amp;lsquo;n Proto&amp;rdquo; has no Go language structure as an intermediate carrier, so all fields can only be read and written through the interface, resulting in poor user experience.&lt;/li>
+&lt;/ul>
+&lt;h3 id="thrift-protocols-compatible-copy-free-serialization">Thrift Protocol‘s Compatible Copy-free Serialization&lt;/h3>
+&lt;p>In order to support copy-free serialization better and more efficiently, &amp;ldquo;Cap &amp;lsquo;n Proto&amp;rdquo; uses a self-developed codec format, but it is difficult to be implemented in the current environment where &amp;ldquo;Thrift&amp;rdquo; and &amp;ldquo;ProtoBuf&amp;rdquo; are dominant. In order to achieve the performance of copy-free serialization with protocol compatibility, we started the exploration of copy-free serialization that is compatible with &amp;ldquo;Thrift&amp;rdquo; protocol.&lt;/p>
+&lt;p>&amp;ldquo;Cap &amp;lsquo;n Proto&amp;rdquo; is a benchmark for copy-free serialization, so let&amp;rsquo;s see if the optimizations on &amp;ldquo;Cap &amp;lsquo;n Proto&amp;rdquo; can be applied to Thrift:&lt;/p>
+&lt;ul>
+&lt;li>Nature is the core of copy-free serialization, which does not use Go structure as intermediate carriers to reduce one copy. This optimization is not about a particular protocol and can be applied to any existing protocol (So it&amp;rsquo;s naturally compatible with the Thrift protocol), but the user experience of &amp;ldquo;Cap &amp;lsquo;n Proto&amp;rdquo; reflects that it needs to be carefully polished.&lt;/li>
+&lt;li>&amp;ldquo;Cap &amp;lsquo;n Proto&amp;rdquo; is operated on a contiguous memory. The read &amp;amp; write of the encoded data can be completed at once. &amp;ldquo;Cap &amp;lsquo;n Proto&amp;rdquo; can operate on contiguous memory because there is a pointer mechanism that allows data to be stored anywhere, allowing fields to be written in any order without affecting decoding. However, on the one hand, it is very likely to leave a hole in resize due to misoperation on contiguous memory. Besides, &amp;ldquo;Thrift&amp;rdquo; has no pointer alike mechanism, so it has stricter requirements on data layout. Here are two ways to approach such problems:
+&lt;ul>
+&lt;li>Insist on contiguous memory operation, while imposing strict regulations on users&amp;rsquo; usage: 1. Resize operation must rebuild the data structure 2. When a structure is nested, there are strict requirements on the order in which the fields are written (we can think of it as unfolding a nested structure from the outside in, and being written in the same order) . In addition, due to TLV encoding such as Binary, when writing begins for each nesting, it requires declaration (such as &amp;ldquo;StartWriteFieldX&amp;rdquo;).&lt;/li>
+&lt;li>Operating not entirely in contiguous memory, alterable fields are allocated a separate piece of memory. Since memory is not completely contiguous, the write operation can&amp;rsquo;t complete the output at once. In order to get closer to the performance of writing data at once, we adopted a linked buffer scheme. On the one hand, when the variable field resize occurs, only one node of the linked buffer is replaced, and there is no need to reconstruct the structure like &amp;ldquo;Cap &amp;lsquo;n Proto”. On the other hand, there is no need to clarify the actual structure like &amp;ldquo;Thrift&amp;rdquo; when the output is needed, just write the buffer on the link.
+To summarize what we have determined previously: 1. Do not use Go structure as the intermediate carrier, directly operate the underlying memory through the interface, and complete the codec at the same time of &amp;ldquo;Get/Set&amp;rdquo;. 2. Data is stored through a linked buffer.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;p>Then let&amp;rsquo;s take a look at the remaining issues:&lt;/p>
+&lt;ul>
+&lt;li>Degradation of the user experience caused by not using Go structures.
+&lt;ul>
+&lt;li>Solution: Improve the user experience of &amp;ldquo;Get/Set&amp;rdquo; interface and make it as easy to use as the Go structure.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Binary Format of &amp;ldquo;Cap &amp;lsquo;n Proto&amp;rdquo; is designed specifically for copy-free serialization scenarios, and although decoding is performed once for every Get, the decoding costs are minimal. The &amp;ldquo;Thrift&amp;rdquo; protocol (taking &amp;ldquo;Binary&amp;rdquo; as an example) has no mechanism that is similar to pointer. When there are multiple fields of variable size or nesting, they must be resolved sequentially instead of directly calculating the offset to get the field data location. Moreover, the cost of sequential resolution for each Get is too high.
+&lt;ul>
+&lt;li>Solution: In addition to recording the structure&amp;rsquo;s buffer nodes, we also add an index that records the pointer to the buffer node at the beginning of each field with unfixed size. The following is the ultimate performance comparison test between the current copy-free serialization scheme and &amp;ldquo;FastRead/Write&amp;rdquo; under the condition of 4 cores:&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th style="text-align:left">Package Size&lt;/th>
+&lt;th style="text-align:left">Type&lt;/th>
+&lt;th style="text-align:left">QPS&lt;/th>
+&lt;th style="text-align:left">TP90&lt;/th>
+&lt;th style="text-align:left">TP99&lt;/th>
+&lt;th style="text-align:left">TP999&lt;/th>
+&lt;th style="text-align:left">CPU&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td style="text-align:left">1KB&lt;/td>
+&lt;td style="text-align:left">Non-serialization&lt;/td>
+&lt;td style="text-align:left">70,700&lt;/td>
+&lt;td style="text-align:left">1 ms&lt;/td>
+&lt;td style="text-align:left">3 ms&lt;/td>
+&lt;td style="text-align:left">6 ms&lt;/td>
+&lt;td style="text-align:left">/&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">&lt;/td>
+&lt;td style="text-align:left">FastWrite/FastRead&lt;/td>
+&lt;td style="text-align:left">82,490&lt;/td>
+&lt;td style="text-align:left">1 ms&lt;/td>
+&lt;td style="text-align:left">2 ms&lt;/td>
+&lt;td style="text-align:left">4 ms&lt;/td>
+&lt;td style="text-align:left">/&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">2KB&lt;/td>
+&lt;td style="text-align:left">Non-serialization&lt;/td>
+&lt;td style="text-align:left">65,000&lt;/td>
+&lt;td style="text-align:left">1 ms&lt;/td>
+&lt;td style="text-align:left">4 ms&lt;/td>
+&lt;td style="text-align:left">9 ms&lt;/td>
+&lt;td style="text-align:left">/&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">&lt;/td>
+&lt;td style="text-align:left">FastWrite/FastRead&lt;/td>
+&lt;td style="text-align:left">72,000&lt;/td>
+&lt;td style="text-align:left">1 ms&lt;/td>
+&lt;td style="text-align:left">2 ms&lt;/td>
+&lt;td style="text-align:left">8 ms&lt;/td>
+&lt;td style="text-align:left">/&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">4KB&lt;/td>
+&lt;td style="text-align:left">Non-serialization&lt;/td>
+&lt;td style="text-align:left">56,400&lt;/td>
+&lt;td style="text-align:left">2 ms&lt;/td>
+&lt;td style="text-align:left">5 ms&lt;/td>
+&lt;td style="text-align:left">10 ms&lt;/td>
+&lt;td style="text-align:left">380%&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">&lt;/td>
+&lt;td style="text-align:left">FastWrite/FastRead&lt;/td>
+&lt;td style="text-align:left">52,700&lt;/td>
+&lt;td style="text-align:left">2 ms&lt;/td>
+&lt;td style="text-align:left">4 ms&lt;/td>
+&lt;td style="text-align:left">10 ms&lt;/td>
+&lt;td style="text-align:left">380%&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">32KB&lt;/td>
+&lt;td style="text-align:left">Non-serialization&lt;/td>
+&lt;td style="text-align:left">27,400&lt;/td>
+&lt;td style="text-align:left">/&lt;/td>
+&lt;td style="text-align:left">/&lt;/td>
+&lt;td style="text-align:left">/&lt;/td>
+&lt;td style="text-align:left">/&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">&lt;/td>
+&lt;td style="text-align:left">FastWrite/FastRead&lt;/td>
+&lt;td style="text-align:left">19,500&lt;/td>
+&lt;td style="text-align:left">/&lt;/td>
+&lt;td style="text-align:left">/&lt;/td>
+&lt;td style="text-align:left">/&lt;/td>
+&lt;td style="text-align:left">/&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">1MB&lt;/td>
+&lt;td style="text-align:left">Non-serialization&lt;/td>
+&lt;td style="text-align:left">986&lt;/td>
+&lt;td style="text-align:left">53 ms&lt;/td>
+&lt;td style="text-align:left">56 ms&lt;/td>
+&lt;td style="text-align:left">59 ms&lt;/td>
+&lt;td style="text-align:left">260%&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">&lt;/td>
+&lt;td style="text-align:left">FastWrite/FastRead&lt;/td>
+&lt;td style="text-align:left">942&lt;/td>
+&lt;td style="text-align:left">55 ms&lt;/td>
+&lt;td style="text-align:left">59 ms&lt;/td>
+&lt;td style="text-align:left">62 ms&lt;/td>
+&lt;td style="text-align:left">290%&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">10MB&lt;/td>
+&lt;td style="text-align:left">Non-serialization&lt;/td>
+&lt;td style="text-align:left">82&lt;/td>
+&lt;td style="text-align:left">630 ms&lt;/td>
+&lt;td style="text-align:left">640 ms&lt;/td>
+&lt;td style="text-align:left">645 ms&lt;/td>
+&lt;td style="text-align:left">240%&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">&lt;/td>
+&lt;td style="text-align:left">FastWrite/FastRead&lt;/td>
+&lt;td style="text-align:left">82&lt;/td>
+&lt;td style="text-align:left">630 ms&lt;/td>
+&lt;td style="text-align:left">640 ms&lt;/td>
+&lt;td style="text-align:left">640 ms&lt;/td>
+&lt;td style="text-align:left">270&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>Summary of the test results:&lt;/p>
+&lt;ul>
+&lt;li>In small data package scenario, performance of non-serialization is poorer - about 85% of the &amp;ldquo;FastWrite/FastRead &amp;rsquo;s&amp;rdquo; performance .&lt;/li>
+&lt;li>In large data package scenario, the performance of non-serialization is better. When processing packages larger than 4K, the performance of non-serialization is 7%-40% better compared with &amp;ldquo;FastWrite/FastRead&amp;rdquo;.&lt;/li>
+&lt;/ul>
+&lt;h2 id="postscript">Postscript&lt;/h2>
+&lt;p>Hope the above sharing can be helpful to the community. At the same time, we are also trying to share memory-based IPC, io_uring, TCP zero copy, RDMA, etc., to better improve Kitex performance; We will also focus on optimizing the communication under the contexts of same device and container. Welcome to join us and contribute to Go ecology together!&lt;/p>
+&lt;h2 id="reference">Reference&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://github.com/alecthomas/go_serialization_benchmarks">https://github.com/alecthomas/go_serialization_benchmarks&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://capnproto.org/">https://capnproto.org/&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://software.intel.com/content/www/us/en/develop/documentation/cpp-compiler-developer-guide-and-reference/top/compiler-reference/intrinsics/intrinsics-for-intel-advanced-vector-extensions-2/intrinsics-for-shuffle-operations-1/mm256-shuffle-epi8.html">Intel C++ Compiler Classic Developer Guide and Reference&lt;/a>&lt;/li>
+&lt;/ul></description></item><item><title>Blog: Netpoll Release v0.0.4</title><link>/blog/2021/09/16/netpoll-release-v0.0.4/</link><pubDate>Thu, 16 Sep 2021 00:00:00 +0000</pubDate><guid>/blog/2021/09/16/netpoll-release-v0.0.4/</guid><description>
+&lt;h2 id="improvement">Improvement:&lt;/h2>
+&lt;ul>
+&lt;li>Support TCP_NODELAY by default&lt;/li>
+&lt;li>Read &amp;amp;&amp;amp; write in a single loop&lt;/li>
+&lt;li>Return real error for nocopy rw&lt;/li>
+&lt;li>Change default number of loops policy&lt;/li>
+&lt;li>Redefine EventLoop.Serve arg: Listener -&amp;gt; net.Listener&lt;/li>
+&lt;li>Add API to DisableGopool&lt;/li>
+&lt;li>Remove reading lock&lt;/li>
+&lt;li>Blocking conn flush API&lt;/li>
+&lt;/ul>
+&lt;h2 id="bugfix">Bugfix:&lt;/h2>
+&lt;ul>
+&lt;li>Set leftover wait read size&lt;/li>
+&lt;/ul></description></item><item><title>Blog: CloudWeGo Open Source Announcement</title><link>/blog/2021/09/13/cloudwego-open-source-announcement/</link><pubDate>Mon, 13 Sep 2021 00:00:00 +0000</pubDate><guid>/blog/2021/09/13/cloudwego-open-source-announcement/</guid><description>
+&lt;h2 id="background">Background&lt;/h2>
+&lt;p>ByteDance is proud to announce the launch of open source software &lt;a href="https://github.com/cloudwego">CloudWeGo&lt;/a>. Focusing on microservice communication and governance, it offers high performance, strong extensibility, and high reliability which enables quick construction of an enterprise-level cloud native architecture.&lt;/p>
+&lt;p>ByteDance uses Golang as its main development language, and supports the reliable communication of tens of thousands of Golang microservices. We are experienced in microservices after practicing under massive traffic, and so we decided to offer open source software in order to enrich the community&amp;rsquo;s ecology.&lt;/p>
+&lt;p>We have built the CloudWeGo project to gradually open source the internal microservices system and try to make the projects friendly to external users, and our internal projects will also use this open source project as a library for iterative development. CloudWeGo will follow a key principle of maintaining one set of code internally and externally, iterating them as a whole. As we needed to migrate our internal users to open source libraries transparently, we did not initially pursue any publicity. However, it has been gratifying to see Kitex gain 1.2k stars and Netpoll gain 700+ stars within one month organically.&lt;/p>
+&lt;p>CloudWeGo is not only an external open source project, but also a real ultra-large-scale enterprise-level practice project.&lt;/p>
+&lt;p>We look forward to enriching the Golang product system of the cloud native community through CloudWeGo and helping other companies to build cloud-native architectures in a rapid and convenient way. We also hope to attract developers in the open source community, to maintain and improve this project together, provide support for multiple scenarios, and enrich product capabilities.&lt;/p>
+&lt;p>Because the projects under CloudWeGo depend on many internal basic tool libraries, we also open source the basic Golang tool libraries used internally, and maintain them in &lt;a href="https://github.com/bytedance/gopkg">bytedance/gopkg&lt;/a>.&lt;/p>
+&lt;h2 id="cloudwego">CloudWeGo&lt;/h2>
+&lt;p>To begin with, the two main projects included within CloudWeGo are the &lt;a href="https://github.com/cloudwego/kitex">Kitex&lt;/a> RPC framework and the &lt;a href="https://github.com/cloudwego/netpoll">Netpoll&lt;/a> network library. We chose not to publicise these projects prematurely, to ensure our open source technologies were ready and had sufficient verification upon launch.&lt;/p>
+&lt;h3 id="kitex">Kitex&lt;/h3>
+&lt;p>Kitex [kaɪt&amp;rsquo;eks] is a &lt;strong>high-performance&lt;/strong> and &lt;strong>strong-extensibility&lt;/strong> Golang RPC framework used in Bytedance. Before Kitex, the internal Golang framework was Kite, which was strongly coupled with Thrift - the code generation part of which covered intricate logic in the code.&lt;/p>
+&lt;p>Due to these factors, it was difficult to optimize the framework from the network model or codec level.&lt;/p>
+&lt;p>Adding new features will inevitably lead to more bloated code and would have hindered the iteration process. Instead we designed a new framework, Kitex, to address these concerns. Although Kitex is a new framework, it has been applied online internally for more than a year. At present, more than 50% of Golang microservices in Bytedance use Kitex.&lt;/p>
+&lt;p>Features of Kitex include:&lt;/p>
+&lt;ul>
+&lt;li>High Performance&lt;/li>
+&lt;/ul>
+&lt;p>Kitex integrates Netpoll, a high-performance network library which offers significant performance advantage over &lt;a href="https://pkg.go.dev/net">go net&lt;/a>. Kitex also makes some optimizations on the codec of Thrift, details of which can be found &lt;a href="https://mp.weixin.qq.com/s/Xoaoiotl7ZQoG2iXo9_DWg">here&lt;/a>. Users can also refer to this &lt;a href="https://github.com/cloudwego/kitex-benchmark">website&lt;/a> for performance results.&lt;/p>
+&lt;ul>
+&lt;li>Extensibility&lt;/li>
+&lt;/ul>
+&lt;p>Kitex employs a modular design and provides many interfaces with default implementation for users to customize. Users can then extend or inject them into Kitex to fulfill their needs. Please refer to the official &lt;a href="https://www.cloudwego.io/docs/kitex/tutorials/framework-exten/">doc&lt;/a> for the extensibility of Kitex. For their network library, developers can freely choose other network libraries aside from netpoll.&lt;/p>
+&lt;ul>
+&lt;li>Multi-message Protocol&lt;/li>
+&lt;/ul>
+&lt;p>Regarding the RPC message protocol, Kitex supports &lt;strong>Thrift&lt;/strong>, &lt;strong>Kitex Protobuf&lt;/strong> and &lt;strong>gRPC&lt;/strong> by default. For Thrift, it supports two binary protocols, Buffered and Framed. Kitex Protobuf is a Kitex custom Protobuf messaging protocol with a protocol format similar to Thrift. The gRPC message protocol enables Kitex to interact with gRPC. Additionally, Kitex allows developers to extend their own messaging protocols.&lt;/p>
+&lt;ul>
+&lt;li>Multi-transport Protocol&lt;/li>
+&lt;/ul>
+&lt;p>The transport protocol encapsulates the message protocol for RPC communication and is able to transparently transmit meta-information used for service governance. Kitex supports two transport protocols, &lt;strong>TTHeader&lt;/strong> and &lt;strong>HTTP2&lt;/strong>. TTHeader can be used in conjunction with Thrift and Kitex Protobuf. At present, HTTP2 is mainly used in combination with the gRPC protocol, and will support Thrift in the future.&lt;/p>
+&lt;ul>
+&lt;li>Multi-message Type&lt;/li>
+&lt;/ul>
+&lt;p>Kitex supports &lt;strong>PingPong&lt;/strong>, &lt;strong>One-way&lt;/strong>, and &lt;strong>Bidirectional Streaming&lt;/strong>. Among them, One-way currently only supports Thrift protocol, two-way Streaming only supports gRPC, and Kitex will support Thrift&amp;rsquo;s two-way Streaming in the future.&lt;/p>
+&lt;ul>
+&lt;li>Service Governance&lt;/li>
+&lt;/ul>
+&lt;p>Kitex integrates service governance modules such as service registry, service discovery, load balancing, circuit breaker, rate limiting, retry, monitoring, tracing, logging, diagnosis, etc. Most of these modules have been provided with default extensions, and users can make their choice of modules to integrate.&lt;/p>
+&lt;ul>
+&lt;li>Code Generation&lt;/li>
+&lt;/ul>
+&lt;p>Kitex has built-in code generation tools that support generating &lt;strong>Thrift&lt;/strong>, &lt;strong>Protobuf&lt;/strong>, and scaffold code. The original Thrift code is generated by Thriftgo, which is now open sourced. Kitex&amp;rsquo;s optimization of Thrift is supported by Kitex Tool as a plugin. Protobuf code is generated by Kitex as an official protoc plugin. Currently, Protobuf IDL parsing and code generation are not separately supported.&lt;/p>
+&lt;h3 id="netpoll">Netpoll&lt;/h3>
+&lt;p>Netpoll is a high-performance, non-blocking I/O networking framework which focuses on RPC scenarios, developed by ByteDance.&lt;/p>
+&lt;p>RPC is usually heavy on processing logic, including business logic and codec, and therefore cannot handle I/O serially like Redis. However, Go&amp;rsquo;s standard library &lt;a href="https://github.com/golang/go/tree/master/src/net">net&lt;/a> is designed for blocking I/O APIs, so that the RPC framework can only follow the One Conn One Goroutine design. It increases cost for context switching due to a large number of goroutines under high concurrency. Moreover, &lt;a href="https://github.com/golang/go/blob/master/src/net/net.go">net.Conn&lt;/a> has no API to check Alive, so it is difficult to make an efficient connection pool for the RPC framework, because there may be a large number of failed connections in the pool.&lt;/p>
+&lt;p>On the other hand, the open source community currently lacks Go network libraries that focus on RPC scenarios. Similar repositories such as evio and gnet are focused on scenarios like Redis and Haproxy.&lt;/p>
+&lt;p>Netpoll has been designed to solve these problems. It draws inspiration from the design of &lt;a href="https://github.com/tidwall/evio">evio&lt;/a> and &lt;a href="https://github.com/netty/netty">netty&lt;/a>, achieves excellent &lt;a href="https://github.com/cloudwego/netpoll#performance">performance&lt;/a> and is more suitable for microservice architecture. Netpoll also provides a number of &lt;a href="https://github.com/cloudwego/netpoll#features">Features&lt;/a>. Developers are recommended to use Netpoll as the network library of the RPC framework.&lt;/p>
+&lt;h3 id="thriftgo">Thriftgo&lt;/h3>
+&lt;p>Thriftgo is an implementation of &lt;a href="https://thrift.apache.org/docs/idl">thrift&lt;/a> compiler in go language that supports complete syntax and semantic checking of Thrift IDL.&lt;/p>
+&lt;p>Compared with the official Golang code generation by Apache Thrift, Thriftgo made some bug fixes and supports a plugin mechanism. Users can customize the generated code according to their needs.&lt;/p>
+&lt;p>Thriftgo is the code generation tool of Kitex. CloudWeGo will soon opensource &lt;strong>thrift-gen-validator&lt;/strong>, a plugin of Thriftgo that supports IDL Validator and is used for field verification, which is not provide by Thrift. With the IDL Validator, developers do not need to implement code verification logic by themselves.&lt;/p>
+&lt;p>Although Thriftgo currently only supports the generation of Golang Thrift code, it is positioned to support Thrift code generation in various languages. If there is a need in future, we will also consider supporting code generation for other programming languages. At the same time, we will try to contribute Thriftgo to the Apache Thrift community.&lt;/p>
+&lt;h2 id="maintenance">Maintenance&lt;/h2>
+&lt;p>A complete microservice system builds upon a basic cloud ecosystem. No matter how the microservices are developed; based on the public cloud, a private cloud or your own infrastructure, additional services (including service governance platform, monitoring, tracing, service registry and discovery, configuration and service mesh etc) and some customized standards are needed to provide better service governance. At Bytedance we have complete internal services to support the microservice system, but these services cannot be open source in the short term. So, how will CloudWeGo maintain a set of code internally and externally, and iterate them as a whole?&lt;/p>
+&lt;p>Projects in CloudWeGo are not coupled with the internal ecology. For example, Netpoll is directly migrated to open source libraries, and our internal dependencies are adjusted to open source libraries.&lt;/p>
+&lt;p>Kitex&amp;rsquo;s code is split into two parts, including the core of Kitex which has been migrated to the open source library, and the encapsulated internal library which will provide transparent upgrades for internal users.&lt;/p>
+&lt;p>For open source users who use Kitex, they can also extend Kitex and integrate Kitex into their own microservice system. We hope, and expect, that more developers will contribute their own extensions to &lt;a href="https://github.com/kitex-contrib">kitex-contrib&lt;/a>, providing help and convenience for more users.&lt;/p>
+&lt;h2 id="future-directions">Future directions&lt;/h2>
+&lt;ul>
+&lt;li>Open source other internal projects&lt;/li>
+&lt;/ul>
+&lt;p>We will continue to open source other internal projects, such as HTTP framework &lt;strong>Hertz&lt;/strong>, shared memory-based IPC communication library &lt;strong>ShmIPC&lt;/strong> and others, to provide more support for microservice scenarios.&lt;/p>
+&lt;ul>
+&lt;li>Open source verified and stable features&lt;/li>
+&lt;/ul>
+&lt;p>The main projects of CloudWeGo provide support for internal microservices of Bytedance. New features are usually verified internally, and we will gradually open source them when they are relatively mature, such as the integration of &lt;strong>ShmIPC&lt;/strong>, &lt;strong>no serialization&lt;/strong>, and &lt;strong>no code generation&lt;/strong>.&lt;/p>
+&lt;ul>
+&lt;li>Combine internal and external needs and iterate&lt;/li>
+&lt;/ul>
+&lt;p>After launching open source software, in addition to supporting internal users we also hope that CloudWeGo can provide good support for external users and help everyone quickly build their own microservice system. As such, we will iterate based on the needs of both internal and external users.&lt;/p>
+&lt;p>Following initial feedback, users have shown a stronger demand for Protobuf. Although Kitex supports multiple protocols, the internal RPC communication protocol of Bytedance is Thrift. Protobuf, Kitex Protobuf or compatibility with gRPC is supported only to fulfill the needs of a small number of internal users, so performance [for Protobuf] has not been optimized yet. In terms of code generation, we have not made any optimizations, and currently utilize Protobuf&amp;rsquo;s official binary directly.&lt;/p>
+&lt;p>Gogo/protobuf is an excellent open source library that optimizes Protobuf serialization performance based on generated code, but unfortunately the library is currently out of maintenance, which is why Kitex did not choose gogo.
+In order to meet the growing needs of developers, we are planning to carry out Kitex&amp;rsquo;s performance optimization for Protobuf support.&lt;/p>
+&lt;p>You are welcome to submit issues and PRs to build CloudWeGo together. We are excited for more developers to join, and also look forward to CloudWeGo helping more and more companies quickly build cloud-native architectures. If any corporate customers want to employ CloudWeGo in your internal projects, we can provide technical support. Feel free to raise an issue in &lt;a href="https://github.com/cloudwego">Github&lt;/a> if you have any questions.&lt;/p></description></item><item><title>Blog: Kitex Release v0.0.4</title><link>/blog/2021/08/26/kitex-release-v0.0.4/</link><pubDate>Thu, 26 Aug 2021 00:00:00 +0000</pubDate><guid>/blog/2021/08/26/kitex-release-v0.0.4/</guid><description>
+&lt;h2 id="improvement">Improvement:&lt;/h2>
+&lt;ul>
+&lt;li>Make transMetaHandler executed before customized boundHandlers to ensure the customized boundHandlers could get metainfo.&lt;/li>
+&lt;li>TransError uses internal error typeID if exist.&lt;/li>
+&lt;/ul>
+&lt;h2 id="bugfix">Bugfix:&lt;/h2>
+&lt;ul>
+&lt;li>Not reset stats level when clear RPCInfo in netpollmux to fix metric missing bug when use netpollmux.&lt;/li>
+&lt;li>Remove stale addresses in long pool.&lt;/li>
+&lt;li>Add an EOF condition to eliminate a redundant warning.&lt;/li>
+&lt;li>Modify error types check of service circuit breaker to fix the bug that fuse cannot be triggered.&lt;/li>
+&lt;/ul>
+&lt;h2 id="tool">Tool:&lt;/h2>
+&lt;ul>
+&lt;li>Adjust protobuf generated code of unary to support both Kitex Protobuf and gRPC.&lt;/li>
+&lt;li>Upgrade version of thriftgo to fix golint style.&lt;/li>
+&lt;li>Fix typo in thrift generated code.&lt;/li>
+&lt;li>Fix a bug that streaming generated code missing transport option.&lt;/li>
+&lt;/ul>
+&lt;h2 id="docs">Docs:&lt;/h2>
+&lt;ul>
+&lt;li>Add Golang setup section and Golang version requirement&lt;/li>
+&lt;li>Some docs are updated.&lt;/li>
+&lt;li>Add some English documents.&lt;/li>
+&lt;/ul>
+&lt;h2 id="dependency-change">Dependency Change:&lt;/h2>
+&lt;ul>
+&lt;li>Thriftgo: v0.0.2-0.20210726073420-0145861fcd04 -&amp;gt; v0.1.2&lt;/li>
+&lt;li>Netpoll: v0.0.2 -&amp;gt; v0.0.3&lt;/li>
+&lt;/ul></description></item><item><title>Blog: Kitex Release v0.0.3</title><link>/blog/2021/08/01/kitex-release-v0.0.3/</link><pubDate>Sun, 01 Aug 2021 00:00:00 +0000</pubDate><guid>/blog/2021/08/01/kitex-release-v0.0.3/</guid><description>
+&lt;h2 id="bugfix">Bugfix:&lt;/h2>
+&lt;ul>
+&lt;li>Prevent connection pool from being overridden.&lt;/li>
+&lt;/ul></description></item><item><title>Blog: Kitex Release v0.0.2</title><link>/blog/2021/07/30/kitex-release-v0.0.2/</link><pubDate>Fri, 30 Jul 2021 00:00:00 +0000</pubDate><guid>/blog/2021/07/30/kitex-release-v0.0.2/</guid><description>
+&lt;h2 id="improvement">Improvement:&lt;/h2>
+&lt;ul>
+&lt;li>Kitex now disables all stats to improve performance when no tracer is provided.&lt;/li>
+&lt;li>The Kitex client now will reuse connections by default.&lt;/li>
+&lt;/ul>
+&lt;h2 id="bugfix">Bugfix:&lt;/h2>
+&lt;ul>
+&lt;li>A nil-pointer bug in lbcache has been fixed.&lt;/li>
+&lt;li>A data-race issue in the retry(backup request) is fixed.&lt;/li>
+&lt;/ul>
+&lt;h2 id="tool">Tool:&lt;/h2>
+&lt;ul>
+&lt;li>The kitex tool no longer generates a default config file.&lt;/li>
+&lt;li>The kitex tool now uses the latest API of thriftgo which fixes several bad corner cases in code generation.&lt;/li>
+&lt;li>The kitex tool now checks the existence of the go command instead of assuming it. Thanks to @anqiansong&lt;/li>
+&lt;/ul>
+&lt;h2 id="docs">Docs:&lt;/h2>
+&lt;ul>
+&lt;li>
+&lt;p>We have updated some documentations in this version.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Several lint issues and typos are fixed thanks to @rleungx @Huangxuny1 @JeffreyBool.&lt;/p>
+&lt;/li>
+&lt;/ul></description></item><item><title>Blog: Kitex Release v0.0.1</title><link>/blog/2021/07/12/kitex-release-v0.0.1/</link><pubDate>Mon, 12 Jul 2021 00:00:00 +0000</pubDate><guid>/blog/2021/07/12/kitex-release-v0.0.1/</guid><description>
+&lt;p>Kitex project initialization.&lt;/p></description></item></channel></rss>
