@@ -1,4 +1,17 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>CloudWeGo – CloudWeGo</title><link>/</link><description>Recent content on CloudWeGo</description><generator>Hugo -- gohugo.io</generator><atom:link href="/index.xml" rel="self" type="application/rss+xml"/><item><title>Blog: Kitex Release v0.1.0</title><link>/blog/2021/12/13/kitex-release-v0.1.0/</link><pubDate>Mon, 13 Dec 2021 00:00:00 +0000</pubDate><guid>/blog/2021/12/13/kitex-release-v0.1.0/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>CloudWeGo – CloudWeGo</title><link>/</link><description>Recent content on CloudWeGo</description><generator>Hugo -- gohugo.io</generator><atom:link href="/index.xml" rel="self" type="application/rss+xml"/><item><title>Blog: Kitex Release v0.1.2</title><link>/blog/2021/12/22/kitex-release-v0.1.2/</link><pubDate>Wed, 22 Dec 2021 00:00:00 +0000</pubDate><guid>/blog/2021/12/22/kitex-release-v0.1.2/</guid><description>
+&lt;h2 id="hotfix">Hotfix&lt;/h2>
+&lt;ul>
+&lt;li>Fix some gRPC request bugs which are involved by v0.1.0&lt;/li>
+&lt;li>Fix mistake gRPC method path when no package definition in ID&lt;/li>
+&lt;/ul>
+&lt;h2 id="dependency-change">Dependency Change&lt;/h2>
+&lt;ul>
+&lt;li>Chore: upgrade netpoll-http2 to fix the problem about large request package (&amp;gt;4K) in streaming&lt;/li>
+&lt;/ul>
+&lt;h2 id="chore">Chore&lt;/h2>
+&lt;ul>
+&lt;li>Chore: use GitHub&amp;rsquo;s &lt;code>PULL_REQUEST_TEMPLATE&lt;/code> to create a PR&lt;/li>
+&lt;/ul></description></item><item><title>Blog: Kitex Release v0.1.0</title><link>/blog/2021/12/13/kitex-release-v0.1.0/</link><pubDate>Mon, 13 Dec 2021 00:00:00 +0000</pubDate><guid>/blog/2021/12/13/kitex-release-v0.1.0/</guid><description>
 &lt;h2 id="feature">Feature&lt;/h2>
 &lt;h3 id="generic-call">Generic Call&lt;/h3>
 &lt;ul>

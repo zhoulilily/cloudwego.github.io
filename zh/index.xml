@@ -1,4 +1,17 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>CloudWeGo – CloudWeGo</title><link>/zh/</link><description>Recent content on CloudWeGo</description><generator>Hugo -- gohugo.io</generator><atom:link href="/zh/index.xml" rel="self" type="application/rss+xml"/><item><title>Blog: Kitex v0.1.0 版本发布</title><link>/zh/blog/2021/12/13/kitex-v0.1.0-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</link><pubDate>Mon, 13 Dec 2021 00:00:00 +0000</pubDate><guid>/zh/blog/2021/12/13/kitex-v0.1.0-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>CloudWeGo – CloudWeGo</title><link>/zh/</link><description>Recent content on CloudWeGo</description><generator>Hugo -- gohugo.io</generator><atom:link href="/zh/index.xml" rel="self" type="application/rss+xml"/><item><title>Blog: Kitex v0.1.2 版本发布</title><link>/zh/blog/2021/12/22/kitex-v0.1.2-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</link><pubDate>Wed, 22 Dec 2021 00:00:00 +0000</pubDate><guid>/zh/blog/2021/12/22/kitex-v0.1.2-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</guid><description>
+&lt;h2 id="hotfix">Hotfix&lt;/h2>
+&lt;ul>
+&lt;li>修复 v0.1.0 gRPC 请求优化引入的部分问题&lt;/li>
+&lt;li>修复 IDL 中未定义 package 时，gRPC 的方法信息错误问题&lt;/li>
+&lt;/ul>
+&lt;h2 id="依赖更新">依赖更新&lt;/h2>
+&lt;ul>
+&lt;li>更新 netpoll-http2 依赖，解决 streaming 场景下大包（&amp;gt;4K）请求报错的问题&lt;/li>
+&lt;/ul>
+&lt;h2 id="杂项">杂项&lt;/h2>
+&lt;ul>
+&lt;li>使用 GitHub 的 PR 模板，强制开发者提交 PR 时填写相关描述&lt;/li>
+&lt;/ul></description></item><item><title>Blog: Kitex v0.1.0 版本发布</title><link>/zh/blog/2021/12/13/kitex-v0.1.0-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</link><pubDate>Mon, 13 Dec 2021 00:00:00 +0000</pubDate><guid>/zh/blog/2021/12/13/kitex-v0.1.0-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</guid><description>
 &lt;h2 id="功能">功能&lt;/h2>
 &lt;h3 id="泛化调用">泛化调用&lt;/h3>
 &lt;ul>
