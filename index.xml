@@ -2,7 +2,7 @@
 &lt;h2 id="hotfix">Hotfix&lt;/h2>
 &lt;ul>
 &lt;li>Fix some gRPC request bugs which are involved by v0.1.0&lt;/li>
-&lt;li>Fix mistake gRPC method path when no package definition in ID&lt;/li>
+&lt;li>Fix mistake gRPC method path when no package definition in IDL&lt;/li>
 &lt;/ul>
 &lt;h2 id="dependency-change">Dependency Change&lt;/h2>
 &lt;ul>
