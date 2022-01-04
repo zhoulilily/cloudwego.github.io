@@ -1,4 +1,22 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>CloudWeGo – CloudWeGo</title><link>/zh/</link><description>Recent content on CloudWeGo</description><generator>Hugo -- gohugo.io</generator><atom:link href="/zh/index.xml" rel="self" type="application/rss+xml"/><item><title>Blog: Kitex v0.1.2 版本发布</title><link>/zh/blog/2021/12/22/kitex-v0.1.2-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</link><pubDate>Wed, 22 Dec 2021 00:00:00 +0000</pubDate><guid>/zh/blog/2021/12/22/kitex-v0.1.2-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>CloudWeGo – CloudWeGo</title><link>/zh/</link><description>Recent content on CloudWeGo</description><generator>Hugo -- gohugo.io</generator><atom:link href="/zh/index.xml" rel="self" type="application/rss+xml"/><item><title>Blog: Kitex v0.1.3 版本发布</title><link>/zh/blog/2021/12/30/kitex-v0.1.3-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</link><pubDate>Thu, 30 Dec 2021 00:00:00 +0000</pubDate><guid>/zh/blog/2021/12/30/kitex-v0.1.3-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</guid><description>
+&lt;h2 id="功能优化">功能优化&lt;/h2>
+&lt;ul>
+&lt;li>JSON 泛化调用场景，向服务端传递 Base 信息，从而服务端可获取 Caller 等信息&lt;/li>
+&lt;/ul>
+&lt;h2 id="bugfix">Bugfix&lt;/h2>
+&lt;ul>
+&lt;li>修复 streaming 的 metric 上报（server侧）丢失 method 信息的问题&lt;/li>
+&lt;li>修复 JSON 和 HTTP 泛化中 base64 和 binary 的不兼容改动&lt;/li>
+&lt;li>修复 gRPC 流控相关的问题，该问题会导致 client 侧出现持续超时&lt;/li>
+&lt;/ul>
+&lt;h2 id="ci">CI&lt;/h2>
+&lt;ul>
+&lt;li>增加场景测试&lt;/li>
+&lt;/ul>
+&lt;h2 id="chore">Chore&lt;/h2>
+&lt;ul>
+&lt;li>更新了 &lt;a href="https://github.com/cloudwego/kitex/blob/develop/ROADMAP.md">ROADMAP&lt;/a>&lt;/li>
+&lt;/ul></description></item><item><title>Blog: Kitex v0.1.2 版本发布</title><link>/zh/blog/2021/12/22/kitex-v0.1.2-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</link><pubDate>Wed, 22 Dec 2021 00:00:00 +0000</pubDate><guid>/zh/blog/2021/12/22/kitex-v0.1.2-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</guid><description>
 &lt;h2 id="hotfix">Hotfix&lt;/h2>
 &lt;ul>
 &lt;li>修复 v0.1.0 gRPC 请求优化引入的部分问题&lt;/li>
