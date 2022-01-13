@@ -127,7 +127,7 @@
 &lt;/ul>
 &lt;h2 id="breaking-change">Breaking Change&lt;/h2>
 &lt;ul>
-&lt;li>remove Append and WriteBuffer returned parameter n&lt;/li>
+&lt;li>remove WriteBuffer() returned parameter n&lt;/li>
 &lt;/ul></description></item><item><title>Blog: Getting Started With RPC Practices: Performance Testing Guide</title><link>/blog/2021/11/24/getting-started-with-rpc-practices-performance-testing-guide/</link><pubDate>Wed, 24 Nov 2021 00:00:00 +0000</pubDate><guid>/blog/2021/11/24/getting-started-with-rpc-practices-performance-testing-guide/</guid><description>
 &lt;blockquote>
 &lt;p>On September 8, 2021, ByteDance announced the launch of CloudWeGo open source project. CloudWeGo is a set of microservice middleware developed by ByteDance with high performance, scalability, and stability. It focuses on microservice communication and governance, and meets the demands of different services in various scenarios. CloudWeGo currently has 4 Repos: Kitex, Netpoll, Thriftgo and Netpoll-HTTP2, featuring the RPC framework &amp;ndash; Kitex and the network library &amp;ndash; Netpoll.&lt;/p>

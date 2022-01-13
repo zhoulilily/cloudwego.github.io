@@ -91,6 +91,43 @@
 &lt;h2 id="依赖变化">依赖变化&lt;/h2>
 &lt;ul>
 &lt;li>github.com/cloudwego/netpoll: v0.0.4 -&amp;gt; v0.1.2&lt;/li>
+&lt;/ul></description></item><item><title>Blog: Netpoll v0.1.2 版本发布</title><link>/zh/blog/2021/12/13/netpoll-v0.1.2-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</link><pubDate>Mon, 13 Dec 2021 00:00:00 +0000</pubDate><guid>/zh/blog/2021/12/13/netpoll-v0.1.2-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</guid><description>
+&lt;h2 id="bug-修复">Bug 修复:&lt;/h2>
+&lt;ul>
+&lt;li>LinkBuffer 增加了空值校验&lt;/li>
+&lt;/ul></description></item><item><title>Blog: Netpoll v0.1.1 版本发布</title><link>/zh/blog/2021/12/09/netpoll-v0.1.1-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</link><pubDate>Thu, 09 Dec 2021 00:00:00 +0000</pubDate><guid>/zh/blog/2021/12/09/netpoll-v0.1.1-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</guid><description>
+&lt;h2 id="优化">优化:&lt;/h2>
+&lt;ul>
+&lt;li>优化了多路复用下，分片队列的性能&lt;/li>
+&lt;/ul>
+&lt;h2 id="bug-修复">Bug 修复:&lt;/h2>
+&lt;ul>
+&lt;li>修复了 book 方法在多路复用下的 bug&lt;/li>
+&lt;/ul>
+&lt;h2 id="文档">文档&lt;/h2>
+&lt;ul>
+&lt;li>修正了一些大小写和语法问题，并更新了链接&lt;/li>
+&lt;/ul></description></item><item><title>Blog: Netpoll v0.1.0 版本发布</title><link>/zh/blog/2021/12/01/netpoll-v0.1.0-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</link><pubDate>Wed, 01 Dec 2021 00:00:00 +0000</pubDate><guid>/zh/blog/2021/12/01/netpoll-v0.1.0-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</guid><description>
+&lt;h2 id="功能">功能:&lt;/h2>
+&lt;ul>
+&lt;li>增加了分片队列，用于支持连接多路复用&lt;/li>
+&lt;li>优化方案：尽可能的维护单节点 LinkBuffer 来减少 copy&lt;/li>
+&lt;li>优化方案：修复了 waitReadSize 的 bug，并优化了 input trigger 效率&lt;/li>
+&lt;li>优化方案：减少了 waitRead 和 inputAck 冲突时产生的超时错误&lt;/li>
+&lt;li>逻辑简化：简化了连接状态机&lt;/li>
+&lt;/ul>
+&lt;h2 id="bug-修复">Bug 修复:&lt;/h2>
+&lt;ul>
+&lt;li>修复了 eventLoop 提前 GC 的 bug&lt;/li>
+&lt;/ul>
+&lt;h2 id="文档">文档&lt;/h2>
+&lt;ul>
+&lt;li>更新 README，将 Performance 部分移动至 netpoll-benchmark 项目&lt;/li>
+&lt;li>更新了 reference，添加了官网信息，移除了 change log&lt;/li>
+&lt;/ul>
+&lt;h2 id="重大变更">重大变更&lt;/h2>
+&lt;ul>
+&lt;li>WriteBuffer 返回值由 (n int, err error) 改为 (err error)&lt;/li>
 &lt;/ul></description></item><item><title>Blog: RPC 框架 Kitex 实践入门：性能测试指南</title><link>/zh/blog/2021/11/24/rpc-%E6%A1%86%E6%9E%B6-kitex-%E5%AE%9E%E8%B7%B5%E5%85%A5%E9%97%A8%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95%E6%8C%87%E5%8D%97/</link><pubDate>Wed, 24 Nov 2021 00:00:00 +0000</pubDate><guid>/zh/blog/2021/11/24/rpc-%E6%A1%86%E6%9E%B6-kitex-%E5%AE%9E%E8%B7%B5%E5%85%A5%E9%97%A8%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95%E6%8C%87%E5%8D%97/</guid><description>
 &lt;blockquote>
 &lt;p>2021 年 9 月 8 日，字节跳动宣布正式开源 CloudWeGo。CloudWeGo 是一套字节跳动内部微服务中间件集合，具备高性能、强扩展性和稳定性的特点，专注于解决微服务通信与治理的难题，满足不同业务在不同场景的诉求。CloudWeGo 第一批开源了四个项目：Kitex、Netpoll、Thriftgo 和 netpoll-http2，以 RPC 框架 Kitex 和网络库 Netpoll 为主。&lt;/p>
@@ -1060,14 +1097,14 @@ go &lt;span style="color:#204a87">test&lt;/span> -gcflags&lt;span style="color:#
 &lt;/ul></description></item><item><title>Blog: Netpoll v0.0.4 版本发布</title><link>/zh/blog/2021/09/16/netpoll-v0.0.4-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</link><pubDate>Thu, 16 Sep 2021 00:00:00 +0000</pubDate><guid>/zh/blog/2021/09/16/netpoll-v0.0.4-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</guid><description>
 &lt;h2 id="优化">优化:&lt;/h2>
 &lt;ul>
-&lt;li>默认支持 TCP_NODELAY。&lt;/li>
-&lt;li>支持在一个循环中读写。&lt;/li>
-&lt;li>返回 nocopy rw 的真实错误。&lt;/li>
-&lt;li>更改了循环策略的默认数量。&lt;/li>
-&lt;li>重新定义了 EventLoop.Serve arg: Listener -&amp;gt; net.Listener。&lt;/li>
-&lt;li>在 DisableGopool 中增加了API。&lt;/li>
-&lt;li>删除了读锁。&lt;/li>
-&lt;li>连接 Flush API 调整为阻塞的。&lt;/li>
+&lt;li>默认支持 TCP_NODELAY&lt;/li>
+&lt;li>支持在一个循环中读写&lt;/li>
+&lt;li>返回 nocopy rw 的真实错误&lt;/li>
+&lt;li>更改了循环策略的默认数量&lt;/li>
+&lt;li>重新定义了 EventLoop.Serve arg: Listener -&amp;gt; net.Listener&lt;/li>
+&lt;li>在 DisableGopool 中增加了API&lt;/li>
+&lt;li>删除了读锁&lt;/li>
+&lt;li>连接 Flush API 调整为阻塞的&lt;/li>
 &lt;/ul>
 &lt;h2 id="bug-修复">Bug 修复:&lt;/h2>
 &lt;ul>
