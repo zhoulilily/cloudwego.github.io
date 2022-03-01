@@ -162,10 +162,11 @@
 &lt;ul>
 &lt;li>
 &lt;p>RPC 通信模型&lt;/p>
-&lt;p>一次 RPC 调用往往需要多个微服务协作完成，而下游服务又会有其自身依赖，所以整个调用链路会是一个复杂的网状结构。&lt;/p>
+&lt;p>微服务间的通信通常以 PingPong 模型为主，所以除了常规的吞吐性能指标外，每次 RPC 的平均时延也是开发者需要考虑的点。&lt;/p>
 &lt;/li>
 &lt;li>
 &lt;p>复杂的调用链路&lt;/p>
+&lt;p>一次 RPC 调用往往需要多个微服务协作完成，而下游服务又会有其自身依赖，所以整个调用链路会是一个复杂的网状结构。&lt;/p>
 &lt;p>在这种复杂调用关系中，某个中间节点出现的延迟波动可能会传导到整个链路上，导致整体超时。当链路上的节点足够多时，即便每个节点的波动概率很低，最终汇聚到链路上的超时概率也会被放大。所以单一服务的延迟波动 —— 即 P99 延迟指标，也是一个会对线上服务产生重大影响的关键指标。&lt;/p>
 &lt;/li>
 &lt;li>
@@ -209,7 +210,7 @@
 &lt;li>KITEX-MUX：多路复用模式&lt;/li>
 &lt;li>其他框架均使用多路复用模式&lt;/li>
 &lt;/ul>
-&lt;p>&lt;img src="/img/blog/kitex_performance_testing/qps.png" alt="image">&lt;br>
+&lt;p>&lt;img src="/img/blog/kitex_performance_testing/qps.png" alt="image">
 &lt;img src="/img/blog/kitex_performance_testing/tp99.png" alt="image">&lt;/p>
 &lt;h2 id="结语">结语&lt;/h2>
 &lt;p>在当前主流的 Golang 开源 RPC 框架中，每个框架其实在设计目标上都各有侧重：有些框架侧重于通用性，有些侧重于类似 Redis 这种轻业务逻辑的场景，有些侧重于吞吐性能，而有些则更侧重 P99 时延。&lt;/p>

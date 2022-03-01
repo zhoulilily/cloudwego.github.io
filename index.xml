@@ -151,52 +151,78 @@ but in handler.go kitex use &amp;ldquo;{{.ServiceName}}{{.RawName}}Server&amp;rd
 &lt;h2 id="breaking-change">Breaking Change&lt;/h2>
 &lt;ul>
 &lt;li>remove WriteBuffer() returned parameter n&lt;/li>
-&lt;/ul></description></item><item><title>Blog: Getting Started With RPC Practices: Performance Testing Guide</title><link>/blog/2021/11/24/getting-started-with-rpc-practices-performance-testing-guide/</link><pubDate>Wed, 24 Nov 2021 00:00:00 +0000</pubDate><guid>/blog/2021/11/24/getting-started-with-rpc-practices-performance-testing-guide/</guid><description>
+&lt;/ul></description></item><item><title>Blog: Getting Started With Kitex's Practice: Performance Testing Guide</title><link>/blog/2021/11/24/getting-started-with-kitexs-practice-performance-testing-guide/</link><pubDate>Wed, 24 Nov 2021 00:00:00 +0000</pubDate><guid>/blog/2021/11/24/getting-started-with-kitexs-practice-performance-testing-guide/</guid><description>
 &lt;blockquote>
-&lt;p>On September 8, 2021, ByteDance announced the launch of CloudWeGo open source project. CloudWeGo is a set of microservice middleware developed by ByteDance with high performance, scalability, and stability. It focuses on microservice communication and governance, and meets the demands of different services in various scenarios. CloudWeGo currently has 4 Repos: Kitex, Netpoll, Thriftgo and Netpoll-HTTP2, featuring the RPC framework &amp;ndash; Kitex and the network library &amp;ndash; Netpoll.&lt;/p>
+&lt;p>On September 8, 2021, ByteDance announced the launch of CloudWeGo open source project.
+CloudWeGo is a set of microservice middleware developed by ByteDance with high performance, strong scalability and stability.
+It focuses on microservice communication and governance, and meets the demands of different services in various scenarios.
+CloudWeGo currently has 4 Repos: Kitex, Netpoll, Thriftgo and netpoll-http2, featuring the RPC framework &amp;ndash; Kitex and the network library &amp;ndash; Netpoll.&lt;/p>
 &lt;/blockquote>
-&lt;p>Recently, ByteDance Service Framework Team officially announced the open source of CloudWeGo. It includes the Golang microservice RPC framework &amp;ndash; Kitex, which has been widely used in Douyin and Toutiao.
-The purpose of this article is to share the scenarios and technical issues that developers need to know when stress testing Kitex. These guides will help users adjust and optimize Kitex to better match their business needs, and maximize Kitex&amp;rsquo;s performance in real RPC scenarios. Users can also refer to the official stress test project &amp;ndash; &lt;a href="https://github.com/cloudwego/kitex-benchmark">kitex-benchmark&lt;/a> for more details.&lt;/p>
-&lt;h2 id="the-charaterstics-of-microservice-scenario">The Charaterstics of Microservice Scenario&lt;/h2>
+&lt;p>Recently, ByteDance Service Framework Team officially announced the open source of CloudWeGo. It includes the Golang microservice RPC framework &amp;ndash; Kitex, which has been deeply used in Douyin and Toutiao.&lt;/p>
+&lt;p>This article aims to share the scenarios and technical issues that developers need to know when stress testing Kitex.
+These guides will help users adjust and optimize Kitex to better match their business needs, and maximize Kitex&amp;rsquo;s performance in real RPC scenarios.
+Users can also refer to the official stress test project &amp;ndash; &lt;a href="https://github.com/cloudwego/kitex-benchmark">kitex-benchmark&lt;/a> for more details.&lt;/p>
+&lt;h2 id="the-characteristics-of-microservice-scenario">The Characteristics of Microservice Scenario&lt;/h2>
+&lt;p>Kitex was born in ByteDance&amp;rsquo;s large-scale microservices architecture practice. The scenario it is aimed at is naturally a microservices scenario.
+Therefore, the following will first introduce the characteristics of microservices, so that developers can understand Kitex&amp;rsquo;s design thinking in depth.&lt;/p>
 &lt;ul>
 &lt;li>
-&lt;p>&lt;strong>RPC Communication Model&lt;/strong>&lt;br>
+&lt;p>&lt;strong>RPC Communication Model&lt;/strong>
 The communication between microservices is usually based on PingPong model. So, in addition to the conventional throughput performance index, developers also need to consider the average latency of each RPC.&lt;/p>
 &lt;/li>
 &lt;li>
-&lt;p>&lt;strong>Complex Call Chain&lt;/strong>&lt;br>
-A RPC request usually requires multiple microservices to work together. With downstream services having their own dependencies, it leads the whole call chain to become a complex network structure. In these kind of complex call chains, the latency fluctuation of one intermediate node may be transmitted to the whole and lead to increase of overall latency. When there are many nodes on the chain, even if the latency of each node is less likely to fluctuate, the overall timeout probability of the chain could be amplified. Therefore, the latency fluctuation of a single service, notably P99, is also a key indicator that has a significant impact on online services.&lt;/p>
+&lt;p>&lt;strong>Complex Call Chain&lt;/strong>
+An RPC call often requires multiple microservices to collaborate, and downstream services have their own dependencies, so the entire call chain will be a complex network structure.&lt;/p>
 &lt;/li>
-&lt;li>
-&lt;p>&lt;strong>Size of Data Package&lt;/strong>&lt;br>
-Although the size of transmitted data packages depends on the actual business scenario, the internal statistics of ByteDance found that most online requests are small packages (&amp;lt;2KB). So we focused on optimizing the performance in the small data package scenarios while taking the large package scenarios into account.&lt;/p>
-&lt;/li>
+&lt;/ul>
+&lt;p>In this kind of complex call chains, the latency fluctuation of one intermediate node may be transmitted to the entire chain，resulting in an overall timeout.
+When there are many nodes on the chain, even if the fluctuation probability of each node is very low, the timeout probability that eventually converges on the chain will be magnified.
+Therefore, the latency fluctuation of a single service, notably P99, is also a key indicator that has a significant impact on online services.&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>Size of Data Package&lt;/strong>
+Although the size of transmitted data packages depends on the actual business scenario, the internal statistics of ByteDance found that most online requests are small packages (&amp;lt;2KB).&lt;/li>
+&lt;li>So we focused on optimizing the performance in the small data package scenarios while taking the large package scenarios into account.&lt;/li>
 &lt;/ul>
 &lt;h2 id="stress-test-for-microservice-scenarios">Stress Test for Microservice Scenarios&lt;/h2>
 &lt;h3 id="determine-stress-test-objects">Determine Stress Test Objects&lt;/h3>
-&lt;p>Measuring the performance of an RPC framework requires consideration from two perspectives: Client and Server. In large-scale business architectures, upstream clients are not necessarily using the same frameworks as downstream, and same goes to the downstream services scheduled by developers. The situation becomes more complicated when Service Mesh is involved.
-Some stress test projects often generate performance data for the &lt;strong>entire framework&lt;/strong> by mixing Client and Server processes. The outcome may not be consistent with the framework&amp;rsquo;s actual performance online.
-If you want to stress test Server, you should give Client as many resources as possible to push Server to its limit, and vice versa. If both Client and Server are only provided 4-core CPUS for stress tests, it will be impossible for developers to determine the performance data is referring to either Client or Server. Thus, the test result will not have practical value for online services.&lt;/p>
+&lt;p>Measuring the performance of an RPC framework requires consideration from two perspectives: Client and Server.
+In large-scale business architectures, upstream clients are not necessarily using the same frameworks as downstream, and same goes to the downstream services scheduled by developers.
+The situation becomes more complicated when Service Mesh is involved.&lt;/p>
+&lt;p>Some stress test projects often generate performance data for the &lt;strong>entire framework&lt;/strong> by mixing Client and Server processes, which is likely to be inconsistent with the actual online operation.&lt;/p>
+&lt;p>If you want to stress test Server, you should give Client as many resources as possible to push Server to its limit, and vice versa.
+If both Client and Server are only provided 4-core CPUs for stress tests, it will be impossible for developers to determine the performance data is referring to either Client or Server.
+Thus, the test result will not have practical value for online services.&lt;/p>
 &lt;h3 id="alignment-of-connection-model">Alignment of Connection Model&lt;/h3>
 &lt;p>Conventional RPCs have three major connection models:&lt;/p>
 &lt;ul>
 &lt;li>&lt;strong>Short connection&lt;/strong>: Each request creates a new connection and closes the connection immediately after the return is received.&lt;/li>
-&lt;li>&lt;strong>Persistent connection pool&lt;/strong>: A connection can process only one complete request &amp;amp; return at once.&lt;/li>
+&lt;li>&lt;strong>Persistent connection pool&lt;/strong>: A single connection can process only one complete request &amp;amp; return at once.&lt;/li>
 &lt;li>&lt;strong>Connection multiplexing&lt;/strong>: A single connection can process multiple requests &amp;amp; returns asynchronously at the same time.&lt;/li>
 &lt;/ul>
-&lt;p>Each type of connection model is not absolutely good or bad, it depends on the use case. Although connection multiplexing generally performs the best, some older framework services may not support multiplexing calls. Because to make it work, the dependency protocol must support the package serial number.
-In order to ensure maximum compatibility, Kitex initially used short connections on the Client side by default, while other mainstream open source frameworks used connection multiplexing by default. It resulted in large performance data deviations for some users when stress testing with default configuration.
-Later, in order to accommodate the common scenario of open source users, Kitex supported &lt;a href="https://github.com/cloudwego/kitex/pull/40/files">persistent connection&lt;/a> by default in v0.0.2.&lt;/p>
+&lt;p>Each type of connection model is not absolutely good or bad, it depends on the actual usage scenario.
+Although connection multiplexing generally performs the best, the application must rely on the protocol being able to support package serial numbers,
+and some older framework services may not support multiplexing calls.&lt;/p>
+&lt;p>In order to ensure maximum compatibility, Kitex initially used short connections on the Client side by default, while other mainstream open source frameworks used connection multiplexing by default.
+It resulted in large performance data deviations for some users when stress testing with default configuration.&lt;/p>
+&lt;p>Later, in order to accommodate the common scenario of open source users, Kitex supported &lt;a href="https://github.com/cloudwego/kitex/pull/40/files">persistent connection&lt;/a> by default in v0.0.2.&lt;/p>
 &lt;h3 id="alignment-of-serialization-strategy">Alignment of Serialization Strategy&lt;/h3>
-&lt;p>For RPC frameworks, regardless of service governance, the computation overhead is mainly generated by serialization and deserialization.
-Kitex uses the &lt;a href="https://github.com/golang/protobuf">Go protobuf library&lt;/a> to serialize Protobuf. And for serialization of Thrift, Kitex has specific performance optimization, which is introduced in the &lt;a href="https://www.cloudwego.io/blog/2021/09/23/performance-optimization-on-kitex/#serializationdeserialization-optimization-of-thrift">blog post&lt;/a> on our official web.
-Most of current open source frameworks support Protobuf in preference, and some of the built-in Protobuf are actually &lt;a href="https://github.com/gogo/protobuf">gogo/protobuf&lt;/a> versions with performance optimizations. However, gogo/protobuf is currently at risk of &lt;a href="https://github.com/gogo/protobuf/issues/691">maintenance absence&lt;/a>. Therefore, due to maintainability concerns, we decided to use the official protobuf library only. Certainly, we will make plans for optimizing Protobuf in the future.&lt;/p>
-&lt;h3 id="use-cpu-exclusively">Use CPU Exclusively&lt;/h3>
-&lt;p>Although multiple processes would usually utilize the CPU capability at the same time for online applications. But in stress test scenarios, both Client and Server processes are extremely busy. Sharing the CPU will result in a large number of context switches, which makes the output data less reliable and prone to large fluctuations.
-Therefore, we recommend that the Client and Server processes should be isolated on different CPU or machine. If you want to further avoid the impact of multiple processes, you can add the nice -n -20 command to prioritize the scheduling priority of the stress testing process.
-In addition, if possible, using physical machines makes the test results more precise and reproducible compared to using virtual machines on cloud platforms.&lt;/p>
+&lt;p>For RPC frameworks, regardless of service governance, the computation overhead is mainly generated in serialization and deserialization.&lt;/p>
+&lt;p>Kitex uses the &lt;a href="https://github.com/golang/protobuf">Go protobuf library&lt;/a> to serialize Protobuf.
+And for serialization of Thrift, Kitex has specific performance optimization, which is introduced in the &lt;a href="https://www.cloudwego.io/blog/2021/09/23/performance-optimization-on-kitex/#serializationdeserialization-optimization-of-thrift">blog post&lt;/a> on our official web.&lt;/p>
+&lt;p>Most of the current open source frameworks support Protobuf in preference, and some built-in Protobuf are actually &lt;a href="https://github.com/gogo/protobuf">gogo/protobuf&lt;/a> versions with performance optimizations.
+However, gogo/protobuf is currently at risk of &lt;a href="https://github.com/gogo/protobuf/issues/691">maintenance absence&lt;/a>.
+Therefore, due to maintainability concerns, we decided to use the official protobuf library only. Certainly, we will plan to optimize Protobuf in the future.&lt;/p>
+&lt;h3 id="use-exclusive-cpu">Use Exclusive CPU&lt;/h3>
+&lt;p>Although multiple processes would usually utilize the CPU capability at the same time for online applications.
+But in stress test scenarios, both Client and Server processes are extremely busy.
+Sharing the CPU will result in a large number of context switching, which makes the output data less reliable and prone to large fluctuations.&lt;/p>
+&lt;p>Therefore, we recommend that the Client and Server processes should be isolated on different CPUs or different exclusive machines.
+If you want to further avoid the impact of other processes, you can add the nice -n -20 command to adjust the scheduling priority of the stress testing process.&lt;/p>
+&lt;p>In addition, if possible, using physical machines makes the test results more precise and reproducible compared to using virtual machines on cloud platforms.&lt;/p>
 &lt;h2 id="performance-data-demonstration">Performance Data Demonstration&lt;/h2>
-&lt;p>In order to meet the above requirements, we compared the stress test results of multiple frameworks using Protobuf. The stress test source code can be found in &lt;a href="https://github.com/gogo/protobuf/issues/691">kitex-benchmark&lt;/a> repo. When Servier is fully loaded, P99 Latency of Kitex in connection pool mode is the lowest of all frameworks. In multiplexing mode, Kitex also performs well in each indicator.&lt;/p>
+&lt;p>On the premise of meeting the above requirements, we compared the stress test results of multiple frameworks using Protobuf.
+The stress test source code can be found in &lt;a href="https://github.com/gogo/protobuf/issues/691">kitex-benchmark&lt;/a> repo.
+When Server is fully loaded, P99 Latency of Kitex in connection pool mode is the lowest of all frameworks. In multiplexing mode, Kitex also performs well in each indicator.&lt;/p>
 &lt;p>&lt;strong>Configuration&lt;/strong>&lt;/p>
 &lt;ul>
 &lt;li>Client 16 CPUs，Server 4 CPUs&lt;/li>
@@ -208,12 +234,15 @@ In addition, if possible, using physical machines makes the test results more pr
 &lt;li>KITEX-MUX: Connection Multiplexing&lt;/li>
 &lt;li>Connection Multiplexing for all other Frameworks&lt;/li>
 &lt;/ul>
-&lt;p>&lt;img src="/img/blog/kitex_performance_testing/qps.png" alt="image">&lt;br>
+&lt;p>&lt;img src="/img/blog/kitex_performance_testing/qps.png" alt="image">
 &lt;img src="/img/blog/kitex_performance_testing/tp99.png" alt="image">&lt;/p>
 &lt;h2 id="summary">Summary&lt;/h2>
-&lt;p>Each mainstream Golang open source RPC framework actually has its own focus in terms of design goals: some focus on generality, some on scenarios with light business logic like Redis, some on throughput performance, and some on P99 delay.
-In the daily iteration of ByteDance&amp;rsquo;s business, it is common for a feature to cause one indicator to rise and another indicator to decline. Therefore, Kitex was more inclined to solve various problems in large-scale microservice scenarios at the beginning of its design.&lt;/p>
-&lt;p>Since the launch of Kitex, we have received a large amount of self-testing data from our users. We appreciate the community for their attention and support. We also encourage developers to use the testing guide provided in this article, and select appropriate tools for their own scenarios. For more questions, please make an Issue on GitHub.&lt;/p>
+&lt;p>Each mainstream Golang open source RPC framework actually has its own focus in terms of design goals: some focus on generality,
+some on scenarios with light business logic like Redis, some on throughput performance, and some on P99 latency.&lt;/p>
+&lt;p>In the daily iteration of ByteDance&amp;rsquo;s business, it is common for a feature to cause one indicator to rise and another indicator to decline.
+Therefore, Kitex was more inclined to solve various problems in large-scale microservice scenarios at the beginning of its design.&lt;/p>
+&lt;p>Since the launch of Kitex, we have received a large amount of self-testing data from our users. We appreciate the community for their attention and support.
+We also encourage developers to use the testing guide provided in this article, and select appropriate tools for their own scenarios. For more questions, please make an Issue on GitHub.&lt;/p>
 &lt;h2 id="pertinent-links">Pertinent Links&lt;/h2>
 &lt;ul>
 &lt;li>CloudWeGo Official Website: &lt;a href="https://www.cloudwego.io">https://www.cloudwego.io&lt;/a>&lt;/li>
@@ -221,6 +250,8 @@ In the daily iteration of ByteDance&amp;rsquo;s business, it is common for a fea
 &lt;li>Netpoll: &lt;a href="https://github.com/cloudwego/netpoll">https://github.com/cloudwego/netpoll&lt;/a>&lt;/li>
 &lt;li>kitex-benchmark: &lt;a href="https://github.com/cloudwego/kitex-benchmark">https://github.com/cloudwego/kitex-benchmark&lt;/a>&lt;/li>
 &lt;li>netpoll-benchmark: &lt;a href="https://github.com/cloudwego/netpoll-benchmark">https://github.com/cloudwego/netpoll-benchmark&lt;/a>&lt;/li>
+&lt;li>Go Protobuf Library: &lt;a href="https://github.com/golang/protobuf">https://github.com/golang/protobuf&lt;/a>&lt;/li>
+&lt;li>Thriftgo：https://github.com/cloudwego/thriftgo&lt;/li>
 &lt;/ul></description></item><item><title>Blog: Kitex Release v0.0.8</title><link>/blog/2021/11/05/kitex-release-v0.0.8/</link><pubDate>Fri, 05 Nov 2021 00:00:00 +0000</pubDate><guid>/blog/2021/11/05/kitex-release-v0.0.8/</guid><description>
 &lt;h2 id="improvement">Improvement:&lt;/h2>
 &lt;ul>
