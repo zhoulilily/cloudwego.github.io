@@ -1,4 +1,47 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>CloudWeGo – CloudWeGo</title><link>/</link><description>Recent content on CloudWeGo</description><generator>Hugo -- gohugo.io</generator><atom:link href="/index.xml" rel="self" type="application/rss+xml"/><item><title>Blog: An Article to Learn About ByteDance Microservices Middleware CloudWeGo</title><link>/blog/2022/03/25/an-article-to-learn-about-bytedance-microservices-middleware-cloudwego/</link><pubDate>Fri, 25 Mar 2022 00:00:00 +0000</pubDate><guid>/blog/2022/03/25/an-article-to-learn-about-bytedance-microservices-middleware-cloudwego/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>CloudWeGo – CloudWeGo</title><link>/</link><description>Recent content on CloudWeGo</description><generator>Hugo -- gohugo.io</generator><atom:link href="/index.xml" rel="self" type="application/rss+xml"/><item><title>Blog: Kitex Release v0.3.0</title><link>/blog/2022/04/29/kitex-release-v0.3.0/</link><pubDate>Fri, 29 Apr 2022 00:00:00 +0000</pubDate><guid>/blog/2022/04/29/kitex-release-v0.3.0/</guid><description>
+&lt;h2 id="feature">Feature&lt;/h2>
+&lt;ul>
+&lt;li>[&lt;a href="https://github.com/cloudwego/kitex/pull/366">#366&lt;/a>, &lt;a href="https://github.com/cloudwego/kitex/pull/426">#426&lt;/a> ] feat(client): support warming-up for kitex client&lt;/li>
+&lt;li>[&lt;a href="https://github.com/cloudwego/kitex/pull/395">#395&lt;/a> ] feat(mux): support gracefully shutdown in connection multiplexing&lt;/li>
+&lt;li>[&lt;a href="https://github.com/cloudwego/kitex/pull/399">#399&lt;/a> ] feat(protobuf): add fastpb protocol API and support it in the pkg/remote/codec module&lt;/li>
+&lt;/ul>
+&lt;h2 id="optimise">Optimise&lt;/h2>
+&lt;ul>
+&lt;li>[&lt;a href="https://github.com/cloudwego/kitex/pull/402">#402&lt;/a> ] optimize(connpool): export getCommonReporter in pkg/remote/connpool&lt;/li>
+&lt;li>[&lt;a href="https://github.com/cloudwego/kitex/pull/389">#389&lt;/a> ] optimize(rpcinfo): fill TransportProtocol, PackageName fields into RPCInfo of the server side after decoding&lt;/li>
+&lt;/ul>
+&lt;h2 id="bugfix">Bugfix&lt;/h2>
+&lt;ul>
+&lt;li>[&lt;a href="https://github.com/cloudwego/kitex/pull/413">#413&lt;/a> ] fix(mux): set PayloadCodec for sendMsg in NetpollMux trans handler to fix generic request codec error.&lt;a href="https://github.com/cloudwego/kitex/issues/411">issue #411&lt;/a>&lt;/li>
+&lt;li>[&lt;a href="https://github.com/cloudwego/kitex/pull/406">#406&lt;/a> ] fix(grpc): fix the sending and receiving logic about http2 framer, such as preventing the peer unable to receive the framer in time&lt;/li>
+&lt;li>[&lt;a href="https://github.com/cloudwego/kitex/pull/398">#398&lt;/a> ] fix(utils): fix the bug that Dump() func in ring.go can&amp;rsquo;t dump the accurate data in ring shards&lt;/li>
+&lt;li>[&lt;a href="https://github.com/cloudwego/kitex/pull/428">#428&lt;/a> ] fix(trans): close connection when flush data fails to avoid memory leak&lt;/li>
+&lt;/ul>
+&lt;h2 id="tool">Tool&lt;/h2>
+&lt;ul>
+&lt;li>[&lt;a href="https://github.com/cloudwego/kitex/pull/340">#340&lt;/a> ] tool(protobuf): redesign and implement new protobuf gen code called fastpb which doesn&amp;rsquo;t use reflection and only supports proto3&lt;/li>
+&lt;/ul>
+&lt;h2 id="chore">Chore&lt;/h2>
+&lt;ul>
+&lt;li>[&lt;a href="https://github.com/cloudwego/kitex/pull/396">#396&lt;/a> ] chore: replace cespare/xxhash with xxhash3 from bytedance/gopkg&lt;/li>
+&lt;li>[&lt;a href="https://github.com/cloudwego/kitex/pull/400">#400&lt;/a> ] chore: upgrade go version of workflow to 1.18&lt;/li>
+&lt;li>[&lt;a href="https://github.com/cloudwego/kitex/pull/407">#407&lt;/a> ] chore: add a separate file to declare the use of gRPC source code&lt;/li>
+&lt;/ul>
+&lt;h2 id="test">Test&lt;/h2>
+&lt;ul>
+&lt;li>[&lt;a href="https://github.com/cloudwego/kitex/pull/401">#401&lt;/a> ] test: add ut for kitex/server package&lt;/li>
+&lt;li>[&lt;a href="https://github.com/cloudwego/kitex/pull/393">#393&lt;/a> ] test: add ut for pkg/remote/bound package&lt;/li>
+&lt;li>[&lt;a href="https://github.com/cloudwego/kitex/pull/403">#403&lt;/a> ] test: add netpollmux unit test&lt;/li>
+&lt;li>[&lt;a href="https://github.com/cloudwego/kitex/pull/401">#401&lt;/a> ] test: add klog unit test&lt;/li>
+&lt;li>[&lt;a href="https://github.com/cloudwego/kitex/pull/392">#392&lt;/a> ] test(utils): add UT for utils and fix inaccurate err throw in json.go&lt;/li>
+&lt;li>[&lt;a href="https://github.com/cloudwego/kitex/pull/373">#373&lt;/a>, &lt;a href="https://github.com/cloudwego/kitex/pull/432">#432&lt;/a>, &lt;a href="https://github.com/cloudwego/kitex/pull/434">#434&lt;/a> ] test(grpc): add gRPC transport unit tests, promoting the coverage to 76%&lt;/li>
+&lt;li>[&lt;a href="https://github.com/cloudwego/kitex/pull/424">#424&lt;/a> ] test(transmeta): supplementary of unit tests for http2 and ttheader implementations of MetaHandler/StreamingMetaHandler in pkg/transmeta.&lt;/li>
+&lt;/ul>
+&lt;h2 id="dependency-change">Dependency Change&lt;/h2>
+&lt;ul>
+&lt;li>github.com/cloudwego/netpoll: v0.2.0 -&amp;gt; v0.2.2&lt;/li>
+&lt;li>github.com/bytedance/gopkg: 20210910103821-e4efae9c17c3 -&amp;gt; 20220413063733-65bf48ffb3a7&lt;/li>
+&lt;/ul></description></item><item><title>Blog: An Article to Learn About ByteDance Microservices Middleware CloudWeGo</title><link>/blog/2022/03/25/an-article-to-learn-about-bytedance-microservices-middleware-cloudwego/</link><pubDate>Fri, 25 Mar 2022 00:00:00 +0000</pubDate><guid>/blog/2022/03/25/an-article-to-learn-about-bytedance-microservices-middleware-cloudwego/</guid><description>
 &lt;p>In the cloud native era, infrastructures across all industries are undergoing a microservice architecture transformation, and all internet companies are concerned about R&amp;amp;D efficiency and stability. Developers who want to build microservices can never forgo supporting microservice governance, such as governance platforms, monitoring, tracing, registration/discovery, configuration centers, service mesh, etc. With Golang gradually becoming the dominating programming language in the cloud native era, there is a strong demand for Golang-based microservices middleware in the open source community.&lt;/p>
 &lt;p>ByteDance also faces these problems. In 2014, ByteDance introduced Golang to solve the high concurrency problem faced by push services with persistent connections; and two years later, the technical team launched a framework called Kite based on Golang, and rolled out Ginex after lightly encapsulating the open-source project Gin. In QCon 2021, Guozhu Cheng, the head of ByteDance&amp;rsquo;s infrastructure/service framework team, said that the launch of these two original frameworks has greatly promoted Golang&amp;rsquo;s adoption within the company.&lt;/p>
 &lt;p>However, due to evolutions of related technologies and demanding business requirements, the deeply coupled Kite and Thrift are difficult to be transformed and improved on the network model or codec level, and therefore continuous feature delivery will inevitably cause code bloat and blocked iterations. In the second half of 2019, the ByteDance technical team began to redesign the Golang RPC framework. At the same time, in order to get better performance in network communication, support connection multiplexing and sense connection status, they developed their own network library Netpoll.&lt;/p>
