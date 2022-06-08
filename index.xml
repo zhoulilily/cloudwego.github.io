@@ -41,6 +41,28 @@
 &lt;ul>
 &lt;li>github.com/cloudwego/netpoll: v0.2.0 -&amp;gt; v0.2.2&lt;/li>
 &lt;li>github.com/bytedance/gopkg: 20210910103821-e4efae9c17c3 -&amp;gt; 20220413063733-65bf48ffb3a7&lt;/li>
+&lt;/ul></description></item><item><title>Blog: Netpoll Release v0.2.2</title><link>/blog/2022/04/28/netpoll-release-v0.2.2/</link><pubDate>Thu, 28 Apr 2022 00:00:00 +0000</pubDate><guid>/blog/2022/04/28/netpoll-release-v0.2.2/</guid><description>
+&lt;h2 id="improvement">Improvement&lt;/h2>
+&lt;ul>
+&lt;li>Fix: reduce costs of SetNumLoops&lt;/li>
+&lt;li>Chore: update mcache and ci&lt;/li>
+&lt;li>Feat: recycle caches when LinkBuffer is closed&lt;/li>
+&lt;/ul>
+&lt;h2 id="fix">Fix&lt;/h2>
+&lt;ul>
+&lt;li>Fix: send&amp;amp;close ignored by OnRequest&lt;/li>
+&lt;li>Fix: fill lost some data when read io.EOF&lt;/li>
+&lt;li>Fix: check is active when flush&lt;/li>
+&lt;/ul>
+&lt;h2 id="doc">Doc&lt;/h2>
+&lt;ul>
+&lt;li>Doc: update guide.md&lt;/li>
+&lt;li>Doc: restate the definition of Reader.Slice&lt;/li>
+&lt;li>Doc: fix replace examples url&lt;/li>
+&lt;/ul>
+&lt;h2 id="revert">Revert&lt;/h2>
+&lt;ul>
+&lt;li>Revert &amp;ldquo;feat: change default number of loops policy (#31)&amp;rdquo;&lt;/li>
 &lt;/ul></description></item><item><title>Blog: An Article to Learn About ByteDance Microservices Middleware CloudWeGo</title><link>/blog/2022/03/25/an-article-to-learn-about-bytedance-microservices-middleware-cloudwego/</link><pubDate>Fri, 25 Mar 2022 00:00:00 +0000</pubDate><guid>/blog/2022/03/25/an-article-to-learn-about-bytedance-microservices-middleware-cloudwego/</guid><description>
 &lt;p>In the cloud native era, infrastructures across all industries are undergoing a microservice architecture transformation, and all internet companies are concerned about R&amp;amp;D efficiency and stability. Developers who want to build microservices can never forgo supporting microservice governance, such as governance platforms, monitoring, tracing, registration/discovery, configuration centers, service mesh, etc. With Golang gradually becoming the dominating programming language in the cloud native era, there is a strong demand for Golang-based microservices middleware in the open source community.&lt;/p>
 &lt;p>ByteDance also faces these problems. In 2014, ByteDance introduced Golang to solve the high concurrency problem faced by push services with persistent connections; and two years later, the technical team launched a framework called Kite based on Golang, and rolled out Ginex after lightly encapsulating the open-source project Gin. In QCon 2021, Guozhu Cheng, the head of ByteDance&amp;rsquo;s infrastructure/service framework team, said that the launch of these two original frameworks has greatly promoted Golang&amp;rsquo;s adoption within the company.&lt;/p>

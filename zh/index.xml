@@ -312,6 +312,28 @@ Kitex/gRPC 性能对比（2022 年 1 月数据）
 &lt;ul>
 &lt;li>github.com/cloudwego/netpoll: v0.2.0 -&amp;gt; v0.2.2&lt;/li>
 &lt;li>github.com/bytedance/gopkg: 20210910103821-e4efae9c17c3 -&amp;gt; 20220413063733-65bf48ffb3a7&lt;/li>
+&lt;/ul></description></item><item><title>Blog: Netpoll v0.2.2 版本发布</title><link>/zh/blog/2022/04/28/netpoll-v0.2.2-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</link><pubDate>Thu, 28 Apr 2022 00:00:00 +0000</pubDate><guid>/zh/blog/2022/04/28/netpoll-v0.2.2-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</guid><description>
+&lt;h2 id="improvement">Improvement&lt;/h2>
+&lt;ul>
+&lt;li>Fix: Loops 缩容不再全部重置&lt;/li>
+&lt;li>Chore: mcache bsr 计算使用 math/bits.Len 代替，以提升性能。&lt;/li>
+&lt;li>Feat: 修复 LinkBuffer Close 时没有回收 caches 的问题（不是内存泄漏）&lt;/li>
+&lt;/ul>
+&lt;h2 id="fix">Fix&lt;/h2>
+&lt;ul>
+&lt;li>Fix: 修复短链接 send&amp;amp;close 场景无法触发 OnRequest 回调的问题&lt;/li>
+&lt;li>Fix: 修复 zcReader 读到 io.EOF 后丢失部分数据的问题&lt;/li>
+&lt;li>Fix: 修复 flush 没有检查连接关闭的问题&lt;/li>
+&lt;/ul>
+&lt;h2 id="doc">Doc&lt;/h2>
+&lt;ul>
+&lt;li>Doc: 更新了用户文档&lt;/li>
+&lt;li>Doc: 增加了 Reader.Slice 的定义描述&lt;/li>
+&lt;li>Doc: 修复了 examples 中的死链&lt;/li>
+&lt;/ul>
+&lt;h2 id="revert">Revert&lt;/h2>
+&lt;ul>
+&lt;li>Revert: 重置了 loops 初始化数量&lt;/li>
 &lt;/ul></description></item><item><title>Blog: CloudWeGo 助 NextArch 基金会推动标准化建设</title><link>/zh/blog/2022/04/01/cloudwego-%E5%8A%A9-nextarch-%E5%9F%BA%E9%87%91%E4%BC%9A%E6%8E%A8%E5%8A%A8%E6%A0%87%E5%87%86%E5%8C%96%E5%BB%BA%E8%AE%BE/</link><pubDate>Fri, 01 Apr 2022 00:00:00 +0000</pubDate><guid>/zh/blog/2022/04/01/cloudwego-%E5%8A%A9-nextarch-%E5%9F%BA%E9%87%91%E4%BC%9A%E6%8E%A8%E5%8A%A8%E6%A0%87%E5%87%86%E5%8C%96%E5%BB%BA%E8%AE%BE/</guid><description>
 &lt;blockquote>
 &lt;p>导语：2022 年 3 月，NextArch 基金会正式成立微服务技术小组，致力于推动微服务技术和开源生态的持续发展，根据各个企业在微服务生产实践中遇到的问题，针对不同行业和应用场景输出标准化解决方案，并且联合 PolarisMesh、TARS、go-zero、GoFrame、&lt;strong>&lt;a href="https://github.com/cloudwego">CloudWeGo&lt;/a>&lt;/strong> 和 Spring Cloud Tencent 等开源社区提供开箱即用的实现，降低终端用户的使用门槛。来自腾讯、字节跳动、七牛云、快手、BIGO、好未来和蓝色光标等多家企业的技术专家已经加入技术小组，欢迎更多企业和开源社区加入。&lt;/p>
