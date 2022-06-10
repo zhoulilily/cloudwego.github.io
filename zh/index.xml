@@ -1,4 +1,63 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>CloudWeGo – CloudWeGo</title><link>/zh/</link><description>Recent content on CloudWeGo</description><generator>Hugo -- gohugo.io</generator><atom:link href="/zh/index.xml" rel="self" type="application/rss+xml"/><item><title>Blog: 从 CloudWeGo 谈云原生时代的微服务与开源</title><link>/zh/blog/2022/05/26/%E4%BB%8E-cloudwego-%E8%B0%88%E4%BA%91%E5%8E%9F%E7%94%9F%E6%97%B6%E4%BB%A3%E7%9A%84%E5%BE%AE%E6%9C%8D%E5%8A%A1%E4%B8%8E%E5%BC%80%E6%BA%90/</link><pubDate>Thu, 26 May 2022 00:00:00 +0000</pubDate><guid>/zh/blog/2022/05/26/%E4%BB%8E-cloudwego-%E8%B0%88%E4%BA%91%E5%8E%9F%E7%94%9F%E6%97%B6%E4%BB%A3%E7%9A%84%E5%BE%AE%E6%9C%8D%E5%8A%A1%E4%B8%8E%E5%BC%80%E6%BA%90/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>CloudWeGo – CloudWeGo</title><link>/zh/</link><description>Recent content on CloudWeGo</description><generator>Hugo -- gohugo.io</generator><atom:link href="/zh/index.xml" rel="self" type="application/rss+xml"/><item><title>Blog: Kitex v0.3.2 版本发布</title><link>/zh/blog/2022/06/02/kitex-v0.3.2-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</link><pubDate>Thu, 02 Jun 2022 00:00:00 +0000</pubDate><guid>/zh/blog/2022/06/02/kitex-v0.3.2-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</guid><description>
+&lt;h2 id="feature">Feature&lt;/h2>
+&lt;ul>
+&lt;li>[&lt;a href="https://github.com/cloudwego/kitex/pull/473">#473&lt;/a>] 功能 (grpc): 为 Kitex gRPC unary 模式增加短连接功能。&lt;/li>
+&lt;li>[&lt;a href="https://github.com/cloudwego/kitex/pull/431">#431&lt;/a>] 功能 (limiter):
+&lt;ol>
+&lt;li>支持自定义的限流实现，接口增加了请求参数的传递；&lt;/li>
+&lt;li>修复多路复用场景下 Server 的 QPS 限流器问题，添加基于 OnMessage 的限流；&lt;/li>
+&lt;li>调整默认的限流生效时机，只有使用框架 QPS 限流且非多路复用的场景下，才使用基于 OnRead 的限流。&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="optimize">Optimize&lt;/h2>
+&lt;ul>
+&lt;li>[&lt;a href="https://github.com/cloudwego/kitex/pull/465">#465&lt;/a>] 优化 (ttheader): Client 端在 TTHeader 解码结束后赋值 Remote Address (用于 Proxy 场景请求失败时获取对端地址)。&lt;/li>
+&lt;li>[&lt;a href="https://github.com/cloudwego/kitex/pull/466">#466&lt;/a>] 优化 (mux): 连接多路复用场景的 ErrReadTimeout 用 ErrRPCTimeout 封装返回。Proxy 场景请求失败时获取对端地址)。&lt;/li>
+&lt;li>[&lt;a href="https://github.com/cloudwego/kitex/pull/425">#425&lt;/a>] 优化 (limiter): 优化限流实现，保证第一秒的 Tokens 不会大幅超过限制。&lt;/li>
+&lt;/ul>
+&lt;h2 id="bugfix">Bugfix&lt;/h2>
+&lt;ul>
+&lt;li>[&lt;a href="https://github.com/cloudwego/kitex/pull/485">#485&lt;/a>] 修复 (grpc): 修复 grpc 内不恰当的 int 类型转换。&lt;/li>
+&lt;li>[&lt;a href="https://github.com/cloudwego/kitex/pull/474">#474&lt;/a>] 修复 (trans): 在 detection handler 中增加检测。当 OnInactive 比 OnActive 先发生，或者 OnActive 返回 error 时，防止空指针 panic。&lt;/li>
+&lt;li>[&lt;a href="https://github.com/cloudwego/kitex/pull/445">#445&lt;/a>] 修复 (retry):
+&lt;ol>
+&lt;li>修复重试中 &lt;code>callTimes&lt;/code> 字段的 race 问题；&lt;/li>
+&lt;li>修复 &lt;code>rpcStats&lt;/code> 中一些字段的 race 问题。&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;li>[&lt;a href="https://github.com/cloudwego/kitex/pull/471">#471&lt;/a>] 修复 (retry): 修复在 backup request 中的一个 race 问题。&lt;/li>
+&lt;/ul>
+&lt;h2 id="test">Test&lt;/h2>
+&lt;ul>
+&lt;li>[&lt;a href="https://github.com/cloudwego/kitex/pull/404">#404&lt;/a>] test: 增加 pkg/retry 的单测。&lt;/li>
+&lt;li>[&lt;a href="https://github.com/cloudwego/kitex/pull/439">#439&lt;/a>, &lt;a href="https://github.com/cloudwego/kitex/pull/472">#472&lt;/a>] test: 增加 pkg/remote/remotecli 的单测。&lt;/li>
+&lt;li>[&lt;a href="https://github.com/cloudwego/kitex/pull/462">#462&lt;/a>, &lt;a href="https://github.com/cloudwego/kitex/pull/457">#457&lt;/a>] test: 增加 pkg/remote/trans/nphttp2/grpc 的单测。&lt;/li>
+&lt;li>[&lt;a href="https://github.com/cloudwego/kitex/pull/420">#420&lt;/a>] test: 增加 pkg/remote/trans/nphttp2 的单测。&lt;/li>
+&lt;/ul>
+&lt;h2 id="refactor">Refactor&lt;/h2>
+&lt;ul>
+&lt;li>[&lt;a href="https://github.com/cloudwego/kitex/pull/464">#464&lt;/a>] refactor (ttheader): 修改 Kitex Protobuf 在 TTHeader 中的 protocolID，同时保证该变更与低版本的兼容性。&lt;/li>
+&lt;/ul>
+&lt;h2 id="chore">Chore&lt;/h2>
+&lt;ul>
+&lt;li>[&lt;a href="https://github.com/cloudwego/kitex/pull/453">#453&lt;/a>, &lt;a href="https://github.com/cloudwego/kitex/pull/475">#475&lt;/a>] chore: 更新 netpoll 和 bytedance/gopkg 的版本。&lt;/li>
+&lt;li>[&lt;a href="https://github.com/cloudwego/kitex/pull/458">#458&lt;/a>] chore: 修复了 reviewdog 失效的问题与 fork pr 单测的问题。&lt;/li>
+&lt;li>[&lt;a href="https://github.com/cloudwego/kitex/pull/454">#454&lt;/a>] chore: 现在的 CI 受限于 github runner 的性能经常会失败，尝试改成 self-hosted runner 来提升性能。&lt;/li>
+&lt;li>[&lt;a href="https://github.com/cloudwego/kitex/pull/449">#449&lt;/a>] chore: 更新 issue template，修改为更适合 Kitex 项目的问题模板。&lt;/li>
+&lt;/ul>
+&lt;h2 id="style">Style&lt;/h2>
+&lt;ul>
+&lt;li>[&lt;a href="https://github.com/cloudwego/kitex/pull/486">#486&lt;/a>] style (trans): 为 detection trans handler 增加注释信息。&lt;/li>
+&lt;/ul>
+&lt;h2 id="docs">Docs&lt;/h2>
+&lt;ul>
+&lt;li>[&lt;a href="https://github.com/cloudwego/kitex/pull/482">#482&lt;/a>] docs: 在 Readme 中增加 FAQ 链接。&lt;/li>
+&lt;/ul>
+&lt;h2 id="dependency-change">Dependency Change&lt;/h2>
+&lt;ul>
+&lt;li>github.com/cloudwego/netpoll: v0.2.2 -&amp;gt; v0.2.4&lt;/li>
+&lt;/ul></description></item><item><title>Blog: 从 CloudWeGo 谈云原生时代的微服务与开源</title><link>/zh/blog/2022/05/26/%E4%BB%8E-cloudwego-%E8%B0%88%E4%BA%91%E5%8E%9F%E7%94%9F%E6%97%B6%E4%BB%A3%E7%9A%84%E5%BE%AE%E6%9C%8D%E5%8A%A1%E4%B8%8E%E5%BC%80%E6%BA%90/</link><pubDate>Thu, 26 May 2022 00:00:00 +0000</pubDate><guid>/zh/blog/2022/05/26/%E4%BB%8E-cloudwego-%E8%B0%88%E4%BA%91%E5%8E%9F%E7%94%9F%E6%97%B6%E4%BB%A3%E7%9A%84%E5%BE%AE%E6%9C%8D%E5%8A%A1%E4%B8%8E%E5%BC%80%E6%BA%90/</guid><description>
 &lt;h1 id="从-cloudwego-谈云原生时代的微服务与开源">从 CloudWeGo 谈云原生时代的微服务与开源&lt;/h1>
 &lt;blockquote>
 &lt;p>本文整理自罗广明在 DIVE 全球基础软件创新大会 2022 的演讲分享，主题为《从 CloudWeGo 谈云原生时代的微服务与开源》。&lt;/p>
