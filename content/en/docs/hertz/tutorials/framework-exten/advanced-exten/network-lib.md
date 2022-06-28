@@ -20,6 +20,7 @@ type Conn interface {
     SetReadTimeout(t time.Duration) error
 }
 
+
 // Reader is for buffered Reader
 type Reader interface {
    // Peek returns the next n bytes without advancing the reader.
